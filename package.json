@@ -1,5 +1,5 @@
 {
-  "name": "auditgear",
+  "name": "deepthought",
   "version": "0.0.1",
   "private": true,
   "scripts": {
@@ -22,6 +22,7 @@
     "react": "17.0.2",
     "react-native": "0.67.2",
     "react-native-gesture-handler": "^2.2.0",
+    "react-native-rename": "^2.9.0",
     "react-native-safe-area-context": "^3.3.2",
     "react-native-screens": "^3.10.2",
     "reactotron-react-native": "^5.0.1"
