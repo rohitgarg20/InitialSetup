@@ -22,7 +22,7 @@ const styles = StyleSheet.create({
     lineHeight: 18,
     color: colors.black
   },
-  aboutUser:  {
+  aboutUser: {
     fontSize: fontDimens.extraSmall,
     lineHeight: 12,
     color: colors.lightBlue,
@@ -88,9 +88,12 @@ const styles = StyleSheet.create({
   },
   cardContainer: {
     padding: 20,
-    borderWidth: 1,
     borderColor: colors.borderColor,
-    borderRadius: 5
+    borderRadius: 10,
+    backgroundColor: colors.white,
+    shadowColor: colors.labelColor,
+    shadowOpacity: 0.26,
+    elevation: 3
   },
   otherInfo: {
     flexDirection: 'row',
@@ -169,7 +172,7 @@ export default class PostCardComponent extends Component<IProps> {
     const userObj: IUserObj = this.getUserData()
     const { signature = '' } = userObj || {}
     return (
-      <CustomText textStyle={styles.aboutUser} numberOfLines = {1} ellipsizeMode = {'tail'} >
+      <CustomText textStyle={styles.aboutUser} numberOfLines={1} ellipsizeMode={'tail'} >
         {signature}
       </CustomText>
     )
@@ -189,12 +192,12 @@ export default class PostCardComponent extends Component<IProps> {
 
   renderPostContent = () => {
     const { postData } = this.props
-    const { content = ''} = postData || {}
+    const { content = '' } = postData || {}
     return (
-      <View style = {{
+      <View style={{
         // paddingBottom: 10
       }}>
-        <CustomText numberOfLines={4} ellipsizeMode={'tail'} style = {styles.contentView}>
+        <CustomText numberOfLines={4} ellipsizeMode={'tail'} style={styles.contentView}>
           {content}
         </CustomText>
       </View>
@@ -210,19 +213,20 @@ export default class PostCardComponent extends Component<IProps> {
       title = ''
     } = attachment
     return (
-      <View style = {styles.postTime}>
+      <View style={styles.postTime}>
         <View>
           <CustomText textStyle={styles.contentView}>{title}</CustomText>
           <CustomText textStyle={styles.aboutUser}>2 min read</CustomText>
         </View>
-        <View style = {styles.rowContainer}>
+        <View style={styles.rowContainer}>
           <CustomText textStyle={styles.contentView}>Read more</CustomText>
           <IconButtonWrapper
             iconImage={icons.RIGHT_ARROW}
-            iconHeight = {20}
-            iconWidth = {20}
-            styling = {{
-              tintColor: colors.black
+            iconHeight={16}
+            iconWidth={16}
+            styling={{
+              tintColor: colors.black,
+              marginLeft: 5
             }}
           />
         </View>
@@ -242,12 +246,12 @@ export default class PostCardComponent extends Component<IProps> {
     } = attachment
     log('imageimage', `${BASE_URL}${image}`)
     return (
-      <View style = {styles.imageContainer}>
+      <View style={styles.imageContainer}>
         {image.length > 0 && <IconButtonWrapper
           iconImage={`${BASE_URL}${image}`}
-          iconWidth = {'100%'}
-          iconHeight = {130}
-          imageResizeMode = {'stretch'}
+          iconWidth={'100%'}
+          iconHeight={130}
+          imageResizeMode={'stretch'}
         />}
         {this.renderPostTimeToReadView()}
       </View>
@@ -256,7 +260,7 @@ export default class PostCardComponent extends Component<IProps> {
 
   renderPostInfoView = () => {
     return (
-      <View style = {styles.postView}>
+      <View style={styles.postView}>
         {this.renderPostContent()}
         {this.renderIconWithTimeView()}
       </View>
@@ -272,7 +276,7 @@ export default class PostCardComponent extends Component<IProps> {
     const { comment_count = 0 } = postData
     const subLabel = comment_count === 1 ? `${comment_count} comment` : `${comment_count} comments`
     return (
-      <View style = {styles.otherInfo}>
+      <View style={styles.otherInfo}>
         <CustomText textStyle={styles.dateView}>{subLabel}</CustomText>
       </View>
     )
@@ -281,8 +285,8 @@ export default class PostCardComponent extends Component<IProps> {
   renderFooterItem = (item) => {
     const { key, name, icon } = item
     return (
-      <View style = {styles.footerItem}>
-        <IconButtonWrapper iconImage={icon} iconHeight = {12} iconWidth = {15}/>
+      <View style={styles.footerItem}>
+        <IconButtonWrapper iconImage={icon} iconHeight={12} iconWidth={15} />
         <CustomText textStyle={styles.contentView}>
           {name}
         </CustomText>
@@ -292,7 +296,7 @@ export default class PostCardComponent extends Component<IProps> {
 
   renderFooterListView = () => {
     return (
-      <View style = {styles.footerList}>
+      <View style={styles.footerList}>
         {
           FOOTER_LIST_ITEMS.map((item) => this.renderFooterItem(item))
         }
@@ -302,7 +306,7 @@ export default class PostCardComponent extends Component<IProps> {
 
   renderUserDetails = () => {
     return (
-      <View style = {{
+      <View style={{
         justifyContent: 'center',
         flex: 1
       }}>
@@ -315,22 +319,23 @@ export default class PostCardComponent extends Component<IProps> {
 
   renderUserInfoView = () => {
     return (
-      <View style = {{
+      <View style={{
         flexDirection: 'row',
         justifyContent: 'space-between',
         alignItems: 'center',
         paddingBottom: 10,
-        flex: 10
+        flex: 10,
+        paddingLeft: 12
       }}>
-        <View style = {[styles.rowContainer, {  flex: 8 }]}>
+        <View style={[styles.rowContainer, { flex: 8 }]}>
           {this.renderRoundedAvtar()}
           {this.renderUserDetails()}
         </View>
-        <View style = {{
+        <View style={{
           flex: 2,
           alignItems: 'flex-end'
         }}>
-       {this.renderOptionsComponent()}
+          {this.renderOptionsComponent()}
         </View>
       </View>
 
@@ -339,7 +344,7 @@ export default class PostCardComponent extends Component<IProps> {
 
   renderCardComponent = () => {
     return (
-      <View style = {styles.cardContainer}>
+      <View style={styles.cardContainer}>
         {this.renderUserInfoView()}
         {this.renderPostInfoView()}
         {this.renderDiscussionCommentView()}
@@ -355,7 +360,7 @@ export default class PostCardComponent extends Component<IProps> {
   renderOptionsListComponent = () => {
     return (
       <CommunityOptionsComponent
-       optionsList={OPTIONS_DATA_FOR_OTHER_POST}
+        optionsList={OPTIONS_DATA_FOR_OTHER_POST}
       />
     )
   }
@@ -382,7 +387,7 @@ export default class PostCardComponent extends Component<IProps> {
         customToolTipView={this.renderOptionsListComponent}
         customView={this.renderCustomView}
         customWidth={120}
-        customHeight = {150}
+        customHeight={150}
         mainViewStyle={{ ...styles.mainViewStyle }}
         useAsDropDownView={true}
         withPointer={false}
