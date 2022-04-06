@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { lazy } from 'react'
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs'
 import { DiscussionRoomListScreen } from '../../screens/discussions/DiscussionRoomListScreen'
 import { EventsListScreen } from '../../screens/events/EventsListScreen'
@@ -16,15 +16,23 @@ const bottomTabBarStack = () => {
     <Tab.Navigator
       initialRouteName='Home'
       screenOptions={{
-        headerShown: false
+        headerShown: false,
+        lazy: true
       }}
-
       tabBar={props => <BottomTabBarComponent {...props} />}
     >
-      <Tab.Screen name={TAB_KEYS.HOME_TAB} component = {HomeScreen} />
-      <Tab.Screen name={TAB_KEYS.EVENTS_TAB} component = {EventsListScreen} />
-      <Tab.Screen name={TAB_KEYS.NUDGES_TAB} component = {NudgesScreen} />
-      <Tab.Screen name={TAB_KEYS.DISCUSSION_TAB} component = {DiscussionRoomListScreen} />
+      <Tab.Screen name={TAB_KEYS.HOME_TAB} component = {HomeScreen} options = {{
+        unmountOnBlur: true
+      }} />
+      <Tab.Screen name={TAB_KEYS.EVENTS_TAB} component = {EventsListScreen} options = {{
+        unmountOnBlur: true
+      }} />
+      <Tab.Screen name={TAB_KEYS.NUDGES_TAB} component = {NudgesScreen} options = {{
+        unmountOnBlur: true
+      }}  />
+      <Tab.Screen name={TAB_KEYS.DISCUSSION_TAB} component = {DiscussionRoomListScreen} options = {{
+        unmountOnBlur: true
+      }}  />
       <Tab.Screen name={TAB_KEYS.PREFERENCES_TAB} component = {PreferencesScreen} />
     </Tab.Navigator>
   )

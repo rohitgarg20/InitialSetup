@@ -28,7 +28,7 @@ export const MAIN_STACK_KEYS = {
 }
 
 export const BASE_URL = 'http://192.168.1.203:4567'
-// export const BASE_URL = 'https://sdlms.deepthought.education'
+// export const BASE_URL = 'http://sdlms.deepthought.education'
 
 
 export const DAYS_NAME = ['Sun', 'Mon', 'Tue', 'Wed', 'Thur', 'Fri', 'Sat']
@@ -144,4 +144,34 @@ export const OPTIONS_DATA_FOR_OTHER_POST = [
 export const USER_STATUS = {
   ONLINE: 'online',
   OFFLINE: 'offline'
+}
+
+export const FILTER_KEYS = {
+  CATEGORY: 'category',
+  SORTING: 'sorting'
+}
+
+export const FILTER_ITEM_KEYS = {
+  FILTER_LABEL: 'filterLabel',
+  CURRENT_SELECTED_FILTER_VALUES: 'currentSelectedFilterValues',
+  PREEVIOUS_SELECTED_FILTER_VALUES: 'previousSelectedValues',
+  FILTER_TYPE: 'filterType',
+  LIST_ITEMS: 'listItems',
+  FILTER_ID: 'filterId',
+  CHECKBOX_TYPE: 'checkBoxType',
+  RADIO_BUTTON_TYPE: 'radioButton'
+}
+
+export interface IFilterItems {
+  id: string
+  isSelected: string
+  displayLabel: string
+}
+export interface IFilterListItem{
+  filterLabel: string
+  currentSelectedFilterValues: IFilterItems[]
+  previousSelectedValues: IFilterItems[]
+  listItems: IFilterItems[]
+  filterType: 'checkboxSelection' | 'radio'
+  filterId: string
 }

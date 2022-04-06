@@ -1,3 +1,5 @@
+import { UserDataStore } from './user-data-store/UserDataStore';
+import { PreferencesDataStore } from './preferences/PreferencesDataStore';
 import { PostListStore } from './posts-list-store/PostListStore';
 import { NudgesListStore } from './nudges-list-store/NudgesListStore';
 import { DiscussionRoomListStore } from './discussion-room-list/DiscussionRoomListStore';
@@ -19,6 +21,8 @@ const eventsListStore = new EventsListStore()
 const discussionRoomListStore = new DiscussionRoomListStore()
 const nudgesListDataStore = new NudgesListStore()
 const postListStore = new PostListStore()
+const preferencesDataStore = new PreferencesDataStore()
+const userDataStore = new UserDataStore()
 
 export * from './LoaderDataStore'
 export * from './login'
@@ -30,6 +34,8 @@ export * from './events-list'
 export * from './discussion-room-list'
 export * from './nudges-list-store'
 export * from './posts-list-store'
+export * from './preferences'
+export * from './user-data-store'
 
 export {
   loaderDataStore,
@@ -41,7 +47,9 @@ export {
   eventsListStore,
   discussionRoomListStore,
   nudgesListDataStore,
-  postListStore
+  postListStore,
+  preferencesDataStore,
+  userDataStore
 }
 
 export default {
@@ -54,5 +62,7 @@ export default {
   eventsListStore,
   discussionRoomListStore,
   nudgesListDataStore,
-  postListStore
+  postListStore,
+  preferencesDataStore,
+  userDataStore
 }
