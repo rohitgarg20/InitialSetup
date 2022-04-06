@@ -46,25 +46,26 @@ const styles = StyleSheet.create({
   },
   nameText: {
     fontSize: fontDimens.medium,
-    lineHeight: 18,
+    lineHeight: 20,
     fontWeight: '600',
     color: colors.black
   },
   tagLine: {
     fontSize: fontDimens.extraSmall,
-    lineHeight: 12,
+    lineHeight: 16,
     fontWeight: '400',
     color: colors.black
   },
   date: {
     fontSize: fontDimens.extraSmall,
-    lineHeight: 12,
+    lineHeight: 16,
     fontWeight: '400',
-    color: colors.lightBlue
+    color: colors.lightBlue,
+    paddingBottom: 15
   },
   description: {
     fontSize: fontDimens.small,
-    lineHeight: 14,
+    lineHeight: 16,
     fontWeight: '400',
     color: colors.black
   },
