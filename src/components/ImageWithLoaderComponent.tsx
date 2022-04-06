@@ -8,21 +8,21 @@ import { log } from '../config'
 
 const styles = StyleSheet.create({
   activityLoaderContainer: {
-		position: 'absolute',
-		justifyContent: 'center',
-		alignItems: 'center',
-		width: '100%',
-		height: '100%',
-		backgroundColor: colors.darkBlue
-	},
+    position: 'absolute',
+    justifyContent: 'center',
+    alignItems: 'center',
+    width: '100%',
+    height: '100%',
+    backgroundColor: colors.lightestGrey
+  },
   srcImage: {
-		width: '100%',
-		height: '100%'
-	},
+    width: '100%',
+    height: '100%'
+  }
 
 })
 
-const imageWithLoaderComponent = ({ srcImage }) => {
+const imageWithLoaderComponent = ({ srcImage, containerStyle = {} }) => {
   const [isImageFeteching, setImageFetchedStatus] = useState(true)
   const [errorFetchingImage, setErrorFetchingImage] = useState(false)
 
@@ -31,14 +31,14 @@ const imageWithLoaderComponent = ({ srcImage }) => {
   }
 
   return (
-    <View style={{ height: '100%', overflow: 'hidden' }}>
+    <View style={[{ height: '100%', overflow: 'hidden' }, containerStyle]}>
       {isImageFeteching && (
         <View style={styles.activityLoaderContainer}>
           <ActivityIndicator color={colors.grey} size={'large'} />
         </View>
       )}
       {errorFetchingImage ? (
-        <Image source={icons.LOGO} resizeMode={'contain'} style={styles.srcImage} />
+        <Image source={icons.ERROR_IMAGE} resizeMode={'stretch'} style={styles.srcImage} />
       ) : (
         <Image
           source={getSourceImage(srcImage)}

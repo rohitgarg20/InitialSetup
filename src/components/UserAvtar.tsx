@@ -36,9 +36,15 @@ interface Props {
   showBorderRadius?: boolean
 }
 
-export class UserAvatar extends React.PureComponent<Props> {
+interface State {
+  errorFetchingImage?: boolean
+}
+export class UserAvatar extends React.PureComponent<Props, State> {
   constructor(props: Props) {
     super(props)
+    this.state = {
+      errorFetchingImage: false
+    }
   }
 
   render() {
@@ -90,11 +96,16 @@ export class UserAvatar extends React.PureComponent<Props> {
     }
 
     let inner
-    if (src) {
+    if (src && !this.state.errorFetchingImage) {
 
       const props = {
         style: [imageLocalStyle, imageStyle],
-        source: {uri: src}
+        source: {uri: src},
+        onError: () => {
+          this.setState({
+            errorFetchingImage: true
+          })
+        }
       }
 
       inner = React.createElement( this.props.component || Image, props )

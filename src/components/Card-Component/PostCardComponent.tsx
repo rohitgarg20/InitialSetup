@@ -12,6 +12,7 @@ import { UserAvatar } from '../UserAvtar'
 import { log } from '../../config'
 import { InfoToolTip } from '../InfoToolTip'
 import { CommunityOptionsComponent } from '../OptionsListComponent'
+import { ImageWithLoaderComponent } from '../ImageWithLoaderComponent'
 
 const styles = StyleSheet.create({
   withoutImageColor: {
@@ -54,7 +55,7 @@ const styles = StyleSheet.create({
     borderRadius: 10,
     overflow: 'hidden',
     borderWidth: 1,
-    borderColor: colors.borderColor,
+    borderColor: 'transparent',
     marginTop: 10
   },
   postView: {
@@ -247,11 +248,12 @@ export default class PostCardComponent extends Component<IProps> {
     log('imageimage', `${BASE_URL}${image}`)
     return (
       <View style={styles.imageContainer}>
-        {image.length > 0 && <IconButtonWrapper
-          iconImage={`${BASE_URL}${image}`}
-          iconWidth={'100%'}
-          iconHeight={130}
-          imageResizeMode={'stretch'}
+        {image.length > 0 && <ImageWithLoaderComponent
+          srcImage={`${BASE_URL}${image}`}
+          containerStyle = {{
+            height: 130,
+            width: '100%'
+          }}
         />}
         {this.renderPostTimeToReadView()}
       </View>

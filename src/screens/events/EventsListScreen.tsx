@@ -13,7 +13,8 @@ import { icons } from '../../common/icons'
 
 const styles = StyleSheet.create({
   container: {
-    backgroundColor: colors.whiteSmock
+    backgroundColor: colors.whiteSmock,
+    flex: 1
   },
   borderBottom: {
     borderBottomWidth: 2,
@@ -109,7 +110,9 @@ export class EventsListScreen extends Component {
     const { eventData = {}, isFetching } = eventsListStore
     const { eventsList } = eventData
     return (
-      <View>
+      <View style = {{
+        flex: 1
+      }}>
         <View style={styles.subHeaderContainer}>
           <CustomText textStyle={styles.subheadingStyle}>Explore Events</CustomText>
           <TouchableOpacity>
