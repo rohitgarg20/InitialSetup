@@ -2,7 +2,7 @@ import React, { Component } from 'react'
 import { Dimensions, ImageBackground, StyleSheet, View } from 'react-native'
 import { get } from 'lodash'
 import { colors, fontDimens } from '../../common'
-import { BASE_URL, FOOTER_LIST_ITEMS, OPTIONS_DATA_FOR_OTHER_POST, POST_TYPES } from '../../common/constant'
+import { BASE_URL, FOOTER_LIST_ITEMS, OPTIONS_DATA_FOR_OTHER_POST, OPTIONS_DATA_FOR_SELF_POST, POST_TYPES } from '../../common/constant'
 import { icons } from '../../common/icons'
 import { IPostItem, IUserObj } from '../../store/interfaces'
 import { formatDate } from '../../utils/app-utils'
@@ -37,7 +37,7 @@ const styles = StyleSheet.create({
   },
   contentView: {
     fontSize: fontDimens.small,
-    lineHeight: 15,
+    lineHeight: 16,
     color: colors.black,
     fontWeight: '400'
   },
@@ -369,7 +369,7 @@ export default class PostCardComponent extends Component<IProps> {
   renderOptionsListComponent = () => {
     return (
       <CommunityOptionsComponent
-        optionsList={OPTIONS_DATA_FOR_OTHER_POST}
+        optionsList={OPTIONS_DATA_FOR_SELF_POST}
       />
     )
   }
@@ -401,7 +401,7 @@ export default class PostCardComponent extends Component<IProps> {
         customToolTipView={this.renderOptionsListComponent}
         customView={this.renderCustomView}
         customWidth={120}
-        customHeight={150}
+        customHeight={200}
         mainViewStyle={{ ...styles.mainViewStyle }}
         useAsDropDownView={true}
         withPointer={false}

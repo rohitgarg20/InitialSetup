@@ -55,7 +55,7 @@ export class HeaderCardComponent extends Component {
         <View>
           <TouchableOpacity>
             <IconButtonWrapper
-              iconImage={icons.SIGN_IN}
+              iconImage={icons.LOGO}
               iconHeight={20}
               iconWidth={20}
             />

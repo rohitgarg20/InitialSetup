@@ -116,7 +116,7 @@ export class EventCardComponent extends PureComponent<IProps> {
             <CustomText textStyle={styles.date}>{subLabel}</CustomText>
           </View>
           <View>
-            <CustomText numberOfLines={3} ellipsizeMode={'tail'} textStyle={styles.description}>
+            <CustomText numberOfLines={2} ellipsizeMode={'tail'} textStyle={styles.description}>
               {description}
             </CustomText>
           </View>
