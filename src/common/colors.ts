@@ -8,18 +8,20 @@ const colors = {
   labelColor: '#7C7C7C',
   red: '#FF0000',
   green: '#30BE76',
-  borderColor: '#D0D0D0'
+  borderColor: '#D0D0D0',
+  lightestGrey: '#999999',
+  lightBlack: '#4D4D4D'
 
 }
 
 const fontDimens = {
-  extraSmall: 8,
-  small: 10,
-  medium: 12,
-  normal: 14,
-  big: 16,
-  large: 18,
-  extraLarge: 20
+  extraSmall: 12,
+  small: 14,
+  medium: 16,
+  normal: 18,
+  big: 20,
+  large: 22,
+  extraLarge: 24
 }
 
 const fontWeight = {
