@@ -33,6 +33,12 @@ const styles = StyleSheet.create({
     paddingVertical: 15,
     borderTopRightRadius: 10,
     borderBottomRightRadius: 10
+  },
+  mainContainer: {
+    position: 'relative',
+    paddingTop: 15,
+    flex: 1,
+    paddingBottom: 10
   }
 })
 
@@ -110,7 +116,7 @@ export class HomeScreen extends Component {
     const { postsData = {}, isFetching } = postListStore
     const { postList } = postsData
     return (
-      <View style={{ position: 'relative', paddingTop: 15, flex: 1 }}>
+      <View style={styles.mainContainer}>
         <View style={styles.filterBtn}>
           <IconButtonWrapper
             iconImage={icons.FILTER_ICON}

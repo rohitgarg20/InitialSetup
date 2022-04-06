@@ -46,25 +46,26 @@ const styles = StyleSheet.create({
   },
   nameText: {
     fontSize: fontDimens.medium,
-    lineHeight: 18,
+    lineHeight: 20,
     fontWeight: '600',
     color: colors.black
   },
   tagLine: {
     fontSize: fontDimens.extraSmall,
-    lineHeight: 12,
+    lineHeight: 16,
     fontWeight: '400',
     color: colors.black
   },
   date: {
     fontSize: fontDimens.extraSmall,
-    lineHeight: 12,
+    lineHeight: 16,
     fontWeight: '400',
-    color: colors.lightBlue
+    color: colors.lightBlue,
+    paddingBottom: 15
   },
   description: {
     fontSize: fontDimens.small,
-    lineHeight: 14,
+    lineHeight: 16,
     fontWeight: '400',
     color: colors.black
   },
@@ -73,7 +74,17 @@ const styles = StyleSheet.create({
     justifyContent: 'space-between',
     flex: 6,
     paddingLeft: 10
-
+  },
+  activedot: {
+    height: 5,
+    width: 5,
+    borderRadius: 20,
+    backgroundColor: colors.lightBlue,
+    marginRight: 5
+  },
+  userActive: {
+    fontSize: fontDimens.small,
+    color: colors.labelColor
   }
 })
 
@@ -115,12 +126,14 @@ export class EventCardComponent extends PureComponent<IProps> {
             <CustomText textStyle={styles.date}>{subLabel}</CustomText>
           </View>
           <View>
-            <CustomText numberOfLines={3} ellipsizeMode={'tail'} textStyle={styles.description}>
+            <CustomText numberOfLines={2} ellipsizeMode={'tail'} textStyle={styles.description}>
               {description}
             </CustomText>
           </View>
         </View>
-        {this.renderUserStatus()}
+        <View>
+          {this.renderUserStatus()}
+        </View>
       </View>
     )
   }
@@ -145,18 +158,18 @@ export class EventCardComponent extends PureComponent<IProps> {
     if (status.length === 0) {
       return null
     }
-    if (status === USER_STATUS.ONLINE) {
+    if (status !== USER_STATUS.ONLINE) {
       return (
-        <View>
-          <View />
-          <CustomText>{strings.USER_ACTIVE}</CustomText>
+        <View style={{ flexDirection: 'row', alignItems: 'center' }}>
+          <View style={styles.activedot} />
+          <CustomText textStyle={styles.userActive}>{strings.USER_ACTIVE}</CustomText>
         </View>
       )
     }
     return (
       <View>
-        <CustomText>{strings.USER_LAST_ACTIVE}</CustomText>
-        <CustomText>{lastActiveTime}</CustomText>
+        <CustomText textStyle={styles.userActive}>{strings.USER_LAST_ACTIVE}</CustomText>
+        <CustomText textStyle={styles.userActive}>{lastActiveTime}</CustomText>
       </View>
     )
   }

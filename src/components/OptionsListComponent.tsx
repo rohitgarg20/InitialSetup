@@ -77,11 +77,11 @@ export class CommunityOptionsComponent extends PureComponent<Props, State> {
           }
         }}
       >
-        <View style={{ marginLeft: -10 }}>
+        <View>
           <IconButtonWrapper
             iconImage={icon}
-            iconWidth={30}
-            iconHeight={30}
+            iconWidth={20}
+            iconHeight={20}
             styling={iconStyle}
           />
         </View>

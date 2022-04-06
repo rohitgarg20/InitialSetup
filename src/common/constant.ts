@@ -27,7 +27,7 @@ export const MAIN_STACK_KEYS = {
   TAB_BAR_STACK: 'tabBarStack'
 }
 
-export const BASE_URL = 'http://192.168.1.203:4567'
+export const BASE_URL = 'http://192.168.27.164:4567'
 // export const BASE_URL = 'https://sdlms.deepthought.education'
 
 
@@ -96,27 +96,27 @@ export const LABELS = {
 export const OPTIONS_DATA_FOR_SELF_POST = [
   {
     key: POST_KEYS.EDIT,
-    icon: icons.ADD_DISCUSSSION,
+    icon: icons.EDIT_ICON,
     heading: LABELS.EDIT
   },
   {
     key: POST_KEYS.SHARE,
-    icon: icons.ADD_DISCUSSSION,
+    icon: icons.SHARE_ICON,
     heading: LABELS.SHARE
   },
   {
     key: POST_KEYS.SAVE,
-    icon: icons.ADD_DISCUSSSION,
+    icon: icons.SAVE_ICON,
     heading: LABELS.SAVE
   },
   {
     key: POST_KEYS.REPORT,
-    icon: icons.ADD_DISCUSSSION,
+    icon: icons.REPORT_ICON,
     heading: LABELS.REPORT
   },
   {
     key: POST_KEYS.DELETE,
-    icon: icons.ADD_DISCUSSSION,
+    icon: icons.DELETE_ICON,
     heading: LABELS.DELETE
   }
 
@@ -125,17 +125,17 @@ export const OPTIONS_DATA_FOR_SELF_POST = [
 export const OPTIONS_DATA_FOR_OTHER_POST = [
   {
     key: POST_KEYS.SHARE,
-    icon: icons.ADD_DISCUSSSION,
+    icon: icons.SHARE_ICON,
     heading: LABELS.SHARE
   },
   {
     key: POST_KEYS.SAVE,
-    icon: icons.ADD_DISCUSSSION,
+    icon: icons.SAVE_ICON,
     heading: LABELS.SAVE
   },
   {
     key: POST_KEYS.REPORT,
-    icon: icons.ADD_DISCUSSSION,
+    icon: icons.REPORT_ICON,
     heading: LABELS.REPORT
   }
 
