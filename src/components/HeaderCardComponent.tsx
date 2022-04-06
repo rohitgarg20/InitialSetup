@@ -22,7 +22,8 @@ const styles = StyleSheet.create({
     alignContent: 'center',
     justifyContent: 'center',
     borderRadius: 100,
-    backgroundColor: colors.whiteSmock
+    backgroundColor: colors.whiteSmock,
+    marginLeft: 15
   },
   serachField: {
     borderWidth: 1,
@@ -35,6 +36,15 @@ const styles = StyleSheet.create({
     justifyContent: 'flex-end',
     alignItems: 'flex-end',
     borderColor: colors.borderColor
+  },
+  topIconStyle: {
+    marginLeft: 15
+  },
+  topHeaderRightView: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    flex: 1,
+    justifyContent: 'flex-end'
   }
 })
 
@@ -42,32 +52,32 @@ export class HeaderCardComponent extends Component {
   render() {
     return (
       <View style={styles.headerContainer}>
-        <View style={{ flex: 1, flexDirection: 'row', alignItems: 'center' }}>
+        <View>
           <TouchableOpacity>
             <IconButtonWrapper
-              iconImage={icons.SIGN_IN}
+              iconImage={icons.LOGO}
               iconHeight={20}
               iconWidth={20}
             />
           </TouchableOpacity>
-          <View style={styles.serachField}>
-            <IconButtonWrapper
-              iconImage={icons.SEARCH_ICON}
-              iconHeight={14}
-              iconWidth={14}
-            />
-          </View>
         </View>
 
-        <View style={{ flexDirection: 'row', alignItems: 'center' }}>
-          <TouchableOpacity>
+        <View style={styles.topHeaderRightView}>
+          <TouchableOpacity style={styles.topIconStyle}>
+            <IconButtonWrapper
+              iconImage={icons.SEARCH_ICON}
+              iconHeight={16}
+              iconWidth={16}
+            />
+          </TouchableOpacity>
+          <TouchableOpacity style={styles.topIconStyle}>
             <IconButtonWrapper
               iconImage={icons.MESSAGE_ICON}
               iconHeight={15}
               iconWidth={15}
             />
           </TouchableOpacity>
-          <TouchableOpacity style={{ marginHorizontal: 15 }}>
+          <TouchableOpacity style={styles.topIconStyle}>
             <IconButtonWrapper
               iconImage={icons.BELL_ICON}
               iconHeight={15}

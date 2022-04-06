@@ -11,17 +11,17 @@ import { log } from '../../config'
 import { nudgesListDataStore } from '../../store'
 import { INudgeListItem } from '../../store/interfaces'
 
-const  PADDING_HORIZONTAL = 20
-const PADDING_VERTIACAL =  10
+const PADDING_HORIZONTAL = 20
+const PADDING_VERTIACAL = 10
 
 const styles = StyleSheet.create({
   container: {
-    height: '70%'
-    // backgroundColor: '#F5FCFF'
+    height: '60%',
+    backgroundColor: '#F5FCFF'
   },
   card: {
     flex: 1,
-    borderRadius: 4,
+    borderRadius: 10,
     borderWidth: 1,
     borderColor: '#E8E8E8',
     justifyContent: 'center',
@@ -39,8 +39,8 @@ const styles = StyleSheet.create({
   },
   swipeLabel: {
     fontWeight: '600',
-    fontSize: fontDimens.small,
-    lineHeight: 12,
+    fontSize: fontDimens.medium,
+    lineHeight: 16,
     color: colors.white
   },
   footerContainer: {
@@ -72,13 +72,21 @@ const styles = StyleSheet.create({
   description: {
     fontWeight: '600',
     fontSize: fontDimens.small,
-    lineHeight: 13,
+    lineHeight: 16,
     color: colors.black
+  },
+  nudgesNotes: {
+    fontSize: fontDimens.small,
+    lineHeight: 16,
+    color: colors.labelColor,
+    paddingTop: 25,
+    paddingBottom: 30,
+    textAlign: 'center'
   }
 })
 
 @observer
-export  class NudgesScreen extends Component {
+export class NudgesScreen extends Component {
   swiper
   constructor(props, state) {
     super(props, state)
@@ -87,6 +95,10 @@ export  class NudgesScreen extends Component {
 
   componentDidMount() {
     nudgesListDataStore.getNudgesListData()
+  }
+
+  componentWillUnmount() {
+    nudgesListDataStore.init()
   }
 
   renderNudgeSwiperView = () => {
@@ -101,7 +113,7 @@ export  class NudgesScreen extends Component {
           ref={swiper => {
             this.swiper = swiper
           }}
-          cards={[ ...nudgesList]}
+          cards={[...nudgesList]}
           renderCard={(card) => {
             const { image } = card as INudgeListItem
             return (
@@ -121,17 +133,17 @@ export  class NudgesScreen extends Component {
           }}
           cardIndex={0}
           // backgroundColor={'transparent'}
-          verticalSwipe = {false}
-          stackSize= {3}
-          cardStyle = {{
+          verticalSwipe={false}
+          stackSize={3}
+          cardStyle={{
             height: '90%'
           }}
-          cardVerticalMargin = {10}
-          containerStyle = {{
+          cardVerticalMargin={0}
+          containerStyle={{
             backgroundColor: colors.grey
           }}
-          animateCardOpacity = {true}
-          stackSeparation = {10}
+          animateCardOpacity={true}
+          stackSeparation={10}
         />
       </View>
     )
@@ -140,7 +152,7 @@ export  class NudgesScreen extends Component {
 
   renderShimmerView = () => {
     return (
-      <ShimmerComponent/>
+      <ShimmerComponent />
     )
   }
 
@@ -151,10 +163,10 @@ export  class NudgesScreen extends Component {
     }
     return (
       <FlatListWrapper
-        isFetching = {true}
-        data = {FETCHING_ARR}
-        customizedShimmerView = {this.renderShimmerView}
-        renderItem = {null}
+        isFetching={true}
+        data={FETCHING_ARR}
+        customizedShimmerView={this.renderShimmerView}
+        renderItem={null}
 
       />
     )
@@ -162,19 +174,19 @@ export  class NudgesScreen extends Component {
 
   renderSwipeArrowsList = () => {
     const leftArrowList = (
-      <View style = {{
+      <View style={{
         flexDirection: 'row',
         alignItems: 'center'
       }}>
         {
-          [1, 2, 3, 4, 5].map((item, index) => {
+          [1, 2, 3, 4, 5, 6].map((item, index) => {
             return (
               <IconButtonWrapper
                 iconImage={icons.RIGHT_ARROW}
-                iconHeight = {30 / item }
-                iconWidth = {30 / item}
-                styling = {{
-                  paddingRight: 5,
+                iconHeight={25 / item}
+                iconWidth={25 / item}
+                styling={{
+                  paddingRight: 10,
                   transform: [{
                     rotate: '180deg'
                   }]
@@ -187,18 +199,18 @@ export  class NudgesScreen extends Component {
     )
 
     const rightArrowList = (
-      <View style = {{
+      <View style={{
         flexDirection: 'row',
         alignItems: 'center'
       }}>
-        {[5, 4, 3, 2, 1].map((item, index) => {
+        {[6, 5, 4, 3, 2, 1].map((item, index) => {
           return (
             <IconButtonWrapper
               iconImage={icons.RIGHT_ARROW}
-              iconHeight = {30 / item }
-              iconWidth = {30 / item}
-              styling = {{
-                paddingRight: 5
+              iconHeight={25 / item}
+              iconWidth={25 / item}
+              styling={{
+                paddingRight: 10
               }}
             />
           )
@@ -206,7 +218,7 @@ export  class NudgesScreen extends Component {
       </View>
     )
     return (
-      <View style = {{
+      <View style={{
         flexDirection: 'row',
         alignItems: 'center',
         justifyContent: 'space-between',
@@ -214,7 +226,7 @@ export  class NudgesScreen extends Component {
         paddingHorizontal: 20
       }}>
         {leftArrowList}
-        <CustomText textStyle={{...styles.swipeLabel, fontWeight: '400' }}>
+        <CustomText textStyle={{ ...styles.swipeLabel, fontWeight: '400', fontSize: 10 }}>
           Swipe
         </CustomText>
         {rightArrowList}
@@ -223,7 +235,7 @@ export  class NudgesScreen extends Component {
   }
 
   moveToNextNudge = (key) => {
-    if (key === ACTION_TYPE.NEXT ) {
+    if (key === ACTION_TYPE.NEXT) {
       this.swiper.swipeRight()
     } else {
       this.swiper.swipeLeft()
@@ -232,7 +244,7 @@ export  class NudgesScreen extends Component {
 
   renderNudeSkipAcceptSection = () => {
     return (
-      <View style = {{
+      <View style={{
         flexDirection: 'row',
         alignItems: 'center',
         justifyContent: 'center',
@@ -244,14 +256,14 @@ export  class NudgesScreen extends Component {
       }}>
         <TouchableOpacity onPress={() => this.moveToNextNudge(ACTION_TYPE.SKIP)}>
           <CustomText textStyle={styles.swipeLabel}>
-              Skip
+            Skip
           </CustomText>
         </TouchableOpacity>
         {this.renderSwipeArrowsList()}
 
         <TouchableOpacity onPress={() => this.moveToNextNudge(ACTION_TYPE.NEXT)}>
           <CustomText textStyle={styles.swipeLabel}>
-              Next
+          Accept
           </CustomText>
         </TouchableOpacity>
 
@@ -261,16 +273,16 @@ export  class NudgesScreen extends Component {
 
   renderFooterComponent = () => {
     return (
-      <View style = {styles.footerContainer}>
-        <TouchableOpacity onPress={() => this.moveToNextNudge(ACTION_TYPE.NEXT)} style = {styles.rowContainer}>
+      <View style={styles.footerContainer}>
+        <TouchableOpacity onPress={() => this.moveToNextNudge(ACTION_TYPE.NEXT)} style={styles.rowContainer}>
           <CustomText textStyle={styles.nudgesLabel}>
-        My Nudges
+            My Nudges
           </CustomText>
           <IconButtonWrapper
             iconImage={icons.RIGHT_ARROW}
-            iconHeight = {10}
-            iconWidth = {10}
-            styling = {{
+            iconHeight={10}
+            iconWidth={10}
+            styling={{
               marginLeft: 5,
               tintColor: colors.black,
               marginTop: 1
@@ -279,12 +291,12 @@ export  class NudgesScreen extends Component {
         </TouchableOpacity>
 
         <TouchableOpacity>
-            <IconButtonWrapper
-              iconImage={icons.FILTER_ICON}
-              iconHeight={18}
-              iconWidth={18}
-            />
-          </TouchableOpacity>
+          <IconButtonWrapper
+            iconImage={icons.FILTER_ICON}
+            iconHeight={18}
+            iconWidth={18}
+          />
+        </TouchableOpacity>
       </View>
     )
   }
@@ -295,8 +307,8 @@ export  class NudgesScreen extends Component {
     log('currentNudgeDatacurrentNudgeData', currentNudgeData)
 
     return (
-      <View style = {styles.descContainer}>
-        <CustomText textStyle={styles.description} numberOfLines = {4} ellipsizeMode = {'tail'}>
+      <View style={styles.descContainer}>
+        <CustomText textStyle={styles.description} numberOfLines={4} ellipsizeMode={'tail'}>
           {description}
         </CustomText>
       </View>
@@ -306,7 +318,7 @@ export  class NudgesScreen extends Component {
   renderNudesView = () => {
     const { currentNudeIndex, nudgesData } = nudgesListDataStore
     const nudgesList = nudgesData?.nudgesList || []
-    const totalNudges =   nudgesList?.length
+    const totalNudges = nudgesList?.length
     if (currentNudeIndex > totalNudges) {
       return (
         <View>
@@ -318,6 +330,7 @@ export  class NudgesScreen extends Component {
     }
     return (
       <>
+        <CustomText textStyle={styles.nudgesNotes}>Note: Click on the poster to check event details.</CustomText>
         {this.renderNudgeSwiperView()}
         {this.renderNudeSkipAcceptSection()}
         {this.renderFooterComponent()}
@@ -333,7 +346,7 @@ export  class NudgesScreen extends Component {
 
     return (
       <>
-      <HeaderCardComponent/>
+        <HeaderCardComponent />
         {
           isFetching ? this.renderFetchingView() : <>
             {this.renderNudesView()}

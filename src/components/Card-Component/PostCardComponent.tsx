@@ -2,7 +2,7 @@ import React, { Component } from 'react'
 import { Dimensions, ImageBackground, StyleSheet, View } from 'react-native'
 import { get } from 'lodash'
 import { colors, fontDimens } from '../../common'
-import { BASE_URL, FOOTER_LIST_ITEMS, OPTIONS_DATA_FOR_OTHER_POST, POST_TYPES } from '../../common/constant'
+import { BASE_URL, FOOTER_LIST_ITEMS, OPTIONS_DATA_FOR_OTHER_POST, OPTIONS_DATA_FOR_SELF_POST, POST_TYPES } from '../../common/constant'
 import { icons } from '../../common/icons'
 import { IPostItem, IUserObj } from '../../store/interfaces'
 import { formatDate } from '../../utils/app-utils'
@@ -20,23 +20,24 @@ const styles = StyleSheet.create({
   },
   nameLabel: {
     fontSize: fontDimens.medium,
-    lineHeight: 18,
-    color: colors.black
+    lineHeight: 20,
+    color: colors.black,
+    fontWeight: '500'
   },
   aboutUser: {
     fontSize: fontDimens.extraSmall,
-    lineHeight: 12,
+    lineHeight: 16,
     color: colors.lightBlue,
     // width: '50%'
   },
   dateView: {
     fontSize: fontDimens.extraSmall,
-    lineHeight: 12,
+    lineHeight: 16,
     color: colors.labelColor
   },
   contentView: {
     fontSize: fontDimens.small,
-    lineHeight: 15,
+    lineHeight: 16,
     color: colors.black,
     fontWeight: '400'
   },
@@ -59,9 +60,9 @@ const styles = StyleSheet.create({
     marginTop: 10
   },
   postView: {
-    borderWidth: 1,
+    borderWidth: 0.5,
     borderColor: colors.borderColor,
-    borderRadius: 5,
+    borderRadius: 10,
     padding: 10
   },
   dotView: {
@@ -74,7 +75,7 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     justifyContent: 'space-between',
     borderTopWidth: 1,
-    borderColor: colors.black,
+    borderColor: colors.lightestGrey,
     paddingTop: 10,
     marginTop: 10
   },
@@ -85,7 +86,7 @@ const styles = StyleSheet.create({
     height: 50,
     width: 50,
     justifyContent: 'center',
-    marginRight: 10
+    marginRight: 5
   },
   cardContainer: {
     padding: 20,
@@ -111,10 +112,10 @@ const styles = StyleSheet.create({
     shadowOffset: { width: 0, height: 0 },
     shadowOpacity: 0.25,
     shadowRadius: 4,
-    elevation: 1,
+    elevation: 3,
     borderRadius: 10,
     padding: 0,
-    paddingVertical: 12,
+    paddingVertical: 15,
     // left: Dimensions.get('window').width - 180,
     alignItems: 'flex-start',
     justifyContent: 'flex-start',
@@ -122,6 +123,14 @@ const styles = StyleSheet.create({
     overflow: 'hidden',
     marginTop: 15,
     marginLeft: 10
+  },
+  userInfoView: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+    paddingBottom: 10,
+    flex: 10,
+    paddingLeft: 15
   }
 
 })
@@ -149,7 +158,7 @@ export default class PostCardComponent extends Component<IProps> {
     return displayname ? (
       <View style={[styles.avtarContainer]}>
         <UserAvatar
-          size={'50'}
+          size={'45'}
           imageStyle={[styles.withoutImageColor, { width: '100%', height: '100%' }]}
           showBorderRadius={true}
           name={displayname.toUpperCase()}
@@ -250,7 +259,7 @@ export default class PostCardComponent extends Component<IProps> {
       <View style={styles.imageContainer}>
         {image.length > 0 && <ImageWithLoaderComponent
           srcImage={`${BASE_URL}${image}`}
-          containerStyle = {{
+          containerStyle={{
             height: 130,
             width: '100%'
           }}
@@ -288,7 +297,12 @@ export default class PostCardComponent extends Component<IProps> {
     const { key, name, icon } = item
     return (
       <View style={styles.footerItem}>
-        <IconButtonWrapper iconImage={icon} iconHeight={12} iconWidth={15} />
+        <IconButtonWrapper
+          iconImage={icon}
+          iconHeight={20}
+          iconWidth={20}
+          styling={{ marginBottom: 3 }}
+        />
         <CustomText textStyle={styles.contentView}>
           {name}
         </CustomText>
@@ -321,14 +335,7 @@ export default class PostCardComponent extends Component<IProps> {
 
   renderUserInfoView = () => {
     return (
-      <View style={{
-        flexDirection: 'row',
-        justifyContent: 'space-between',
-        alignItems: 'center',
-        paddingBottom: 10,
-        flex: 10,
-        paddingLeft: 12
-      }}>
+      <View style={styles.userInfoView}>
         <View style={[styles.rowContainer, { flex: 8 }]}>
           {this.renderRoundedAvtar()}
           {this.renderUserDetails()}
@@ -362,7 +369,7 @@ export default class PostCardComponent extends Component<IProps> {
   renderOptionsListComponent = () => {
     return (
       <CommunityOptionsComponent
-        optionsList={OPTIONS_DATA_FOR_OTHER_POST}
+        optionsList={OPTIONS_DATA_FOR_SELF_POST}
       />
     )
   }
@@ -370,9 +377,14 @@ export default class PostCardComponent extends Component<IProps> {
   renderCustomView = () => {
     return (
       <View>
-        <CustomText>
-          123
-        </CustomText>
+        <IconButtonWrapper
+          iconImage={icons.MORE_THREE_DOT}
+          iconHeight={24}
+          iconWidth={24}
+          styling={{
+            tintColor: colors.lightBlack
+          }}
+        />
       </View>
     )
   }
@@ -389,7 +401,7 @@ export default class PostCardComponent extends Component<IProps> {
         customToolTipView={this.renderOptionsListComponent}
         customView={this.renderCustomView}
         customWidth={120}
-        customHeight={150}
+        customHeight={200}
         mainViewStyle={{ ...styles.mainViewStyle }}
         useAsDropDownView={true}
         withPointer={false}

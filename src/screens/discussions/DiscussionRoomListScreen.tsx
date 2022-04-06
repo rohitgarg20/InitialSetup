@@ -46,6 +46,10 @@ export class DiscussionRoomListScreen extends Component {
     discussionRoomListStore.getDiscussionRoomsListData()
   }
 
+  componentWillUnmount() {
+    discussionRoomListStore.init()
+  }
+
   getItemLayout = (data, index) => ({ length: CARD_HEIGHT, offset: ((CARD_HEIGHT * index) + index), index })
 
   getKeyExtractor = (item: IEventListItem, index) => {
