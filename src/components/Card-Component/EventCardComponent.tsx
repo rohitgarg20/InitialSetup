@@ -145,7 +145,7 @@ export class EventCardComponent extends PureComponent<IProps> {
     if (status.length === 0) {
       return null
     }
-    if (status === USER_STATUS.ONLINE) {
+    if (status !== USER_STATUS.ONLINE) {
       return (
         <View>
           <View />

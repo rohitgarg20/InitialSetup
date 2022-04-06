@@ -23,5 +23,10 @@ export const icons = {
   SEARCH_ICON: require('../../images/search.png'),
   FILTER_ICON: require('../../images/filterIcon.png'),
   RIGHT_ARROW_ICON: require('../../images/rightArrow.png'),
-  DAFAULT_ICON: require('../../images/defaultImg.png')
+  DAFAULT_ICON: require('../../images/defaultImg.png'),
+  SHARE_ICON: require('../../images/shareIcon.png'),
+  REPORT_ICON: require('../../images/reportIcon.png'),
+  SAVE_ICON: require('../../images/saveIcon.png'),
+  EDIT_ICON: require('../../images/editIcon.png'),
+  DELETE_ICON: require('../../images/deleteIcon.png')
 }
