@@ -8,7 +8,8 @@ const colors = {
   labelColor: '#7C7C7C',
   red: '#FF0000',
   green: '#30BE76',
-  borderColor: '#D0D0D0'
+  borderColor: '#D0D0D0',
+  whiteSmock: '#F5F5F5'
 
 }
 

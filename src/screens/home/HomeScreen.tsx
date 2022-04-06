@@ -4,25 +4,37 @@ import { ActivityIndicator, StyleSheet, View } from 'react-native'
 import { get } from 'lodash'
 import { colors } from '../../common'
 import { FETCHING_ARR } from '../../common/constant'
-import { CustomText, FlatListWrapper, ShimmerComponent } from '../../components'
+import { CustomText, FlatListWrapper, IconButtonWrapper, ShimmerComponent } from '../../components'
 import { postListStore } from '../../store'
 import { IPostItem } from '../../store/interfaces'
 import PostCardComponent from '../../components/Card-Component/PostCardComponent'
 import { log } from '../../config'
+import { HeaderCardComponent } from '../../components/HeaderCardComponent'
+import { icons } from '../../common/icons'
 
 
 const styles = StyleSheet.create({
   container: {
-    backgroundColor: colors.white,
-    padding: 10
+    backgroundColor: colors.whiteSmock
   },
   borderBottom: {
     paddingBottom: 20
+  },
+  filterBtn: {
+    position: 'absolute',
+    left: 0,
+    top: 22,
+    zIndex: 9,
+    backgroundColor: '#F5F5F5',
+    paddingHorizontal: 8,
+    paddingVertical: 15,
+    borderTopRightRadius: 10,
+    borderBottomRightRadius: 10
   }
 })
 
 @observer
-export  class HomeScreen extends Component {
+export class HomeScreen extends Component {
 
   constructor(props, state) {
     super(props, state)
@@ -32,20 +44,20 @@ export  class HomeScreen extends Component {
     postListStore.getPostsListData()
   }
 
-  getKeyExtractor = (item: IPostItem, index ) => {
+  getKeyExtractor = (item: IPostItem, index) => {
     const { _id } = item
     return _id || index
   }
 
   renderEventSeperatorComponent = () => {
     return (
-      <View style = {styles.borderBottom}/>
+      <View style={styles.borderBottom} />
     )
   }
 
   renderListFooterComponent = () => {
     const { postsData = {} } = postListStore
-    const { current_page, last_page, postList  } = postsData
+    const { current_page, last_page, postList } = postsData
     log('current_page, last_page', current_page, last_page)
     if (current_page === last_page || get(postList, 'length') === 0) {
       return null
@@ -53,14 +65,14 @@ export  class HomeScreen extends Component {
 
     return (
       <View>
-        <ActivityIndicator size={'large'} color = {colors.lightBlue} />
+        <ActivityIndicator size={'large'} color={colors.lightBlue} />
       </View>
     )
   }
 
   loadMoreData = () => {
     const { postsData = {} } = postListStore
-    const { current_page, last_page  } = postsData
+    const { current_page, last_page } = postsData
     if (current_page === last_page) {
       return null
     } else {
@@ -71,38 +83,48 @@ export  class HomeScreen extends Component {
 
   renderShimmerView = () => {
     return (
-      <ShimmerComponent/>
+      <ShimmerComponent />
     )
   }
 
   renderPostsCard = ({ item, index }) => {
     log('renderPostsCardrenderPostsCard', item)
     return (
-      <PostCardComponent postData = {item}/>
+      <PostCardComponent postData={item} />
     )
   }
 
   renderPostsListScreeen = () => {
     const { postsData = {}, isFetching } = postListStore
-    const { postList  } = postsData
+    const { postList } = postsData
     return (
-      <FlatListWrapper
-        isFetching = {isFetching}
-        data = { isFetching ? FETCHING_ARR : postList as IPostItem[]}
-        renderItem = {this.renderPostsCard}
-        keyExtractor = {this.getKeyExtractor}
-        ItemSeparatorComponent = {this.renderEventSeperatorComponent}
-        ListFooterComponent = {this.renderListFooterComponent}
-        onEndReachedThreshold = {0.001}
-        onEndReached = {this.loadMoreData}
-        customizedShimmerView = {this.renderShimmerView}
-      />
+      <View style={{ position: 'relative', paddingTop: 15 }}>
+        <View style={styles.filterBtn}>
+          <IconButtonWrapper
+            iconImage={icons.FILTER_ICON}
+            iconHeight={18}
+            iconWidth={18}
+          />
+        </View>
+        <FlatListWrapper
+          isFetching={isFetching}
+          data={isFetching ? FETCHING_ARR : postList as IPostItem[]}
+          renderItem={this.renderPostsCard}
+          keyExtractor={this.getKeyExtractor}
+          ItemSeparatorComponent={this.renderEventSeperatorComponent}
+          ListFooterComponent={this.renderListFooterComponent}
+          onEndReachedThreshold={0.001}
+          onEndReached={this.loadMoreData}
+          customizedShimmerView={this.renderShimmerView}
+        />
+      </View>
     )
   }
 
   render() {
     return (
-      <View style = {styles.container}>
+      <View style={styles.container}>
+        <HeaderCardComponent />
         {this.renderPostsListScreeen()}
       </View>
     )
