@@ -58,5 +58,14 @@ export const strings = {
     HEADING: 'Set your new password '
   },
   USER_ACTIVE: 'Active',
-  USER_LAST_ACTIVE: 'Last Active'
+  USER_LAST_ACTIVE: 'Last Active',
+  DISCUSSION_ROOM_DETAIL_SCREEN: {
+    MEMBERS: 'Members',
+    MASCOTS: 'Mascots',
+    JOIN: 'Join',
+    KNOW_PHYSOGRAPHICS: 'Know Psychographics',
+    ABOUT: 'About',
+    ONLINE: 'online',
+    BACK: 'Back'
+  }
 }
