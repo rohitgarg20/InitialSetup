@@ -74,7 +74,17 @@ const styles = StyleSheet.create({
     justifyContent: 'space-between',
     flex: 6,
     paddingLeft: 10
-
+  },
+  activedot: {
+    height: 5,
+    width: 5,
+    borderRadius: 20,
+    backgroundColor: colors.lightBlue,
+    marginRight: 5
+  },
+  userActive: {
+    fontSize: fontDimens.small,
+    color: colors.labelColor
   }
 })
 
@@ -121,7 +131,9 @@ export class EventCardComponent extends PureComponent<IProps> {
             </CustomText>
           </View>
         </View>
-        {this.renderUserStatus()}
+        <View>
+          {this.renderUserStatus()}
+        </View>
       </View>
     )
   }
@@ -148,16 +160,16 @@ export class EventCardComponent extends PureComponent<IProps> {
     }
     if (status !== USER_STATUS.ONLINE) {
       return (
-        <View>
-          <View />
-          <CustomText>{strings.USER_ACTIVE}</CustomText>
+        <View style={{ flexDirection: 'row', alignItems: 'center' }}>
+          <View style={styles.activedot} />
+          <CustomText textStyle={styles.userActive}>{strings.USER_ACTIVE}</CustomText>
         </View>
       )
     }
     return (
       <View>
-        <CustomText>{strings.USER_LAST_ACTIVE}</CustomText>
-        <CustomText>{lastActiveTime}</CustomText>
+        <CustomText textStyle={styles.userActive}>{strings.USER_LAST_ACTIVE}</CustomText>
+        <CustomText textStyle={styles.userActive}>{lastActiveTime}</CustomText>
       </View>
     )
   }
