@@ -19,9 +19,10 @@ const styles = StyleSheet.create({
 
   },
   heading: {
-    fontSize: 14,
-    color: colors.labelColor,
-    fontWeight: '500'
+    fontSize: 10,
+    color: colors.black,
+    fontWeight: '400',
+    lineHeight: 12
   },
   subHeading: {
     fontSize: 14,

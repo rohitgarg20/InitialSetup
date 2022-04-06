@@ -81,7 +81,9 @@ export const POST_KEYS = {
   SHARE: 'SHARE',
   SAVE: 'SAVE',
   REPORT: 'REPORT',
-  DELETE: 'DELETE'
+  DELETE: 'DELETE',
+  REPOST: 'REPOST'
+
 }
 
 
@@ -90,7 +92,8 @@ export const LABELS = {
   SHARE: 'Share',
   SAVE: 'Save',
   REPORT: 'Report',
-  DELETE: 'Delete'
+  DELETE: 'Delete',
+  REPOST: 'REPOST'
 }
 
 export const OPTIONS_DATA_FOR_SELF_POST = [
@@ -110,9 +113,9 @@ export const OPTIONS_DATA_FOR_SELF_POST = [
     heading: LABELS.SAVE
   },
   {
-    key: POST_KEYS.REPORT,
+    key: POST_KEYS.REPOST,
     icon: icons.REPORT_ICON,
-    heading: LABELS.REPORT
+    heading: LABELS.REPOST
   },
   {
     key: POST_KEYS.DELETE,
