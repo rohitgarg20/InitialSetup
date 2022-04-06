@@ -3,7 +3,7 @@ import React, { Component } from 'react'
 import { ActivityIndicator, StyleSheet, View } from 'react-native'
 import { get } from 'lodash'
 import { colors } from '../../common'
-import { FETCHING_ARR } from '../../common/constant'
+import { BASE_URL, FETCHING_ARR } from '../../common/constant'
 import { CustomText, FlatListWrapper, IconButtonWrapper, ShimmerComponent } from '../../components'
 import { postListStore } from '../../store'
 import { IPostItem } from '../../store/interfaces'
@@ -11,11 +11,14 @@ import PostCardComponent from '../../components/Card-Component/PostCardComponent
 import { log } from '../../config'
 import { HeaderCardComponent } from '../../components/HeaderCardComponent'
 import { icons } from '../../common/icons'
+import axios from 'axios'
+import reactotron from 'reactotron-react-native'
 
 
 const styles = StyleSheet.create({
   container: {
-    backgroundColor: colors.whiteSmock
+    backgroundColor: colors.whiteSmock,
+    flex: 1
   },
   borderBottom: {
     paddingBottom: 20
@@ -23,7 +26,7 @@ const styles = StyleSheet.create({
   filterBtn: {
     position: 'absolute',
     left: 0,
-    top: 22,
+    top: 35,
     zIndex: 9,
     backgroundColor: '#F5F5F5',
     paddingHorizontal: 8,
@@ -41,6 +44,15 @@ export class HomeScreen extends Component {
     postListStore.updateFetchingStatus(true)
   }
   componentDidMount() {
+    try {
+      axios.get(BASE_URL).then((data) => {
+        reactotron.log('componentDidMountcomponentDidMount', data)
+
+      })
+    } catch (error) {
+      reactotron.log('error', error)
+    }
+
     postListStore.getPostsListData()
   }
 
@@ -98,7 +110,7 @@ export class HomeScreen extends Component {
     const { postsData = {}, isFetching } = postListStore
     const { postList } = postsData
     return (
-      <View style={{ position: 'relative', paddingTop: 15 }}>
+      <View style={{ position: 'relative', paddingTop: 15, flex: 1 }}>
         <View style={styles.filterBtn}>
           <IconButtonWrapper
             iconImage={icons.FILTER_ICON}
@@ -125,6 +137,7 @@ export class HomeScreen extends Component {
     return (
       <View style={styles.container}>
         <HeaderCardComponent />
+
         {this.renderPostsListScreeen()}
       </View>
     )

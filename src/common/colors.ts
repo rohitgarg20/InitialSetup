@@ -16,13 +16,13 @@ const colors = {
 }
 
 const fontDimens = {
-  extraSmall: 12,
-  small: 14,
-  medium: 16,
-  normal: 18,
-  big: 20,
-  large: 22,
-  extraLarge: 24
+  extraSmall: 10,
+  small: 12,
+  medium: 14,
+  normal: 16,
+  big: 18,
+  large: 20,
+  extraLarge: 22
 }
 
 const fontWeight = {

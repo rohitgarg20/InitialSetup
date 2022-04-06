@@ -28,5 +28,7 @@ export const icons = {
   REPORT_ICON: require('../../images/reportIcon.png'),
   SAVE_ICON: require('../../images/saveIcon.png'),
   EDIT_ICON: require('../../images/editIcon.png'),
-  DELETE_ICON: require('../../images/deleteIcon.png')
+  DELETE_ICON: require('../../images/deleteIcon.png'),
+  ERROR_IMAGE: require('../../images/ErrorImage.png')
+
 }

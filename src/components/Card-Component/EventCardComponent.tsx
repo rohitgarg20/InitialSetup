@@ -1,7 +1,7 @@
 import React, { PureComponent } from 'react'
 import { StyleSheet, View } from 'react-native'
 import { colors, fontDimens, strings } from '../../common'
-import { BASE_URL, CARD_HEIGHT, POST_TYPES, USER_STATUS } from '../../common/constant'
+import { BASE_URL, CARD_HEIGHT, EVENT_CARD_HEIGHT, POST_TYPES, USER_STATUS } from '../../common/constant'
 import { icons } from '../../common/icons'
 import { formatDate } from '../../utils/app-utils'
 import { CustomText } from '../CustomText'
@@ -11,7 +11,7 @@ import { ImageWithLoaderComponent } from '../ImageWithLoaderComponent'
 
 const styles = StyleSheet.create({
   cardContainer: {
-    height: CARD_HEIGHT,
+    height: EVENT_CARD_HEIGHT,
     paddingVertical: 20,
     paddingLeft: 20,
     flexDirection: 'row',
@@ -24,7 +24,7 @@ const styles = StyleSheet.create({
     borderRadius: 8,
     borderWidth: 1,
     overflow: 'hidden',
-    borderColor: colors.labelColor
+    borderColor: 'transparent'
   },
   contentContainer: {
     justifyContent: 'space-between',

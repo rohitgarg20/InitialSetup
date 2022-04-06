@@ -12,7 +12,8 @@ import { icons } from '../../common/icons'
 
 const styles = StyleSheet.create({
   container: {
-    backgroundColor: colors.whiteSmock
+    backgroundColor: colors.whiteSmock,
+    flex: 1
   },
   borderBottom: {
     borderBottomWidth: 2,
@@ -114,7 +115,9 @@ export class DiscussionRoomListScreen extends Component {
     const { discussionRoomData = {}, isFetching } = discussionRoomListStore
     const { roomsList = [] } = discussionRoomData
     return (
-      <View>
+      <View style = {{
+        flex: 1
+      }}>
          <View style={styles.subHeaderContainer}>
           <CustomText textStyle={styles.subheadingStyle}>My Discussion Room</CustomText>
           <TouchableOpacity>
