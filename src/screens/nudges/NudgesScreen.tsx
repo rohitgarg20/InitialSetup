@@ -6,6 +6,7 @@ import { colors, fontDimens } from '../../common'
 import { ACTION_TYPE, BASE_URL, FETCHING_ARR } from '../../common/constant'
 import { icons } from '../../common/icons'
 import { CustomText, FlatListWrapper, IconButtonWrapper, ImageWithLoaderComponent, ShimmerComponent } from '../../components'
+import { HeaderCardComponent } from '../../components/HeaderCardComponent'
 import { log } from '../../config'
 import { nudgesListDataStore } from '../../store'
 import { INudgeListItem } from '../../store/interfaces'
@@ -37,7 +38,7 @@ const styles = StyleSheet.create({
 
   },
   swipeLabel: {
-    fontWeight: '400',
+    fontWeight: '600',
     fontSize: fontDimens.small,
     lineHeight: 12,
     color: colors.white
@@ -213,7 +214,7 @@ export  class NudgesScreen extends Component {
         paddingHorizontal: 20
       }}>
         {leftArrowList}
-        <CustomText textStyle={styles.swipeLabel}>
+        <CustomText textStyle={{...styles.swipeLabel, fontWeight: '400' }}>
           Swipe
         </CustomText>
         {rightArrowList}
@@ -276,6 +277,14 @@ export  class NudgesScreen extends Component {
             }}
           />
         </TouchableOpacity>
+
+        <TouchableOpacity>
+            <IconButtonWrapper
+              iconImage={icons.FILTER_ICON}
+              iconHeight={18}
+              iconWidth={18}
+            />
+          </TouchableOpacity>
       </View>
     )
   }
@@ -324,6 +333,7 @@ export  class NudgesScreen extends Component {
 
     return (
       <>
+      <HeaderCardComponent/>
         {
           isFetching ? this.renderFetchingView() : <>
             {this.renderNudesView()}

@@ -14,7 +14,8 @@ const styles = StyleSheet.create({
     height: CARD_HEIGHT,
     paddingVertical: 20,
     paddingLeft: 20,
-    flexDirection: 'row'
+    flexDirection: 'row',
+    backgroundColor: colors.white
     // flex: 10
   },
   iconContainer: {
@@ -36,7 +37,7 @@ const styles = StyleSheet.create({
   },
   arrowBorder: {
     height: 50,
-    width: 40,
+    width: 36,
     borderTopLeftRadius: 6,
     borderBottomLeftRadius: 6,
     backgroundColor: colors.grey,
@@ -71,6 +72,7 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     justifyContent: 'space-between',
     flex: 6,
+    paddingLeft: 10
 
   }
 })
@@ -92,7 +94,7 @@ export class EventCardComponent extends PureComponent<IProps> {
   renderIconContainer = () => {
     const { imageUrl } = this.props
     return (
-      <View style = {styles.iconContainer}>
+      <View style={styles.iconContainer}>
         <ImageWithLoaderComponent
           srcImage={`${BASE_URL}${imageUrl}`}
         />
@@ -102,18 +104,18 @@ export class EventCardComponent extends PureComponent<IProps> {
 
 
   renderContentContainer = () => {
-    const { name, tagline, description, startDate, category, authorName  } = this.props
+    const { name, tagline, description, startDate, category, authorName } = this.props
     const subLabel = category === POST_TYPES.DISCUSSION_ROOM ? `by ${authorName}` : formatDate(startDate)
     return (
-      <View style = {styles.rowContainer}>
-        <View style = {styles.contentContainer}>
+      <View style={styles.rowContainer}>
+        <View style={styles.contentContainer}>
           <View>
-            <CustomText textStyle={styles.nameText} numberOfLines = {1} ellipsizeMode = {'tail'}>{name}</CustomText>
-            <CustomText textStyle={styles.tagLine} numberOfLines = {2} ellipsizeMode = {'tail'}>{tagline}</CustomText>
+            <CustomText textStyle={styles.nameText} numberOfLines={1} ellipsizeMode={'tail'}>{name}</CustomText>
+            <CustomText textStyle={styles.tagLine} numberOfLines={2} ellipsizeMode={'tail'}>{tagline}</CustomText>
             <CustomText textStyle={styles.date}>{subLabel}</CustomText>
           </View>
           <View>
-            <CustomText numberOfLines={3} ellipsizeMode = {'tail'} textStyle ={styles.description}>
+            <CustomText numberOfLines={3} ellipsizeMode={'tail'} textStyle={styles.description}>
               {description}
             </CustomText>
           </View>
@@ -125,12 +127,12 @@ export class EventCardComponent extends PureComponent<IProps> {
 
   renderArrowContainer = () => {
     return (
-      <View style = {styles.arrowContainer}>
-        <View style = {styles.arrowBorder}>
+      <View style={styles.arrowContainer}>
+        <View style={styles.arrowBorder}>
           <IconButtonWrapper
-            iconImage={icons.CROSS}
-            iconHeight = {20}
-            iconWidth = {20}
+            iconImage={icons.RIGHT_ARROW_ICON}
+            iconHeight={16}
+            iconWidth={16}
           />
         </View>
 
@@ -146,7 +148,7 @@ export class EventCardComponent extends PureComponent<IProps> {
     if (status === USER_STATUS.ONLINE) {
       return (
         <View>
-          <View/>
+          <View />
           <CustomText>{strings.USER_ACTIVE}</CustomText>
         </View>
       )
@@ -161,7 +163,7 @@ export class EventCardComponent extends PureComponent<IProps> {
 
   renderEventCard = () => {
     return (
-      <View style = {styles.cardContainer} >
+      <View style={styles.cardContainer} >
         {this.renderIconContainer()}
         {this.renderContentContainer()}
         {this.renderArrowContainer()}

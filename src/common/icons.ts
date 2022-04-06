@@ -17,5 +17,11 @@ export const icons = {
   REFLECTION: require('../../images/reflection.png'),
   THOUGHT_PROCESS: require('../../images/thoughProcess.png'),
   COMMENT: require('../../images/comment.png'),
-  RIGHT_ARROW: require('../../images/whiteRightArrow.png')
+  RIGHT_ARROW: require('../../images/whiteRightArrow.png'),
+  BELL_ICON: require('../../images/bell.png'),
+  MESSAGE_ICON: require('../../images/messageSquare.png'),
+  SEARCH_ICON: require('../../images/search.png'),
+  FILTER_ICON: require('../../images/filterIcon.png'),
+  RIGHT_ARROW_ICON: require('../../images/rightArrow.png'),
+  DAFAULT_ICON: require('../../images/defaultImg.png')
 }
