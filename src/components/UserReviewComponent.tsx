@@ -55,7 +55,7 @@ const styles = StyleSheet.create({
     lineHeight: 19,
     fontWeight: '600',
     color: colors.black,
-    paddingBottom: 10
+    paddingBottom: 15
   }
 })
 

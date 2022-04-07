@@ -30,6 +30,7 @@ export const icons = {
   EDIT_ICON: require('../../images/editIcon.png'),
   DELETE_ICON: require('../../images/deleteIcon.png'),
   ERROR_IMAGE: require('../../images/ErrorImage.png'),
-  MORE_THREE_DOT: require('../../images/moreThreeDot.png')
+  MORE_THREE_DOT: require('../../images/moreThreeDot.png'),
+  CONTACT_US: require('../../images/contactIcon.png')
 
 }

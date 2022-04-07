@@ -20,13 +20,14 @@ const styles = StyleSheet.create({
     color: colors.black,
     fontWeight: '600',
     lineHeight: 24,
-    textAlign: 'center'
+    textAlign: 'center',
+    paddingBottom: 5
   },
   otpSend: {
     fontSize: fontDimens.medium,
     color: colors.labelColor,
     fontWeight: '400',
-    lineHeight: 16,
+    lineHeight: 20,
     textAlign: 'center'
   },
   email: {
@@ -37,11 +38,13 @@ const styles = StyleSheet.create({
   },
   submitButton: {
     backgroundColor: colors.lightBlue,
-    paddingHorizontal: 20,
+    paddingHorizontal: 10,
     paddingVertical: 10,
     borderRadius: 10,
     justifyContent: 'center',
-    alignItems: 'center'
+    alignItems: 'center',
+    marginHorizontal: 10,
+    minWidth: 100
   },
   resendButton: {
     backgroundColor: colors.grey,
@@ -49,7 +52,9 @@ const styles = StyleSheet.create({
     paddingVertical: 10,
     borderRadius: 10,
     justifyContent: 'center',
-    alignItems: 'center'
+    alignItems: 'center',
+    marginHorizontal: 10,
+    minWidth: 100
   },
   submitLabel: {
     fontSize: fontDimens.small,
@@ -65,7 +70,7 @@ const styles = StyleSheet.create({
   },
   rowContainer: {
     flexDirection: 'row',
-    justifyContent: 'space-between',
+    justifyContent: 'center',
     paddingTop: 25,
     paddingHorizontal: 20
   },
@@ -95,7 +100,7 @@ export class OtpComponent extends Component<IProps, IState> {
      const { submitOtp } = this.props
      const { otpInput } = this.state
      return (
-       <TouchableOpacity style = {[styles.submitButton]} onPress={() => {
+       <TouchableOpacity style = {styles.submitButton} onPress={() => {
          if (submitOtp) {
            submitOtp(otpInput.join(''))
          }

@@ -43,7 +43,7 @@ const routerGenerator = async (cb) => {
   const userDetails = getUserInfoData()
   if (!isEmpty(userDetails)) {
     const initialRoute =  await getScreenNameToNavigateToOnLogin()
-    setInititalStackName(initialRoute)
+    setInititalStackName(STACK_NAMES.LOGIN_STACK)
   } else {
     setInititalStackName(STACK_NAMES.LOGIN_STACK)
   }
