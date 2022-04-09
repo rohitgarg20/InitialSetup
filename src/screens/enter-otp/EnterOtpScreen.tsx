@@ -54,7 +54,7 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     alignItems: 'center',
     paddingVertical: 5,
-    paddingHorizontal: 10,
+    paddingHorizontal: 15,
     borderWidth: 1,
     borderRadius: 5,
     borderColor: colors.black
@@ -130,7 +130,7 @@ export class EnterOtpScreen extends Component {
       <View style = {styles.contactUsContainer}>
         <TouchableOpacity style = {styles.rowContainer}>
           <IconButtonWrapper
-            iconImage={icons.BRICK}
+            iconImage={icons.CONTACT_US}
             iconHeight = {20}
             iconWidth = {20}
           />

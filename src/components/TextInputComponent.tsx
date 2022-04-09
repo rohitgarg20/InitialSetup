@@ -19,7 +19,8 @@ const styles = StyleSheet.create({
   textInput: {
     padding: 0,
     margin: 0,
-    flex: 1
+    flex: 1,
+    color: colors.labelColor
   },
   labelContainer: {
     position: 'absolute',

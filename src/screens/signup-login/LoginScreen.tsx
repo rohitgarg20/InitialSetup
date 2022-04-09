@@ -68,10 +68,9 @@ const styles = StyleSheet.create({
   bottomButtonLabel: {
     color: colors.lightBlue,
     fontSize: fontDimens.normal,
-    lineHeight: 15
+    lineHeight: 20
   },
   signInButton: {
-    // borderWidth: 1,
     backgroundColor: colors.lightBlue,
     paddingHorizontal: 15,
     paddingVertical: 10,
@@ -97,7 +96,7 @@ const styles = StyleSheet.create({
   },
   termsAndPolicy: {
     fontSize: fontDimens.medium,
-    lineHeight: 16
+    lineHeight: 20
   }
 
 })
