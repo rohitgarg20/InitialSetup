@@ -10,24 +10,24 @@ import { signupDataStore } from '../../store'
 import { KeyboardAwareScrollViewComponent } from '../../components/KeyboardAwareScrollViewComponent'
 import { I_TEXT_FIELD } from '../../common/Interfaces'
 import { log } from '../../config'
+import { die } from 'mobx/dist/errors'
 
 const styles = StyleSheet.create({
   mainContainer: {
     flex: 1,
     backgroundColor: colors.white,
-    paddingTop: 10
+    paddingTop: 20
   },
   centerView: {
     alignItems: 'center'
   },
   formContainer: {
-    paddingTop: 50,
     paddingHorizontal: 60,
-    paddingBottom: 45
+    paddingVertical: 30
   },
   formHeading: {
     fontSize: fontDimens.normal,
-    lineHeight: 22,
+    lineHeight: 20,
     fontWeight: '600',
     color: colors.black,
     paddingBottom: 20
@@ -73,7 +73,7 @@ const styles = StyleSheet.create({
   },
   termsAndPolicy: {
     fontSize: fontDimens.medium,
-    lineHeight: 16
+    lineHeight: 20
   },
   rowView: {
     flexDirection: 'row',
@@ -100,16 +100,16 @@ export class RegisterUserScreen extends Component<{}, I_STATE> {
   }
   renderLogoComponent = () => {
     return (
-      <View style = {styles.centerView}>
-        <LogoComponent/>
+      <View style={styles.centerView}>
+        <LogoComponent />
       </View>
     )
   }
 
   renderBackArrowContainer = () => {
     return (
-      <View style = {styles.backContainer}>
-        <BackButtonComponent/>
+      <View style={styles.backContainer}>
+        <BackButtonComponent />
       </View>
     )
   }
@@ -119,13 +119,13 @@ export class RegisterUserScreen extends Component<{}, I_STATE> {
     return map(Object.keys(formData), (formKey) => {
       const { label, inputValue, key, isPasswordField = false, errorMessage = '' } = formData[formKey] as I_TEXT_FIELD
       return (
-        <View style = {styles.fieldSeperator}>
+        <View style={styles.fieldSeperator}>
           <TextInputComponent
-            label= {label}
-            inputValue = {inputValue}
-            shouldShowEyeIcon = {isPasswordField}
-            errorMsg = {errorMessage}
-            onChangeText = {(value) => onChangeText(key, value)}
+            label={label}
+            inputValue={inputValue}
+            shouldShowEyeIcon={isPasswordField}
+            errorMsg={errorMessage}
+            onChangeText={(value) => onChangeText(key, value)}
           />
         </View>
       )
@@ -135,7 +135,7 @@ export class RegisterUserScreen extends Component<{}, I_STATE> {
   renderSignUpForm = () => {
     const { HEADING } = strings.SIGN_UP_SCREEN
     return (
-      <View style = {styles.formContainer}>
+      <View style={styles.formContainer}>
         <CustomText textStyle={styles.formHeading}>
           {HEADING}
         </CustomText>
@@ -150,8 +150,8 @@ export class RegisterUserScreen extends Component<{}, I_STATE> {
     const { CREATE_ACCOUNT_BUTTON } = strings.SIGN_UP_SCREEN
     const { registerUser } = signupDataStore
     return (
-      <View style = {styles.buttonView}>
-        <TouchableOpacity style = {styles.signInButton} onPress = {registerUser}>
+      <View style={styles.buttonView}>
+        <TouchableOpacity style={styles.signInButton} onPress={registerUser}>
           <CustomText textStyle={styles.buttonLabel}>
             {CREATE_ACCOUNT_BUTTON}
           </CustomText>
@@ -164,21 +164,21 @@ export class RegisterUserScreen extends Component<{}, I_STATE> {
   renderCopyRightView = () => {
     const { COPYYRIGHT, TERMS_OF_USE, AND, APPLY, SERVICE_APPLY } = strings.LOGIN_SCREEN
     return (
-      <View style = {[styles.buttonView,{ paddingTop: 40 }]}>
+      <View style={[styles.buttonView, { paddingTop: 20 }]}>
         <CustomText textStyle={styles.termsAndPolicy}>
           {COPYYRIGHT}
         </CustomText>
-        <View style = {styles.rowView}>
-          <TouchableOpacity style = {styles.clickabkeText}>
-            <CustomText textStyle={{...styles.clickableText, ...styles.termsAndPolicy }}>
+        <View style={styles.rowView}>
+          <TouchableOpacity style={styles.clickabkeText}>
+            <CustomText textStyle={{ ...styles.clickableText, ...styles.termsAndPolicy }}>
               {TERMS_OF_USE}
             </CustomText>
           </TouchableOpacity>
           <CustomText textStyle={styles.termsAndPolicy}>
             {AND}
           </CustomText>
-          <TouchableOpacity style = {styles.clickabkeText}>
-            <CustomText textStyle={{...styles.clickableText, ...styles.termsAndPolicy }}>
+          <TouchableOpacity style={styles.clickabkeText}>
+            <CustomText textStyle={{ ...styles.clickableText, ...styles.termsAndPolicy }}>
               {SERVICE_APPLY}
             </CustomText>
           </TouchableOpacity>
@@ -194,25 +194,25 @@ export class RegisterUserScreen extends Component<{}, I_STATE> {
     const { reviews } = signupDataStore
     return (
       reviews.map((review) => (
-        <UserReviewComponent review={review}/>
+        <UserReviewComponent review={review} />
       ))
     )
   }
 
 
-setSelectedPageIndex = (pageIndex) => {
-  const { selectedPageIndex } = this.state
-  if (pageIndex !== selectedPageIndex) {
-    this.setState({
-      selectedPageIndex: pageIndex
-    })
+  setSelectedPageIndex = (pageIndex) => {
+    const { selectedPageIndex } = this.state
+    if (pageIndex !== selectedPageIndex) {
+      this.setState({
+        selectedPageIndex: pageIndex
+      })
+    }
   }
-}
 
   renderPagerView = () => {
     const reviewsView = this.getReviviwsView()
     return (
-      <View style = {styles.footerPagerView}>
+      <View style={styles.footerPagerView}>
         <ViewPager
           pages={reviewsView}
           onPageChange={this.setSelectedPageIndex}
@@ -223,7 +223,7 @@ setSelectedPageIndex = (pageIndex) => {
 
   render() {
     return (
-      <View style = {styles.mainContainer}>
+      <View style={styles.mainContainer}>
         {this.renderLogoComponent()}
         {this.renderBackArrowContainer()}
         <ScrollView>
