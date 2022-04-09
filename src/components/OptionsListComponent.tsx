@@ -19,7 +19,7 @@ const styles = StyleSheet.create({
 
   },
   heading: {
-    fontSize: 10,
+    fontSize: 12,
     color: colors.black,
     fontWeight: '400',
     lineHeight: 12
@@ -30,7 +30,7 @@ const styles = StyleSheet.create({
     paddingTop: 5
   },
   labelContainer: {
-    paddingLeft: 10
+    paddingLeft: 12
   },
   listItemSeparator: {
     paddingTop: 15
@@ -81,8 +81,8 @@ export class CommunityOptionsComponent extends PureComponent<Props, State> {
         <View>
           <IconButtonWrapper
             iconImage={icon}
-            iconWidth={20}
-            iconHeight={20}
+            iconWidth={16}
+            iconHeight={16}
             styling={iconStyle}
           />
         </View>

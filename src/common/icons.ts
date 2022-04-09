@@ -26,6 +26,7 @@ export const icons = {
   DAFAULT_ICON: require('../../images/defaultImg.png'),
   SHARE_ICON: require('../../images/shareIcon.png'),
   REPORT_ICON: require('../../images/reportIcon.png'),
+  REPOST_ICON: require('../../images/repostIcon.png'),
   SAVE_ICON: require('../../images/saveIcon.png'),
   EDIT_ICON: require('../../images/editIcon.png'),
   DELETE_ICON: require('../../images/deleteIcon.png'),
