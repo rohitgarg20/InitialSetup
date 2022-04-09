@@ -35,8 +35,8 @@ const bottomTabBarStack = () => {
         unmountOnBlur: true
       }}  />
       {/* <Tab.Screen name={TAB_KEYS.PREFERENCES_TAB} component = {PreferencesScreen} /> */}
-      <Tab.Screen name={TAB_KEYS.PREFERENCES_TAB} component = {EventListingFinal} />
-      
+      <Tab.Screen name={TAB_KEYS.PREFERENCES_TAB} component = {PreferencesScreen} />
+
     </Tab.Navigator>
   )
 }

@@ -50,15 +50,6 @@ export class HomeScreen extends Component {
     postListStore.updateFetchingStatus(true)
   }
   componentDidMount() {
-    try {
-      axios.get(BASE_URL).then((data) => {
-        reactotron.log('componentDidMountcomponentDidMount', data)
-
-      })
-    } catch (error) {
-      reactotron.log('error', error)
-    }
-
     postListStore.getPostsListData()
   }
 

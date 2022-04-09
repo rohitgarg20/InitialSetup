@@ -11,8 +11,8 @@ const getUserProfileDetails = async () => {
 
   const loginUser = new BaseRequest(this, {
     methodType: 'GET',
-    apiEndPoint: API_END_POINTS.GET_USER_DETAIL,
-    apiId: API_IDS.GET_USER_DETAIL,
+    apiEndPoint: API_END_POINTS.GET_USER_INFO,
+    apiId: API_IDS.GET_USER_INFO,
     promisify: true
   })
   await loginUser.setRequestHeaders()
@@ -25,9 +25,11 @@ export const getScreenNameToNavigateToOnLogin = async () => {
     getUserProfileDetails().then(async (userInfoResponse) => {
       log('getUserProfileDetailsgetUserProfileDetails', userInfoResponse)
       const userDataResponse = get(userInfoResponse, 'data.response', null)
-      log('getUserProfileDetails', userDataStore)
+      log('getUserProfileDetails', userDataResponse)
       storeUserInfoData(userDataResponse)
+      log('storeUserInfoDatastoreUserInfoData')
       await userDataStore.setUserInfoData(userDataResponse)
+      log('after await storeUserInfoDatastoreUserInfoData')
       // await userDataStore.getUserData()
       resolve(STACK_NAMES.BOTTOM_TAB_BAR)
     }).catch(_err => {
