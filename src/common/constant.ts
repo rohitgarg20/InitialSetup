@@ -27,7 +27,7 @@ export const MAIN_STACK_KEYS = {
   TAB_BAR_STACK: 'tabBarStack'
 }
 
-export const BASE_URL = 'http://192.168.1.203:4567'
+export const BASE_URL = 'http://192.168.1.102:4567'
 // export const BASE_URL = 'http://sdlms.deepthought.education'
 
 
@@ -157,7 +157,7 @@ export const FILTER_KEYS = {
 export const FILTER_ITEM_KEYS = {
   FILTER_LABEL: 'filterLabel',
   CURRENT_SELECTED_FILTER_VALUES: 'currentSelectedFilterValues',
-  PREEVIOUS_SELECTED_FILTER_VALUES: 'previousSelectedValues',
+  PREVIOUS_SELECTED_FILTER_VALUES: 'previousSelectedValues',
   FILTER_TYPE: 'filterType',
   LIST_ITEMS: 'listItems',
   FILTER_ID: 'filterId',
@@ -165,9 +165,24 @@ export const FILTER_ITEM_KEYS = {
   RADIO_BUTTON_TYPE: 'radioButton'
 }
 
+export const SORTING_DATA = [
+  {
+    name: 'Popular',
+    id: 'popular'
+  },
+  {
+    name: 'Latest',
+    id: 'latest'
+  },
+  {
+    name: 'Rigor Rank',
+    id: 'rigor_rank'
+  },
+]
+
 export interface IFilterItems {
   id: string
-  isSelected: string
+  isSelected: boolean
   displayLabel: string
 }
 export interface IFilterListItem{
@@ -175,6 +190,6 @@ export interface IFilterListItem{
   currentSelectedFilterValues: IFilterItems[]
   previousSelectedValues: IFilterItems[]
   listItems: IFilterItems[]
-  filterType: 'checkboxSelection' | 'radio'
+  filterType: 'checkBoxType' | 'radioButton'
   filterId: string
 }

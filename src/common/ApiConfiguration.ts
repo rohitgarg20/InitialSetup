@@ -11,7 +11,8 @@ export const API_END_POINTS = {
   GET_NUDGES_LIST: '/api/v3/app/nudge',
   GET_ALL_POSTS: '/api/v3/app/posts',
   GET_USER_PREFERENCES: '/api/v3/app/preferences',
-  GET_USER_DETAIL: '/api/v3/app/user'
+  GET_USER_DETAIL: '/api/v3/app/user',
+  GET_CATEGORY_LIST: '/api/v3/app/category'
 }
 
 export const API_IDS = {
@@ -27,5 +28,6 @@ export const API_IDS = {
   GET_NUDGES_LIST: 'GET_NUDGES_LIST',
   GET_ALL_POSTS: 'GET_ALL_POSTS',
   GET_USER_PREFERENCES: 'GET_USER_PREFERENCES',
-  GET_USER_DETAIL: 'GET_USER_DETAIL'
+  GET_USER_DETAIL: 'GET_USER_DETAIL',
+  GET_CATEGORY_LIST: 'GET_CATEGORY_LIST'
 }

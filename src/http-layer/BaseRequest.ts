@@ -97,6 +97,7 @@ export class BaseRequest {
     } catch (err) {
       Reactotron.log('error is', err)
       hideLoader()
+      throw new Error('error while making api call')
     }
 }
 

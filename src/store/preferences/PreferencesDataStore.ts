@@ -1,5 +1,5 @@
-import { IFilterItems } from './../../common/constant';
-import { makeObservable, observable } from 'mobx'
+import { IFilterItems, SORTING_DATA } from './../../common/constant'
+import { action, makeObservable, observable } from 'mobx'
 import { strings } from '../../common'
 import { API_END_POINTS, API_IDS } from '../../common/ApiConfiguration'
 import { BaseRequest, RESPONSE_CALLBACKS } from '../../http-layer'
@@ -9,12 +9,12 @@ import { log } from '../../config'
 import { FILTER_ITEM_KEYS, FILTER_KEYS } from '../../common/constant'
 
 const DEFAULT_SETTINGS = {
-  preferencesData: {}
+  preferencesListData: []
 }
 
 export class PreferencesDataStore implements RESPONSE_CALLBACKS {
 
-  @observable preferencesData
+  @observable preferencesListData
 
   constructor() {
     this.init()
@@ -27,77 +27,133 @@ export class PreferencesDataStore implements RESPONSE_CALLBACKS {
   }
 
   getUserPreferencesData = async () => {
-
     const loginUser = new BaseRequest(this, {
       methodType: 'GET',
       apiEndPoint: API_END_POINTS.GET_USER_PREFERENCES,
       apiId: API_IDS.GET_USER_PREFERENCES,
+      promisify: true,
       urlParams: {
         // limit: PAGE_SIZE,
         // page: get(this.postsData, 'current_page', 0) + 1
       }
     })
     await loginUser.setRequestHeaders()
-    await loginUser.hitGetApi()
+    return await loginUser.hitGetApi()
   }
 
-  constructPreferencesData = (responseData) => {
-    const { CATEGORY, SORTING } = FILTER_KEYS
-    let filterListData = {}
-    responseData.map((filterObj) => {
-      const filterType = Object.keys(filterObj)?.[0] || ''
-      if (filterType === CATEGORY) {
-        const categoryObj = filterObj[filterType]
-        const categories = Object.keys(categoryObj)
-        const filteredCategory = categories.filter((category) => category !== 'uid')
-        filteredCategory.forEach((categoryType) => {
-          const categoryData = get(categoryObj, `${categoryType}`, {})
-          const filterLabel = get(categoryData, 'name')
-          const cid =  get(categoryData, 'cid')
-          const subCategory = get(categoryData, 'sub_categories', [])
-          const formattedValues: IFilterItems[] = subCategory.map((item) => {
-            return {
-              id: get(item, 'cid', ''),
-              isSelected: false,
-              displayLabel: get(item, 'name', '')
-            }
-          })
-          filterListData[categoryType] = {
-            [FILTER_ITEM_KEYS.FILTER_LABEL]: filterLabel,
-            [FILTER_ITEM_KEYS.CURRENT_SELECTED_FILTER_VALUES]: [],
-            [FILTER_ITEM_KEYS.PREEVIOUS_SELECTED_FILTER_VALUES]: [],
-            [FILTER_ITEM_KEYS.FILTER_ID]: cid,
-            [FILTER_ITEM_KEYS.LIST_ITEMS]: [ ...formattedValues],
-            [FILTER_ITEM_KEYS.FILTER_TYPE]:  FILTER_ITEM_KEYS.CHECKBOX_TYPE
-          }
-        })
-      } else if (filterType === SORTING) {
-        const formattedValues: IFilterItems[] = get(filterObj, `${filterType}.sorting`, []).map((item) => {
-          return {
-            id: item,
-            isSelected: false,
-            displayLabel: item
-          }
-        })
-        filterListData[SORTING] = {
-          [FILTER_ITEM_KEYS.FILTER_LABEL]: filterType,
-          [FILTER_ITEM_KEYS.CURRENT_SELECTED_FILTER_VALUES]: [],
-          [FILTER_ITEM_KEYS.PREEVIOUS_SELECTED_FILTER_VALUES]: [],
-          [FILTER_ITEM_KEYS.FILTER_ID]: get(filterObj, `${filterType}.uid`),
-          [FILTER_ITEM_KEYS.LIST_ITEMS]: [ ...formattedValues],
-          [FILTER_ITEM_KEYS.FILTER_TYPE]:  FILTER_ITEM_KEYS.RADIO_BUTTON_TYPE
-        }
+  getCategoryListData = async () => {
+
+    const loginUser = new BaseRequest(this, {
+      methodType: 'GET',
+      apiEndPoint: API_END_POINTS.GET_CATEGORY_LIST,
+      apiId: API_IDS.GET_CATEGORY_LIST,
+      promisify: true,
+      urlParams: {
+        // limit: PAGE_SIZE,
+        // page: get(this.postsData, 'current_page', 0) + 1
       }
     })
-    log('filterTypefilterType', filterListData)
-
+    await loginUser.setRequestHeaders()
+    return await loginUser.hitGetApi()
   }
+
+  @action
+  setPreferencesListData = (preferencesList) => {
+    this.preferencesListData = [ ...preferencesList]
+  }
+
+  getUserPreferencesAndCategoryData = () => {
+    const promisesArr = [
+      this.getUserPreferencesData(),
+      this.getCategoryListData()
+    ]
+    let formattedListData = []
+    Promise.all(promisesArr).then((response) => {
+      const userPreferencesList = get(response, '[0].data.response', [])
+      const userCategoryList = userPreferencesList.find((item) => {
+        return Object.keys(item).find((itemType) => itemType === 'category')
+      })
+      const categoryData = get(userCategoryList, 'category', {})
+      const categoryListData =  get(response, '[1].data.response', [])
+      formattedListData = categoryListData.map((category) => {
+        const { name = '', cid = '', sub_categories = [] } = category || {}
+        const selectedCategoryUserData = get(categoryData, `${name}`)
+        const selectedSubCatList = get(selectedCategoryUserData, 'cid') === cid ?  get(selectedCategoryUserData, 'sub_categories', []) : []
+        let selectedCid = []
+        const formatedSubCategory: IFilterItems[] = sub_categories.map((item) => {
+          const itemCid = get(item, 'cid', '')
+          const isUserSelected = selectedSubCatList.findIndex((subCat) => get(subCat, 'cid') === itemCid)
+          if (isUserSelected !== -1) {
+            selectedCid = [
+              ...selectedCid,
+              {
+                id: itemCid
+              }
+            ]
+          }
+          return {
+            id: itemCid,
+            isSelected: isUserSelected !== -1 ? true : false,
+            displayLabel: get(item, 'name', '')
+          }
+        })
+        return {
+          [FILTER_ITEM_KEYS.FILTER_LABEL]: name,
+          [FILTER_ITEM_KEYS.CURRENT_SELECTED_FILTER_VALUES]: [...selectedCid],
+          [FILTER_ITEM_KEYS.PREVIOUS_SELECTED_FILTER_VALUES]: [ ...selectedCid],
+          [FILTER_ITEM_KEYS.FILTER_ID]: cid,
+          [FILTER_ITEM_KEYS.LIST_ITEMS]: [ ...formatedSubCategory],
+          [FILTER_ITEM_KEYS.FILTER_TYPE]:  FILTER_ITEM_KEYS.CHECKBOX_TYPE
+        }
+      })
+
+      let sortingFormattedValues = []
+      const sortingCategoryList = userPreferencesList.find((item) => {
+        return Object.keys(item).find((itemType) => itemType === 'sorting')
+      })
+
+      const selectedSortingFilter = get(sortingCategoryList, 'sorting.sorting', [])
+      let selectedSortingFilters = []
+      SORTING_DATA.forEach((item) => {
+        const sortingKey = get(item, 'id', '')
+        const isUserSelected = selectedSortingFilter.findIndex((selSort) => selSort === sortingKey)
+        if (isUserSelected !== -1) {
+          selectedSortingFilters = [
+            ...selectedSortingFilters,
+            {
+              id: sortingKey
+            }
+          ]
+        }
+        sortingFormattedValues.push({
+          id: sortingKey,
+          isSelected: isUserSelected !== -1 ? true : false,
+          displayLabel: get(item, 'name', '')
+        })
+      })
+      formattedListData = [
+        ...formattedListData,
+        {
+          [FILTER_ITEM_KEYS.FILTER_LABEL]: 'Sort By',
+          [FILTER_ITEM_KEYS.CURRENT_SELECTED_FILTER_VALUES]: [ ...selectedSortingFilters],
+          [FILTER_ITEM_KEYS.PREVIOUS_SELECTED_FILTER_VALUES]: [ ...selectedSortingFilters],
+          [FILTER_ITEM_KEYS.FILTER_ID]: 'sortBy',
+          [FILTER_ITEM_KEYS.LIST_ITEMS]: [ ...sortingFormattedValues],
+          [FILTER_ITEM_KEYS.FILTER_TYPE]:  FILTER_ITEM_KEYS.RADIO_BUTTON_TYPE
+        }
+      ]
+      this.setPreferencesListData(formattedListData)
+    }).catch(err => {
+      log('error while calling', err)
+    })
+  }
+
 
   onSuccess(apiId: string, response: any) {
     log('onSuccessonSuccess', response)
     switch (apiId) {
       case API_IDS.GET_USER_PREFERENCES:
-        this.constructPreferencesData(get(response, 'response', []))
+        // this.constructPreferencesData(get(response, 'response', []))
         break
       default:
         break

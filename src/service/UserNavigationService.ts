@@ -31,6 +31,7 @@ export const getScreenNameToNavigateToOnLogin = async () => {
       // await userDataStore.getUserData()
       resolve(STACK_NAMES.BOTTOM_TAB_BAR)
     }).catch(_err => {
+      log('getScreenNameToNavigateToOnLogin', _err)
       resolve(STACK_NAMES.LOGIN_STACK)
     }).finally(() => {
       hideLoader()
