@@ -35,6 +35,8 @@ export const icons = {
   CONTACT_US: require('../../images/contactIcon.png'),
   NETWORK_ICON: require('../../images/heroImg.png'),
   CALENDAR_ICON: require('../../images/calendarIcon.png'),
-  SCHEDULE_ICON: require('../../images/scheduleIcon.png')
+  SCHEDULE_ICON: require('../../images/scheduleIcon.png'),
+  HUMAN_HEAD_ICON: require('../../images/humanHead.png'),
+  GROUP_MEMBERS_ICON: require('../../images/groupMembers.png')
 
 }

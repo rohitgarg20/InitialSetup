@@ -54,7 +54,8 @@ const styles = StyleSheet.create({
     fontSize: fontDimens.extraSmall,
     lineHeight: 16,
     fontWeight: '400',
-    color: colors.black
+    color: colors.black,
+    paddingVertical: 2
   },
   date: {
     fontSize: fontDimens.extraSmall,
@@ -124,7 +125,7 @@ export class EventCardComponent extends PureComponent<IProps> {
         <View style={styles.contentContainer}>
           <View>
             <CustomText textStyle={styles.nameText} numberOfLines={1} ellipsizeMode={'tail'}>{name}</CustomText>
-            <CustomText textStyle={styles.tagLine} numberOfLines={2} ellipsizeMode={'tail'}>{tagline}</CustomText>
+            <CustomText textStyle={styles.tagLine} numberOfLines={1} ellipsizeMode={'tail'}>{tagline}</CustomText>
             <CustomText textStyle={styles.date}>{subLabel}</CustomText>
           </View>
           <View>
