@@ -21,7 +21,7 @@ const styles = StyleSheet.create({
     backgroundColor: '#cccccc'
   },
   nameLabel: {
-    fontSize: fontDimens.medium,
+    fontSize: fontDimens.normal,
     lineHeight: 20,
     color: colors.black,
     fontWeight: '500'
