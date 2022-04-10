@@ -10,11 +10,20 @@ import { log } from '../../config'
 import { preferencesDataStore } from '../../store'
 
 const styles = StyleSheet.create({
+  transparantBg: {
+    backgroundColor: 'rgba(0,0,0,0.6)',
+    position: 'absolute',
+    top: 0,
+    left: 0,
+    right: 0,
+    bottom: 0
+  },
   categoryNameContainer: {
     width: '100%',
     borderWidth: 0,
-    borderBottomLeftRadius: 5,
-    borderBottomRightRadius: 5,
+    // borderBottomLeftRadius: 5,
+    // borderBottomRightRadius: 5,
+    borderRadius: 6,
     backgroundColor: colors.black,
     paddingLeft: 20,
     paddingVertical: 10
@@ -31,10 +40,11 @@ const styles = StyleSheet.create({
     // backgroundColor: colors.white
   },
   itemSeperator: {
-    paddingBottom: 30
+    paddingBottom: 15
   },
   container: {
-
+    backgroundColor: colors.white,
+    width: '70%'
   },
   arrowContainer: {
     height: 30,
@@ -51,7 +61,7 @@ const styles = StyleSheet.create({
 })
 
 @observer
-export  class PreferencesScreen extends Component {
+export class PreferencesScreen extends Component {
 
   heightInterpolated = new Animated.Value(0)
 
@@ -69,7 +79,7 @@ export  class PreferencesScreen extends Component {
     )
   }
 
-  renderGoalLevelsInGoalComponent = ()=> {
+  renderGoalLevelsInGoalComponent = () => {
     return (
       <View>
         {
@@ -109,15 +119,16 @@ export  class PreferencesScreen extends Component {
   }
 
   renderAnotherView = () => {
-    const interpolated =  this.heightInterpolated.interpolate({
+    const interpolated = this.heightInterpolated.interpolate({
       inputRange: [0, 1],
       outputRange: [70, 2000]
     })
 
     return (
-      <View style = {{}}>
-        <Animated.View style = {{
-          maxHeight: interpolated, backgroundColor: 'red', overflow: 'hidden'}}>
+      <View style={{}}>
+        <Animated.View style={{
+          maxHeight: interpolated, backgroundColor: 'red', overflow: 'hidden'
+        }}>
           {
             ['a', 'b', 'c'].map((item) => {
               return (
@@ -133,7 +144,7 @@ export  class PreferencesScreen extends Component {
           this.heightInterpolated.setValue(1)
         }}>
           <CustomText>
-          click to increase
+            click to increase
           </CustomText>
         </TouchableOpacity>
       </View>
@@ -142,10 +153,10 @@ export  class PreferencesScreen extends Component {
 
   renderCategoryName = (filterLabel) => {
     return (
-      <View style = {{
+      <View style={{
         backgroundColor: colors.white
       }}>
-        <View style = {styles.categoryNameContainer}>
+        <View style={styles.categoryNameContainer}>
           <CustomText textStyle={styles.categoryName}>
             {filterLabel}
           </CustomText>
@@ -161,13 +172,13 @@ export  class PreferencesScreen extends Component {
           this.heightInterpolated.setValue(1)
 
         }}
-        style = {styles.arrowContainer}
+        style={styles.arrowContainer}
       >
         <IconButtonWrapper
           iconImage={icons.RIGHT_ARROW_ICON}
-          iconWidth = {8}
-          iconHeight = {11}
-          styling = {{
+          iconWidth={8}
+          iconHeight={11}
+          styling={{
             transform: [{
               rotate: '90deg'
             }]
@@ -179,17 +190,17 @@ export  class PreferencesScreen extends Component {
 
 
   renderItemListWithCheckbox = (item) => {
-      return (
-        <FilterListItemsComponent
-          filterCategory={item}
-        />
-      )
+    return (
+      <FilterListItemsComponent
+        filterCategory={item}
+      />
+    )
   }
 
   renderPreferenceCategoryList = ({ item, index }) => {
-    const { filterLabel, listItems, filterId  } = item as IFilterListItem
+    const { filterLabel, listItems, filterId } = item as IFilterListItem
     return (
-      <View style = {styles.categoryContainer}>
+      <View style={styles.categoryContainer}>
         {this.renderCategoryName(filterLabel)}
         {this.renderItemListWithCheckbox(item)}
       </View>
@@ -198,7 +209,7 @@ export  class PreferencesScreen extends Component {
 
   renderItemSeperator = () => {
     return (
-      <View style = {styles.itemSeperator}/>
+      <View style={styles.itemSeperator} />
     )
   }
 
@@ -207,17 +218,19 @@ export  class PreferencesScreen extends Component {
     log('preferencesListDatapreferencesListData', preferencesListData)
     return (
       <FlatListWrapper
-        data = {preferencesListData}
-        renderItem = {this.renderPreferenceCategoryList}
-        ItemSeparatorComponent = {this.renderItemSeperator}
+        data={preferencesListData}
+        renderItem={this.renderPreferenceCategoryList}
+        ItemSeparatorComponent={this.renderItemSeperator}
       />
     )
   }
 
   render() {
     return (
-      <View style = {styles.container}>
-        {this.renderPreferencesList()}
+      <View style={styles.transparantBg}>
+        <View style={styles.container}>
+          {this.renderPreferencesList()}
+        </View>
       </View>
     )
   }

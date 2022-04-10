@@ -9,6 +9,7 @@ export const styles = StyleSheet.create({
   checkBoxContainer: {
     borderWidth: 2,
     backgroundColor: colors.white,
+    borderRadius: 2,
     height: 15,
     width: 15,
     justifyContent: 'center',
