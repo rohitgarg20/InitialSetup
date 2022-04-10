@@ -21,9 +21,8 @@ const styles = StyleSheet.create({
   categoryNameContainer: {
     width: '100%',
     borderWidth: 0,
-    // borderBottomLeftRadius: 5,
-    // borderBottomRightRadius: 5,
-    borderRadius: 6,
+    borderBottomLeftRadius: 5,
+    borderBottomRightRadius: 5,
     backgroundColor: colors.black,
     paddingLeft: 20,
     paddingVertical: 10
@@ -44,7 +43,9 @@ const styles = StyleSheet.create({
   },
   container: {
     backgroundColor: colors.white,
-    width: '70%'
+    width: '55%',
+    paddingTop: 15,
+    position: 'relative'
   },
   arrowContainer: {
     height: 30,
@@ -57,6 +58,39 @@ const styles = StyleSheet.create({
     backgroundColor: colors.white,
     borderColor: 'transparent',
     top: -15
+  },
+  footerContainer: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    paddingVertical: 10,
+    paddingHorizontal: 20,
+    alignItems: 'center'
+  },
+  btnReset: {
+    backgroundColor: colors.grey,
+    borderRadius: 5,
+    minWidth: 70,
+    paddingVertical: 6,
+    justifyContent: 'center',
+    alignItems: 'center'
+  },
+  btnResetText: {
+    color: colors.black,
+    fontSize: fontDimens.small,
+    fontWeight: '500'
+  },
+  btnApply: {
+    backgroundColor: colors.lightBlue,
+    borderRadius: 5,
+    minWidth: 70,
+    paddingVertical: 6,
+    justifyContent: 'center',
+    alignItems: 'center'
+  },
+  btnApplyText: {
+    color: colors.white,
+    fontSize: fontDimens.small,
+    fontWeight: '500'
   }
 })
 
@@ -229,6 +263,26 @@ export class PreferencesScreen extends Component {
     return (
       <View style={styles.transparantBg}>
         <View style={styles.container}>
+          <TouchableOpacity style={{
+            position: 'absolute',
+            right: -28,
+            top: 10
+          }}>
+            <IconButtonWrapper
+              iconImage={icons.CROSS}
+              iconHeight={16}
+              iconWidth={16}
+              styling={{ tintColor: colors.white }}
+            />
+          </TouchableOpacity>
+          <View style={styles.footerContainer}>
+            <TouchableOpacity style={styles.btnReset}>
+              <CustomText textStyle={styles.btnResetText}>Reset</CustomText>
+            </TouchableOpacity>
+            <TouchableOpacity style={styles.btnApply}>
+              <CustomText textStyle={styles.btnApplyText}>Apply</CustomText>
+            </TouchableOpacity>
+          </View>
           {this.renderPreferencesList()}
         </View>
       </View>
