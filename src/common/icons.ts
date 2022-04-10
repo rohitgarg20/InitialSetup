@@ -37,6 +37,10 @@ export const icons = {
   CALENDAR_ICON: require('../../images/calendarIcon.png'),
   SCHEDULE_ICON: require('../../images/scheduleIcon.png'),
   HUMAN_HEAD_ICON: require('../../images/humanHead.png'),
-  GROUP_MEMBERS_ICON: require('../../images/groupMembers.png')
+  GROUP_MEMBERS_ICON: require('../../images/groupMembers.png'),
+  SIGN_OUT_ICON: require('../../images/sign_out.png'),
+  SUPPORT_ICON: require('../../images/supportIcon.png'),
+  SETTING_ICON: require('../../images/settingIcon.png'),
+  USER_ICON: require('../../images/userIcon.png')
 
 }
