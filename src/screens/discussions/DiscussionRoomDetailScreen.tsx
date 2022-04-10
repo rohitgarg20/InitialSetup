@@ -1,10 +1,14 @@
+import { observable } from 'mobx'
 import React, { Component } from 'react'
-import { StyleSheet, TouchableOpacity, View } from 'react-native'
-import { ScrollView } from 'react-native-gesture-handler'
+import { StyleSheet, TouchableOpacity, View, ScrollView, ActivityIndicator } from 'react-native'
 import { colors, fontDimens, strings } from '../../common'
+import { get } from 'lodash'
 import { BASE_URL } from '../../common/constant'
 import { icons } from '../../common/icons'
-import { CustomText, IconButtonWrapper, UserAvatar } from '../../components'
+import { CustomText, IconButtonWrapper, ImageWithLoaderComponent, UserAvatar } from '../../components'
+import { discussionRoomDetailStore } from '../../store'
+import { observer } from 'mobx-react'
+import { IEventListItem } from '../../store/interfaces'
 
 const PADDING_HORIZONTAL = 10
 
@@ -98,12 +102,30 @@ const styles = StyleSheet.create({
   },
   flexEnd: {
     alignItems: 'flex-end'
+  },
+  loaderContainer: {
+    flex: 1,
+    backgroundColor: colors.white,
+    justifyContent: 'center',
+    alignItems: 'center'
   }
 })
 
-export class DiscussionRoomDetailScreen extends Component {
+interface IProps {
+  navigation?: any
+  route?: any
+}
+@observer
+export class DiscussionRoomDetailScreen extends Component<IProps> {
+
+  componentDidMount() {
+    const { route } = this.props
+    discussionRoomDetailStore.getInitData(get(route, 'params.id', ''))
+  }
 
   renderTotalMembers = () => {
+    const { discussionRoomData } = discussionRoomDetailStore
+    const { membersCount } = discussionRoomData as IEventListItem
     const { MEMBERS } = strings.DISCUSSION_ROOM_DETAIL_SCREEN
     return (
       <View>
@@ -115,7 +137,7 @@ export class DiscussionRoomDetailScreen extends Component {
             iconWidth = {10}
           />
           <CustomText textStyle={styles.count}>
-          23
+            {membersCount}
           </CustomText>
         </View>
       </View>
@@ -124,6 +146,8 @@ export class DiscussionRoomDetailScreen extends Component {
 
   renderTotalMascots = () => {
     const { MASCOTS } = strings.DISCUSSION_ROOM_DETAIL_SCREEN
+    const { discussionRoomData } = discussionRoomDetailStore
+    const { mascotsCount } = discussionRoomData as IEventListItem
     return (
       <View>
         <CustomText textStyle={styles.memberLabel}>{MASCOTS}</CustomText>
@@ -134,7 +158,7 @@ export class DiscussionRoomDetailScreen extends Component {
             iconWidth = {10}
           />
           <CustomText textStyle={styles.count}>
-              3
+            {mascotsCount}
           </CustomText>
         </View>
       </View>
@@ -173,28 +197,31 @@ export class DiscussionRoomDetailScreen extends Component {
 
   renderAboutContainer = () => {
     const { ABOUT } = strings.DISCUSSION_ROOM_DETAIL_SCREEN
-
+    const { discussionRoomData } = discussionRoomDetailStore
+    const { description } = discussionRoomData as IEventListItem
     return (
       <View>
         <CustomText textStyle={styles.aboutLabel}>
           {ABOUT}
         </CustomText>
         <CustomText textStyle={styles.content}>
-        I would like to start a discussion on what we can learn from on of the world’s I Lorem ipsum dolor sit amet, sit a consectetur adipiscing elit Lorem ipsum dolor sit amet, sit a consectetur adipiscing elit Lorem ipsum dolor sit read more
+          {description}
         </CustomText>
       </View>
     )
   }
 
-  renderRoundedAvtar = (displayname, picture) => {
-
-    return displayname ? (
+  renderRoundedAvtar = () => {
+    const { discussionRoomData } = discussionRoomDetailStore
+    const { author } = discussionRoomData as IEventListItem
+    const { userName = '', picture } = author || {}
+    return userName ? (
       <View style={[styles.avtarContainer]}>
         <UserAvatar
           size={'10'}
           imageStyle={[styles.withoutImageColor, { width: '100%', height: '100%' }]}
           showBorderRadius={true}
-          name={displayname.toUpperCase()}
+          name={userName.toUpperCase()}
           src={`${BASE_URL}${picture}`}
         />
       </View>
@@ -202,6 +229,9 @@ export class DiscussionRoomDetailScreen extends Component {
   }
 
   renderLabel = () => {
+    const { discussionRoomData } = discussionRoomDetailStore
+    const { tagline, author } = discussionRoomData as IEventListItem
+    const { userName } = author || {}
     return (
       <View style = {styles.spaceBetween}>
         <View style = {styles.rowContainer}>
@@ -211,13 +241,13 @@ export class DiscussionRoomDetailScreen extends Component {
             iconWidth = {10}
           />
           <CustomText textStyle={styles.count}>
-          for visionary parents
+            {tagline}
           </CustomText>
         </View>
         <View style = {styles.rowContainer}>
-          {this.renderRoundedAvtar('', '')}
+          {this.renderRoundedAvtar()}
           <CustomText textStyle={styles.count}>
-          by Clara Bane
+          by {userName}
           </CustomText>
         </View>
       </View>
@@ -225,15 +255,18 @@ export class DiscussionRoomDetailScreen extends Component {
   }
 
   renderDiscussionLabel = () => {
+    const { discussionRoomData } = discussionRoomDetailStore
+    const { name, onlineUsersCount } = discussionRoomData as IEventListItem
+
     return (
       <View style = {[styles.spaceBetween, styles.roundBorder]}>
         <CustomText textStyle={styles.discssionHeading}>
-          Learning from Steve Jobs
+          {name}
         </CustomText>
         <View>
           <View style = {styles.blueDot} />
           <CustomText textStyle={{ ...styles.memberLabel, color: colors.white }}>
-           3 online
+            {onlineUsersCount} online
           </CustomText>
         </View>
       </View>
@@ -241,14 +274,19 @@ export class DiscussionRoomDetailScreen extends Component {
   }
 
   renderDiscussionRoomImage = () => {
+    const { discussionRoomData } = discussionRoomDetailStore
+    const { image } = discussionRoomData as IEventListItem
     return (
-      <View>
-        <IconButtonWrapper
-          iconImage={icons.BRICK}
-          iconWidth = {'100%'}
-          iconHeight = {150}
-        />
-      </View>
+      <ImageWithLoaderComponent
+        // iconImage={icons.NETWORK_ICON}
+        containerStyle = {{
+          height: 320,
+          width: '100%'
+        }}
+        srcImage={`${BASE_URL}${image}`}
+        // iconHeight={320}
+        // iconWidth={'100%'}
+      />
     )
   }
 
@@ -278,19 +316,36 @@ export class DiscussionRoomDetailScreen extends Component {
     )
   }
 
-  render() {
+  renderFetchingView = () => {
     return (
-      <View>
-        {this.renderDiscussionRoomImage()}
-        {this.renderDiscussionLabel()}
-        {this.renderLabel()}
-        <ScrollView contentContainerStyle = {{
-          paddingHorizontal: PADDING_HORIZONTAL
-        }}>
-          {this.renderRoomStats()}
-          {this.renderAboutContainer()}
-        </ScrollView>
+      <View style = {styles.loaderContainer}>
+        <ActivityIndicator
+          animating = {true}
+          size={'large'}
+          color={colors.darkBlue}
+        />
       </View>
+    )
+  }
+
+  render() {
+    const { isFetching } = discussionRoomDetailStore
+    return (
+      <>
+        { isFetching ? this.renderFetchingView() : (
+          <View>
+            {this.renderDiscussionRoomImage()}
+            {this.renderDiscussionLabel()}
+            {this.renderLabel()}
+            <ScrollView contentContainerStyle = {{
+              paddingHorizontal: PADDING_HORIZONTAL
+            }}>
+              {this.renderRoomStats()}
+              {this.renderAboutContainer()}
+            </ScrollView>
+          </View>
+        )}
+      </>
     )
   }
 }

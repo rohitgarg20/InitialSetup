@@ -64,7 +64,7 @@ export class EventsListStore implements RESPONSE_CALLBACKS {
     const formattedData: IEventListItem[] = map(eventList, (event) => {
       return {
         ...event,
-        attendees: get(event, 'attendees.length', 0),
+        attendees: get(event, 'attendees', []),
         startDate: toDateTime(get(event, 'schedule'))
       }
     })

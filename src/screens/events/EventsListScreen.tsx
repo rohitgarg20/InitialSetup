@@ -10,6 +10,7 @@ import { IEventListItem } from '../../store/interfaces'
 import { HeaderCardComponent } from '../../components/HeaderCardComponent'
 import { TouchableOpacity } from 'react-native-gesture-handler'
 import { icons } from '../../common/icons'
+import { navigateSimple } from '../../service'
 
 const styles = StyleSheet.create({
   container: {
@@ -35,8 +36,11 @@ const styles = StyleSheet.create({
 
 })
 
+interface IProps {
+  navigation?: any
+}
 @observer
-export class EventsListScreen extends Component {
+export class EventsListScreen extends Component<IProps> {
 
   constructor(props, state) {
     super(props, state)
@@ -51,8 +55,15 @@ export class EventsListScreen extends Component {
     eventsListStore.init()
   }
 
+  navigateToDetailScreen = (eventId) => {
+    const { navigation } = this.props
+    navigateSimple(navigation, 'EventDetailScreen', {
+      id: eventId
+    })
+  }
+
   renderEventCard = ({ item }) => {
-    const { name, tagline, description, startDate, image } = item as IEventListItem
+    const { name, tagline, description, startDate, image, _id, tid } = item as IEventListItem
 
     return (
       <EventCardComponent
@@ -61,6 +72,8 @@ export class EventsListScreen extends Component {
         description={description}
         startDate={startDate}
         imageUrl={image}
+        onPressCard = {this.navigateToDetailScreen}
+        eventId = {tid}
       />
     )
   }

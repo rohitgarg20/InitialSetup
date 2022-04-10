@@ -111,3 +111,26 @@ export const formatDate = (dateInp, additionalInfo?: IDateAdditionalInfo) => {
     return null
   }
 }
+
+export const getFormattedTime = (datein, appendZeroInHours = true) => {
+  const date = new Date(datein)
+  const hours = date.getHours()
+  const minutes = date.getMinutes()
+  const finalminutes = minutes < 10 ? '0' + minutes : minutes
+  let hoursFinal = hours
+  let timeAmOrPm = 'AM'
+  if (hoursFinal >= 12) {
+    hoursFinal = hoursFinal - 12
+    timeAmOrPm = 'PM'
+  }
+  if (hoursFinal === 0) {
+    hoursFinal = 12
+  }
+  let hoursFinals
+  if (appendZeroInHours) {
+    hoursFinals = hoursFinal < 10 ? '0' + hoursFinal : hoursFinal
+  } else {
+    hoursFinals = hoursFinal
+  }
+  return `${hoursFinals}:${finalminutes} ${timeAmOrPm}`
+}

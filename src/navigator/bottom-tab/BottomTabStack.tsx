@@ -7,7 +7,6 @@ import { NudgesScreen } from '../../screens/nudges/NudgesScreen'
 import { PreferencesScreen } from '../../screens/preferences/PreferencesScreen'
 import { TAB_KEYS } from './TabConstant'
 import { BottomTabBarComponent } from '../../components'
-import { EventListingFinal } from '../../screens/event-listing/EventListingFinal'
 
 
 const bottomTabBarStack = () => {

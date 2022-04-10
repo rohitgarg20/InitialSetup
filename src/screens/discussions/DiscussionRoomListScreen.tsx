@@ -9,6 +9,7 @@ import { discussionRoomListStore } from '../../store'
 import { IEventListItem } from '../../store/interfaces'
 import { HeaderCardComponent } from '../../components/HeaderCardComponent'
 import { icons } from '../../common/icons'
+import { navigateSimple } from '../../service'
 
 const styles = StyleSheet.create({
   container: {
@@ -34,8 +35,11 @@ const styles = StyleSheet.create({
 
 })
 
+interface IProps {
+  navigation?: any
+}
 @observer
-export class DiscussionRoomListScreen extends Component {
+export class DiscussionRoomListScreen extends Component<IProps> {
 
   constructor(props, state) {
     super(props, state)
@@ -96,8 +100,15 @@ export class DiscussionRoomListScreen extends Component {
     )
   }
 
+  navigateToDetailScreen = (eventId) => {
+    const { navigation } = this.props
+    navigateSimple(navigation, 'DiscussionDetailScreen', {
+      id: eventId
+    })
+  }
+
   renderEventCard = ({ item }) => {
-    const { name, tagline, description, startDate, image, author, category } = item as IEventListItem
+    const { name, tagline, description, startDate, image, author, category, tid } = item as IEventListItem
     const { userName, lastActiveTime, status } = author || {}
 
     return (
@@ -111,6 +122,8 @@ export class DiscussionRoomListScreen extends Component {
         status={status}
         lastActiveTime={lastActiveTime}
         category={category}
+        onPressCard = {this.navigateToDetailScreen}
+        eventId = {tid}
       />
     )
   }

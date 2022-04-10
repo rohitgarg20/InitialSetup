@@ -1,5 +1,5 @@
 import React, { PureComponent } from 'react'
-import { StyleSheet, View } from 'react-native'
+import { StyleSheet, TouchableOpacity, View } from 'react-native'
 import { colors, fontDimens, strings } from '../../common'
 import { BASE_URL, CARD_HEIGHT, EVENT_CARD_HEIGHT, POST_TYPES, USER_STATUS } from '../../common/constant'
 import { icons } from '../../common/icons'
@@ -98,6 +98,8 @@ interface IProps {
   status?: string
   lastActiveTime?: string
   category?: string
+  onPressCard?: (id) => void
+  eventId?: string
 }
 
 export class EventCardComponent extends PureComponent<IProps> {
@@ -138,9 +140,16 @@ export class EventCardComponent extends PureComponent<IProps> {
     )
   }
 
+  onPressCard = () => {
+    const { onPressCard, eventId } = this.props
+    if (onPressCard) {
+      onPressCard(eventId)
+    }
+  }
+
   renderArrowContainer = () => {
     return (
-      <View style={styles.arrowContainer}>
+      <TouchableOpacity style={styles.arrowContainer} onPress = {this.onPressCard}>
         <View style={styles.arrowBorder}>
           <IconButtonWrapper
             iconImage={icons.RIGHT_ARROW_ICON}
@@ -149,7 +158,7 @@ export class EventCardComponent extends PureComponent<IProps> {
           />
         </View>
 
-      </View>
+      </TouchableOpacity>
     )
   }
 
@@ -158,7 +167,7 @@ export class EventCardComponent extends PureComponent<IProps> {
     if (status.length === 0) {
       return null
     }
-    if (status !== USER_STATUS.ONLINE) {
+    if (status === USER_STATUS.ONLINE) {
       return (
         <View style={{ flexDirection: 'row', alignItems: 'center' }}>
           <View style={styles.activedot} />

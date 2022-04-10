@@ -1,7 +1,7 @@
 export interface IEventListItem{
   _id: string
   _key: string
-  attendees: number
+  attendees?: number
   description: string
   category: string
   image: string
@@ -9,12 +9,24 @@ export interface IEventListItem{
   schedule: string
   tagline: string
   viewcount: number
-  startDate: Date
+  startDate?: Date
   author?: {
     userName: string
-    status: string
-    lastActiveTime: string
+    status?: string
+    lastActiveTime?: string
+    picture?: string
+    signature?: string
+    aboutme?: string
   }
+  tid?: string
+  description_1?: string
+  description_2?: string
+  field_1?: string
+  field_2?: string
+  mascotsCount?: number
+  onlineUsersCount?: number
+  membersCount?: number
+
 }
 
 export interface INudgeListItem{

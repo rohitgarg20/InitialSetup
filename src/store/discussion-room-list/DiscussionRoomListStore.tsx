@@ -49,8 +49,8 @@ export class DiscussionRoomListStore implements RESPONSE_CALLBACKS {
       apiId: API_IDS.GET_DISCUSSION_ROOM_LIST,
       urlParams: {
         // type: 'latest',
-        // limit: PAGE_SIZE,
-        // page: get(this.discussionRoomData, 'current_page', 0) + 1
+        limit: PAGE_SIZE,
+        page: get(this.discussionRoomData, 'current_page', 0) + 1
       }
     })
     await loginUser.setRequestHeaders()
@@ -65,7 +65,7 @@ export class DiscussionRoomListStore implements RESPONSE_CALLBACKS {
     const lastPage = get(responseData, 'last_page')
     const formattedData: IEventListItem[] = map(roomList, (roomData) => {
       const {_id = '', _key ='', attendees = 0, picture = '', name = '', type, description = '', timestamp,
-        viewcount = 0,tagline = '', author   } = roomData || {}
+        viewcount = 0, tagline = '', author, tid   } = roomData || {}
       const { username = '', status = '', lastonline = 0 } = author || {}
       return {
         _id,
@@ -78,6 +78,7 @@ export class DiscussionRoomListStore implements RESPONSE_CALLBACKS {
         schedule: timestamp,
         tagline,
         viewcount,
+        tid,
         author: {
           userName: username,
           status,
