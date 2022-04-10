@@ -10,9 +10,22 @@ import { discussionRoomDetailStore } from '../../store'
 import { observer } from 'mobx-react'
 import { IEventListItem } from '../../store/interfaces'
 
-const PADDING_HORIZONTAL = 10
+const PADDING_HORIZONTAL = 20
 
 const styles = StyleSheet.create({
+  backBtn: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    backgroundColor: colors.black,
+    paddingVertical: 5,
+    paddingHorizontal: 10,
+    borderTopRightRadius: 4,
+    borderBottomEndRadius: 4,
+    position: 'absolute',
+    top: 20,
+    left: 0,
+    zIndex: 9
+  },
   rowContainer: {
     flexDirection: 'row',
     justifyContent: 'center',
@@ -20,8 +33,8 @@ const styles = StyleSheet.create({
   },
   memberLabel: {
     fontSize: fontDimens.extraSmall,
-    lineHeight: 12,
-    color: colors.lightestGrey
+    color: colors.lightestGrey,
+    paddingBottom: 5
   },
   count: {
     fontSize: fontDimens.small,
@@ -35,7 +48,8 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'center',
     borderRadius: 5,
-    backgroundColor: colors.lightBlue
+    backgroundColor: colors.lightBlue,
+    minWidth: 60
   },
   joinButtonLabel: {
     fontSize: fontDimens.small,
@@ -45,31 +59,26 @@ const styles = StyleSheet.create({
   },
   knowPhysiographics: {
     fontSize: fontDimens.extraSmall,
-    lineHeight: 12,
     color: colors.black,
-    fontWeight: '400',
-    borderBottomWidth: 1,
-    paddingBottom: 2,
-    borderColor: colors.black
+    fontWeight: '400'
   },
   aboutLabel: {
     fontSize: fontDimens.medium,
-    lineHeight: 18,
     color: colors.black,
     fontWeight: '600',
     paddingBottom: 8
   },
   content: {
     fontSize: fontDimens.extraSmall,
-    lineHeight: 12,
+    lineHeight: 16,
     color: colors.black,
     fontWeight: '400'
   },
   avtarContainer: {
-    height: 10,
-    width: 10,
+    height: 20,
+    width: 20,
     justifyContent: 'center',
-    marginRight: 10
+    marginRight: 7
   },
   withoutImageColor: {
     backgroundColor: '#cccccc'
@@ -83,18 +92,17 @@ const styles = StyleSheet.create({
     backgroundColor: colors.grey
   },
   blueDot: {
-    height: 5,
-    width: 5,
+    height: 6,
+    width: 6,
     backgroundColor: colors.lightBlue,
-    borderRadius: 5,
-    marginHorizontal: 10
+    borderRadius: 10,
+    marginHorizontal: 7
   },
   discssionHeading: {
     fontSize: fontDimens.large,
-    lineHeight: 20,
     color: colors.white,
     fontWeight: '600',
-    paddingBottom: 8
+    flex: 1
   },
   roundBorder: {
     borderTopLeftRadius: 4,
@@ -108,6 +116,27 @@ const styles = StyleSheet.create({
     backgroundColor: colors.white,
     justifyContent: 'center',
     alignItems: 'center'
+  },
+  subheadingTitle: {
+    fontSize: fontDimens.small,
+    color: colors.black
+  },
+  knowPsychographics: {
+    flexDirection: 'row',
+    borderBottomWidth: 1,
+    paddingBottom: 3,
+    borderBottomColor: colors.black,
+    marginTop: 12,
+    alignItems: 'center'
+  },
+  memberContainer: {
+    justifyContent: 'space-between',
+    alignItems: 'center',
+    flexDirection: 'row'
+  },
+  onlineTextStyle: {
+    fontSize: fontDimens.small,
+    color: colors.white
   }
 })
 
@@ -128,13 +157,14 @@ export class DiscussionRoomDetailScreen extends Component<IProps> {
     const { membersCount } = discussionRoomData as IEventListItem
     const { MEMBERS } = strings.DISCUSSION_ROOM_DETAIL_SCREEN
     return (
-      <View>
+      <View style={{ marginRight: 30 }}>
         <CustomText textStyle={styles.memberLabel}>{MEMBERS}</CustomText>
-        <View style = {styles.rowContainer}>
+        <View style={styles.rowContainer}>
           <IconButtonWrapper
-            iconImage={icons.ADD_DISCUSSSION}
-            iconHeight = {10}
-            iconWidth = {10}
+            iconImage={icons.GROUP_MEMBERS_ICON}
+            iconHeight={10}
+            iconWidth={20}
+            styling={{ marginRight: 7 }}
           />
           <CustomText textStyle={styles.count}>
             {membersCount}
@@ -151,11 +181,12 @@ export class DiscussionRoomDetailScreen extends Component<IProps> {
     return (
       <View>
         <CustomText textStyle={styles.memberLabel}>{MASCOTS}</CustomText>
-        <View style = {styles.rowContainer}>
+        <View style={styles.rowContainer}>
           <IconButtonWrapper
-            iconImage={icons.ADD_DISCUSSSION}
-            iconHeight = {10}
-            iconWidth = {10}
+            iconImage={icons.GROUP_MEMBERS_ICON}
+            iconHeight={10}
+            iconWidth={20}
+            styling={{ marginRight: 7 }}
           />
           <CustomText textStyle={styles.count}>
             {mascotsCount}
@@ -169,7 +200,7 @@ export class DiscussionRoomDetailScreen extends Component<IProps> {
     const { JOIN } = strings.DISCUSSION_ROOM_DETAIL_SCREEN
 
     return (
-      <TouchableOpacity style = {styles.button}>
+      <TouchableOpacity style={styles.button}>
         <CustomText textStyle={styles.joinButtonLabel}>
           {JOIN}
         </CustomText>
@@ -181,15 +212,15 @@ export class DiscussionRoomDetailScreen extends Component<IProps> {
     const { KNOW_PHYSOGRAPHICS } = strings.DISCUSSION_ROOM_DETAIL_SCREEN
 
     return (
-      <View style = {styles.rowContainer}>
-
+      <View style={styles.knowPsychographics}>
         <CustomText textStyle={styles.knowPhysiographics}>
           {KNOW_PHYSOGRAPHICS}
         </CustomText>
         <IconButtonWrapper
           iconImage={icons.RIGHT_ARROW}
-          iconHeight = {10}
-          iconWidth = {10}
+          iconHeight={10}
+          iconWidth={10}
+          styling={{ tintColor: colors.black, marginLeft: 5 }}
         />
       </View>
     )
@@ -216,9 +247,9 @@ export class DiscussionRoomDetailScreen extends Component<IProps> {
     const { author } = discussionRoomData as IEventListItem
     const { userName = '', picture } = author || {}
     return userName ? (
-      <View style={[styles.avtarContainer]}>
+      <View style={styles.avtarContainer}>
         <UserAvatar
-          size={'10'}
+          size={'20'}
           imageStyle={[styles.withoutImageColor, { width: '100%', height: '100%' }]}
           showBorderRadius={true}
           name={userName.toUpperCase()}
@@ -233,21 +264,22 @@ export class DiscussionRoomDetailScreen extends Component<IProps> {
     const { tagline, author } = discussionRoomData as IEventListItem
     const { userName } = author || {}
     return (
-      <View style = {styles.spaceBetween}>
-        <View style = {styles.rowContainer}>
+      <View style={styles.spaceBetween}>
+        <View style={styles.rowContainer}>
           <IconButtonWrapper
-            iconImage={icons.ADD_DISCUSSSION}
-            iconHeight = {10}
-            iconWidth = {10}
+            iconImage={icons.HUMAN_HEAD_ICON}
+            iconHeight={16}
+            iconWidth={16}
+            styling={{ marginRight: 7 }}
           />
-          <CustomText textStyle={styles.count}>
+          <CustomText textStyle={styles.subheadingTitle}>
             {tagline}
           </CustomText>
         </View>
-        <View style = {styles.rowContainer}>
+        <View style={styles.rowContainer}>
           {this.renderRoundedAvtar()}
-          <CustomText textStyle={styles.count}>
-          by {userName}
+          <CustomText textStyle={styles.subheadingTitle}>
+            by {userName}
           </CustomText>
         </View>
       </View>
@@ -259,13 +291,13 @@ export class DiscussionRoomDetailScreen extends Component<IProps> {
     const { name, onlineUsersCount } = discussionRoomData as IEventListItem
 
     return (
-      <View style = {[styles.spaceBetween, styles.roundBorder]}>
-        <CustomText textStyle={styles.discssionHeading}>
+      <View style={[styles.spaceBetween, styles.roundBorder]}>
+        <CustomText numberOfLines={1} ellipsizeMode='tail' textStyle={styles.discssionHeading}>
           {name}
         </CustomText>
-        <View>
-          <View style = {styles.blueDot} />
-          <CustomText textStyle={{ ...styles.memberLabel, color: colors.white }}>
+        <View style={{ flexDirection: 'row', alignItems: 'center' }}>
+          <View style={styles.blueDot} />
+          <CustomText textStyle={styles.onlineTextStyle}>
             {onlineUsersCount} online
           </CustomText>
         </View>
@@ -277,22 +309,39 @@ export class DiscussionRoomDetailScreen extends Component<IProps> {
     const { discussionRoomData } = discussionRoomDetailStore
     const { image } = discussionRoomData as IEventListItem
     return (
-      <ImageWithLoaderComponent
-        // iconImage={icons.NETWORK_ICON}
-        containerStyle = {{
-          height: 320,
-          width: '100%'
-        }}
-        srcImage={`${BASE_URL}${image}`}
+      <View style={{ position: 'relative' }}>
+        <TouchableOpacity style={styles.backBtn} >
+          <IconButtonWrapper
+            iconImage={icons.RIGHT_ARROW_ICON}
+            iconHeight={10}
+            iconWidth={10}
+            styling={{
+              tintColor: colors.white,
+              marginRight: 5,
+              transform: [{ rotate: '180deg' }]
+            }}
+          />
+          <CustomText textStyle={{ color: colors.white, fontSize: 12 }}>
+            back
+          </CustomText>
+        </TouchableOpacity>
+        <ImageWithLoaderComponent
+          // iconImage={icons.NETWORK_ICON}
+          containerStyle={{
+            height: 320,
+            width: '100%'
+          }}
+          srcImage={`${BASE_URL}${image}`}
         // iconHeight={320}
         // iconWidth={'100%'}
-      />
+        />
+      </View>
     )
   }
 
   renderDiscussionRoomCount = () => {
     return (
-      <View style = {styles.rowContainer}>
+      <View style={styles.rowContainer}>
         {this.renderTotalMembers()}
         {this.renderTotalMascots()}
       </View>
@@ -301,15 +350,12 @@ export class DiscussionRoomDetailScreen extends Component<IProps> {
 
   renderRoomStats = () => {
     return (
-      <View>
-        <View style = {{
-          justifyContent: 'space-between',
-          alignItems: 'center'
-        }}>
+      <View style={{ marginVertical: 20 }}>
+        <View style={styles.memberContainer}>
           {this.renderDiscussionRoomCount()}
           {this.renderJoinButton()}
         </View>
-        <View style = {styles.flexEnd}>
+        <View style={styles.flexEnd}>
           {this.renderKnowPhysiographicsButton()}
         </View>
       </View>
@@ -318,9 +364,9 @@ export class DiscussionRoomDetailScreen extends Component<IProps> {
 
   renderFetchingView = () => {
     return (
-      <View style = {styles.loaderContainer}>
+      <View style={styles.loaderContainer}>
         <ActivityIndicator
-          animating = {true}
+          animating={true}
           size={'large'}
           color={colors.darkBlue}
         />
@@ -332,12 +378,12 @@ export class DiscussionRoomDetailScreen extends Component<IProps> {
     const { isFetching } = discussionRoomDetailStore
     return (
       <>
-        { isFetching ? this.renderFetchingView() : (
+        {isFetching ? this.renderFetchingView() : (
           <View>
             {this.renderDiscussionRoomImage()}
             {this.renderDiscussionLabel()}
             {this.renderLabel()}
-            <ScrollView contentContainerStyle = {{
+            <ScrollView contentContainerStyle={{
               paddingHorizontal: PADDING_HORIZONTAL
             }}>
               {this.renderRoomStats()}

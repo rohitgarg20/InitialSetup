@@ -207,7 +207,7 @@ export default class PostCardComponent extends Component<IProps> {
       <View style={{
         // paddingBottom: 10
       }}>
-        <CustomText numberOfLines={4} ellipsizeMode={'tail'} style={styles.contentView}>
+        <CustomText numberOfLines={4} ellipsizeMode={'tail'} textStyle={styles.contentView}>
           {content}
         </CustomText>
       </View>

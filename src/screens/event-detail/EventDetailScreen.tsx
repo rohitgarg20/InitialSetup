@@ -175,9 +175,9 @@ export class EventDetailScreen extends Component<IProps> {
 
   renderFetchingView = () => {
     return (
-      <View style = {styles.loaderContainer}>
+      <View style={styles.loaderContainer}>
         <ActivityIndicator
-          animating = {true}
+          animating={true}
           size={'large'}
           color={colors.darkBlue}
         />
@@ -188,7 +188,7 @@ export class EventDetailScreen extends Component<IProps> {
 
   renderRoundedAvtar = () => {
     const { eventData } = eventDetailStore
-    const {  author } = eventData as IEventListItem
+    const { author } = eventData as IEventListItem
     const { picture = '', userName } = author || {}
 
     return userName ? (
@@ -207,15 +207,15 @@ export class EventDetailScreen extends Component<IProps> {
   render() {
     const { navigation } = this.props
     const { eventData, isFetching } = eventDetailStore
-    const { name = '', field_1 = '', description_1 = '', field_2 = '', description_2 = '', description = '', author, startDate, image  } = eventData as IEventListItem
+    const { name = '', field_1 = '', description_1 = '', field_2 = '', description_2 = '', description = '', author, startDate, image } = eventData as IEventListItem
     const { picture = '', signature, aboutme, userName } = author || {}
     return (
       <View style={{ flex: 1, backgroundColor: colors.white }}>
         {/* <HeaderCardComponent /> */}
-        { isFetching ? this.renderFetchingView() : (
+        {isFetching ? this.renderFetchingView() : (
           <ScrollView>
             <View style={{ marginTop: -5, position: 'relative' }}>
-              <TouchableOpacity style={styles.backBtn} onPress = {() => goBack(navigation)}>
+              <TouchableOpacity style={styles.backBtn} onPress={() => goBack(navigation)}>
                 <IconButtonWrapper
                   iconImage={icons.RIGHT_ARROW_ICON}
                   iconHeight={10}
@@ -227,12 +227,12 @@ export class EventDetailScreen extends Component<IProps> {
                   }}
                 />
                 <CustomText textStyle={{ color: colors.white, fontSize: 12 }}>
-                back
+                  back
                 </CustomText>
               </TouchableOpacity>
               <ImageWithLoaderComponent
-              // iconImage={icons.NETWORK_ICON}
-                containerStyle = {{
+                // iconImage={icons.NETWORK_ICON}
+                containerStyle={{
                   height: 320,
                   width: '100%'
                 }}
@@ -241,10 +241,10 @@ export class EventDetailScreen extends Component<IProps> {
               // iconWidth={'100%'}
               />
               <View style={styles.sliderHeadingBg}>
-                <View>
-                  <CustomText textStyle={styles.networkTitle}>{name}</CustomText>
+                <View style={{ flex: 1 }}>
+                  <CustomText numberOfLines={1} ellipsizeMode='tail' textStyle={styles.networkTitle}>{name}</CustomText>
                 </View>
-                <View style={{ flexDirection: 'row' }}>
+                <View style={{ flexDirection: 'row', marginLeft: 20 }}>
                   <IconButtonWrapper
                     iconImage={icons.FILTER_ICON}
                     iconHeight={20}
@@ -319,7 +319,7 @@ export class EventDetailScreen extends Component<IProps> {
                 <View style={styles.registerBtnContainer}>
                   <TouchableOpacity style={styles.registerBtn}>
                     <CustomText textStyle={{ color: colors.white, fontSize: 12 }}>
-                    Register
+                      Register
                     </CustomText>
                   </TouchableOpacity>
                 </View>

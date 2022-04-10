@@ -105,8 +105,8 @@ const bottomTabBarComponent = ({ state, descriptors, navigation, insets }) => {
       }}>
         <IconButtonWrapper
           iconImage={NORMAL_ICON}
-          iconHeight={24}
-          iconWidth={24}
+          iconHeight={20}
+          iconWidth={20}
           styling={activeIconStyle}
         />
         <CustomText textStyle={{...textStyle, fontSize: 10 }}>
