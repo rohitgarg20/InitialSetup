@@ -1,8 +1,10 @@
 import React, { Component } from 'react'
-import { Dimensions, ImageBackground, StyleSheet, View } from 'react-native'
+import { Dimensions, ImageBackground, StyleSheet, View, TouchableOpacity } from 'react-native'
+import  Share  from 'react-native-share'
+
 import { get } from 'lodash'
 import { colors, fontDimens } from '../../common'
-import { BASE_URL, FOOTER_LIST_ITEMS, OPTIONS_DATA_FOR_OTHER_POST, OPTIONS_DATA_FOR_SELF_POST, POST_TYPES } from '../../common/constant'
+import { BASE_URL, FOOTER_KEYS, FOOTER_LIST_ITEMS, OPTIONS_DATA_FOR_OTHER_POST, OPTIONS_DATA_FOR_SELF_POST, POST_TYPES } from '../../common/constant'
 import { icons } from '../../common/icons'
 import { IPostItem, IUserObj } from '../../store/interfaces'
 import { formatDate } from '../../utils/app-utils'
@@ -138,6 +140,7 @@ const styles = StyleSheet.create({
 
 interface IProps {
   postData: IPostItem
+  onClickPostOption?: (data) => void
 }
 
 
@@ -293,10 +296,33 @@ export default class PostCardComponent extends Component<IProps> {
     )
   }
 
+  getButtonStateByType = (key) => {
+    const { postData } = this.props
+    const { isDiscussionRoomAvailable = false } = postData
+    let buttonContainer = {}
+    let disabled = false
+    switch (key) {
+      case FOOTER_KEYS.DISCUSSION:
+        if (!isDiscussionRoomAvailable) {
+          buttonContainer = {
+            opacity: 0.5
+          }
+          disabled = true
+        }
+        break
+      default:
+    }
+    return {
+      buttonContainerStyle: buttonContainer,
+      disabled
+    }
+  }
+
   renderFooterItem = (item) => {
     const { key, name, icon } = item
+    const { buttonContainerStyle = {}, disabled } = this.getButtonStateByType(key)
     return (
-      <View style={styles.footerItem}>
+      <TouchableOpacity style={[styles.footerItem, buttonContainerStyle]} disabled = {disabled}>
         <IconButtonWrapper
           iconImage={icon}
           iconHeight={20}
@@ -306,7 +332,7 @@ export default class PostCardComponent extends Component<IProps> {
         <CustomText textStyle={styles.contentView}>
           {name}
         </CustomText>
-      </View>
+      </TouchableOpacity>
     )
   }
 
@@ -366,10 +392,24 @@ export default class PostCardComponent extends Component<IProps> {
     this.toolTipRef = ref
   }
 
+  actionOnClickPost = (optionData) => {
+    const { onClickPostOption } = this.props
+    if (onClickPostOption) {
+      onClickPostOption(optionData)
+    }
+    if (this.toolTipRef) {
+      this.toolTipRef.toggleTooltip()
+    }
+  }
+
   renderOptionsListComponent = () => {
+    const { postData } = this.props
+    const  { isPostByLoggedInUser = false } = postData
+    log('isPostByLoggedInUserisPostByLoggedInUser', isPostByLoggedInUser)
     return (
       <CommunityOptionsComponent
-        optionsList={OPTIONS_DATA_FOR_SELF_POST}
+        optionsList={isPostByLoggedInUser ? OPTIONS_DATA_FOR_SELF_POST : OPTIONS_DATA_FOR_OTHER_POST}
+        onClickListItem = {this.actionOnClickPost}
       />
     )
   }
@@ -393,8 +433,9 @@ export default class PostCardComponent extends Component<IProps> {
     return (
       <InfoToolTip
         toolTipRef={(ref) => {
-          if (ref && this.toolTipRef) {
+          if(ref && !this.toolTipRef) {
             this.setToolTipRef(ref)
+
           }
         }}
         backgroundColor={colors.white}

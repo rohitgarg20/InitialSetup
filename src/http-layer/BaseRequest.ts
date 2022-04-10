@@ -18,6 +18,7 @@ interface REQUEST_CONFIG {
   apiEndPoint: string
   reqParams?: any
   promisify?: boolean
+  params?: any
 }
 
 const DEFAULT_SETTING = {
@@ -30,7 +31,8 @@ const DEFAULT_SETTING = {
   context: undefined,
   apiEndPoint: '',
   reqParams: {},
-  promisify: false
+  promisify: false,
+  params: {}
 }
 
 export class BaseRequest {
@@ -45,6 +47,7 @@ export class BaseRequest {
   apiEndPoint
   reqParams
   promisify
+  params
 
   constructor(context, reqConfig: REQUEST_CONFIG) {
     Object.keys(DEFAULT_SETTING).forEach((key) => this[key] = DEFAULT_SETTING[key])
@@ -120,10 +123,66 @@ setRequestHeaders = async () => {
 
 hitPostApi = async () => {
   log('reqParamsreqParamsreqParamsreqParams', this.apiEndPoint)
+  const paramKeys = JSON.parse(this.params)
+  const urlParamKeys = []
+  let match
+  let index = 0
+  const regex = /:\w*/g
+  // tslint:disable-next-line:no-conditional-assignment
+  while (match = regex.exec(this.apiEndPoint)) {
+      urlParamKeys[index++] = match[0]
+  }
+  urlParamKeys.forEach(key => {
+    log('inside foreach loop', key)
+    let keyText = key.substring(1, key.length)
+    if (paramKeys.hasOwnProperty(keyText)) {
+      this.apiEndPoint = this.apiEndPoint.replace(key, paramKeys[keyText])
+
+    } else {
+      throw new Error(keyText + ' not found')
+    }
+  })
   showLoader()
 
   try {
     const response = await this.axiosInstance.post(this.apiEndPoint, this.reqParams,  { headers: this.reqHeaders })
+    this.setApiSuccessResponse(response)
+    hideLoader()
+
+  } catch (err: any) {
+    hideLoader()
+    log('error is', err.response)
+    this.context.onFailure(this.apiId, err.response)
+  }
+}
+
+hitPutApi = async () => {
+  log('reqParamsreqParamsreqParamsreqParams', this.apiEndPoint)
+
+  const paramKeys = JSON.parse(this.params)
+  const urlParamKeys = []
+  let match
+  let index = 0
+  const regex = /:\w*/g
+  // tslint:disable-next-line:no-conditional-assignment
+  while (match = regex.exec(this.apiEndPoint)) {
+      urlParamKeys[index++] = match[0]
+  }
+  urlParamKeys.forEach(key => {
+    log('inside foreach loop', key)
+    let keyText = key.substring(1, key.length)
+    if (paramKeys.hasOwnProperty(keyText)) {
+      this.apiEndPoint = this.apiEndPoint.replace(key, paramKeys[keyText])
+
+    } else {
+      throw new Error(keyText + ' not found')
+    }
+  })
+  showLoader()
+
+
+  try {
+    const response = await this.axiosInstance.put(this.apiEndPoint, this.reqParams,  { headers: this.reqHeaders })
     this.setApiSuccessResponse(response)
     hideLoader()
 

@@ -134,3 +134,16 @@ export const getFormattedTime = (datein, appendZeroInHours = true) => {
   }
   return `${hoursFinals}:${finalminutes} ${timeAmOrPm}`
 }
+
+export const isValidJSONString = (str) => {
+  try {
+    JSON.parse(str)
+  } catch (e) {
+    return false
+  }
+  return true
+}
+
+export const jsonParseData = (data) => isValidJSONString(data) ? JSON.parse(data) : null
+
+export const stringifyData = (data) => JSON.stringify(data)

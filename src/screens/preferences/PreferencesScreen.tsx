@@ -16,7 +16,7 @@ const styles = StyleSheet.create({
     top: 0,
     left: 0,
     right: 0,
-    bottom: 0
+    bottom: 0,
   },
   categoryNameContainer: {
     width: '100%',
@@ -37,6 +37,7 @@ const styles = StyleSheet.create({
     // borderBottomLeftRadius: 5,
     // borderBottomRightRadius: 5,
     // backgroundColor: colors.white
+    paddingHorizontal: 2
   },
   itemSeperator: {
     paddingBottom: 15
@@ -45,7 +46,9 @@ const styles = StyleSheet.create({
     backgroundColor: colors.white,
     width: '55%',
     paddingTop: 15,
-    position: 'relative'
+    position: 'relative',
+    flex: 1
+
   },
   arrowContainer: {
     height: 30,
@@ -103,6 +106,7 @@ export class PreferencesScreen extends Component<IProps> {
   heightInterpolated = new Animated.Value(0)
   constructor(props) {
     super(props)
+    preferencesDataStore.setInitialFilterData()
   }
 
   // componentDidMount() {
@@ -215,12 +219,15 @@ export class PreferencesScreen extends Component<IProps> {
     )
   }
 
-  renderCategoryName = (filterLabel) => {
+  renderCategoryName = (filterLabel, index) => {
     return (
       <View style={{
         backgroundColor: colors.white
       }}>
-        <View style={styles.categoryNameContainer}>
+        <View style={[styles.categoryNameContainer, {
+          borderTopLeftRadius: index === 0 ? 0 : 5,
+          borderTopRightRadius: index === 0 ? 0 : 5
+        }]}>
           <CustomText textStyle={styles.categoryName}>
             {filterLabel}
           </CustomText>
@@ -253,10 +260,15 @@ export class PreferencesScreen extends Component<IProps> {
   }
 
 
-  renderItemListWithCheckbox = (item) => {
+
+  renderItemListWithCheckbox = (item, index) => {
+    const { updateFilterDataOnPress } = preferencesDataStore
     return (
       <FilterListItemsComponent
         filterCategory={item}
+        onPressFilterItem = {(filterItemKey, checkBoxInitialValue, filterKey) => {
+          updateFilterDataOnPress(item, index, filterItemKey, checkBoxInitialValue, filterKey)
+        }}
       />
     )
   }
@@ -265,8 +277,8 @@ export class PreferencesScreen extends Component<IProps> {
     const { filterLabel, listItems, filterId } = item as IFilterListItem
     return (
       <View style={styles.categoryContainer}>
-        {this.renderCategoryName(filterLabel)}
-        {this.renderItemListWithCheckbox(item)}
+        {this.renderCategoryName(filterLabel, index)}
+        {this.renderItemListWithCheckbox(item, index)}
       </View>
     )
   }
@@ -281,12 +293,35 @@ export class PreferencesScreen extends Component<IProps> {
     const { preferencesListData } = preferencesDataStore
     log('preferencesListDatapreferencesListData', preferencesListData)
     return (
-      <FlatListWrapper
-        data={preferencesListData}
-        renderItem={this.renderPreferenceCategoryList}
-        ItemSeparatorComponent={this.renderItemSeperator}
-      />
+      <View style = {{
+        flex: 1
+      }}>
+        <FlatListWrapper
+          style = {{
+            flex: 1
+          }}
+          data={preferencesListData}
+          renderItem={this.renderPreferenceCategoryList}
+          ItemSeparatorComponent={this.renderItemSeperator}
+        />
+      </View>
     )
+  }
+
+  onPressApplyButton = () => {
+    const { checkIsCurrentSelectedAndPreviousSelectedFiltersSame, setPreviousSelectedFilterList, preferencesListData } = preferencesDataStore
+    const isCurrentFilterSameAsPrevious = checkIsCurrentSelectedAndPreviousSelectedFiltersSame()
+    if (!isCurrentFilterSameAsPrevious) {
+      setPreviousSelectedFilterList()
+    }
+    log('preferencesListDatapreferencesListData', preferencesListData)
+    genericDrawerStore.disableDrawer()
+
+  }
+
+  onPressResetFilter = () => {
+    const { updateFilterDataOnReset } = preferencesDataStore
+    updateFilterDataOnReset()
   }
 
   render() {
@@ -297,7 +332,11 @@ export class PreferencesScreen extends Component<IProps> {
             position: 'absolute',
             right: -28,
             top: 10
-          }}>
+          }}
+          onPress = {() => {
+            genericDrawerStore.disableDrawer()
+          }}
+          >
             <IconButtonWrapper
               iconImage={icons.CROSS}
               iconHeight={16}
@@ -305,15 +344,15 @@ export class PreferencesScreen extends Component<IProps> {
               styling={{ tintColor: colors.white }}
             />
           </TouchableOpacity>
+          {this.renderPreferencesList()}
           <View style={styles.footerContainer}>
-            <TouchableOpacity style={styles.btnReset}>
+            <TouchableOpacity style={styles.btnReset} onPress = {this.onPressResetFilter}>
               <CustomText textStyle={styles.btnResetText}>Reset</CustomText>
             </TouchableOpacity>
-            <TouchableOpacity style={styles.btnApply}>
+            <TouchableOpacity style={styles.btnApply} onPress = {this.onPressApplyButton}>
               <CustomText textStyle={styles.btnApplyText}>Apply</CustomText>
             </TouchableOpacity>
           </View>
-          {this.renderPreferencesList()}
         </View>
       </View>
     )

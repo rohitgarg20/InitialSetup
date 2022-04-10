@@ -1,17 +1,18 @@
-import { INudgeListItem } from './../interfaces';
+import { INudgeListItem } from './../interfaces'
 import { action, computed, makeObservable, observable } from 'mobx'
-import { get, map } from 'lodash'
+import { get, map, isEmpty } from 'lodash'
 import { strings } from '../../common'
 import { API_END_POINTS, API_IDS } from '../../common/ApiConfiguration'
 import { log } from '../../config'
 import { BaseRequest, RESPONSE_CALLBACKS } from '../../http-layer'
 import { showAndroidToastMessage, toDateTime } from '../../utils/app-utils'
+import { SaveDataStore } from '../save-store'
 
 const PAGE_SIZE = 10
 
 const DEFAULT_SETTINGS = {
   nudgesData: {
-    nudgesList: [],
+    nudgesList: []
     // current_page: -1,
     // last_page: undefined
   },
@@ -64,11 +65,11 @@ export class NudgesListStore implements RESPONSE_CALLBACKS {
       return {
         ...nudge,
         startDate: toDateTime(get(nudge, 'schedule')),
-        endDate: toDateTime(get(nudge, 'end_time')),
+        endDate: toDateTime(get(nudge, 'end_time'))
       }
     })
     return {
-      nudgesList: [...tempNudgesData.nudgesList, ...formattedData],
+      nudgesList: [...tempNudgesData.nudgesList, ...formattedData]
       // current_page: currentPage,
       // last_page: lastPage
     }
@@ -89,6 +90,26 @@ export class NudgesListStore implements RESPONSE_CALLBACKS {
   get currentNudgeData() {
     log('currentNudgeDatacurrentNudgeData', this.currentNudeIndex, get(this.nudgesData, `[${this.currentNudeIndex}]`, {}))
     return get(this.nudgesData, `nudgesList.[${this.currentNudeIndex}]`, {})
+  }
+
+  saveCurrentNudge = async (savedNudgeIndex) => {
+    log('saveCurrentEventsaveCurrentEvent')
+    const savedNudgeData = get(this.nudgesData, `nudgesList[${savedNudgeIndex}]`, {})
+    if(!isEmpty(savedNudgeData)) {
+      log('savedNudgeDatasavedNudgeData', savedNudgeData)
+      const saveEvent = new SaveDataStore(this)
+      const params = JSON.stringify({
+        item_name: get(savedNudgeData, 'type')
+      })
+      log('saveCurrentEventsaveCurrentEvent 2', params)
+
+      const urlParams = {
+        id: get(savedNudgeData, '_id')
+      }
+      log('saveCurrentEventsaveCurrentEvent 3', urlParams)
+
+      await saveEvent.saveAnEvent(params, urlParams)
+    }
   }
 
   onSuccess(apiId: string, response: any) {

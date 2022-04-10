@@ -206,7 +206,7 @@ export class EventDetailScreen extends Component<IProps> {
 
   render() {
     const { navigation } = this.props
-    const { eventData, isFetching } = eventDetailStore
+    const { eventData, isFetching, registerEvent, saveCurrentEvent } = eventDetailStore
     const { name = '', field_1 = '', description_1 = '', field_2 = '', description_2 = '', description = '', author, startDate, image } = eventData as IEventListItem
     const { picture = '', signature, aboutme, userName } = author || {}
     return (
@@ -256,6 +256,7 @@ export class EventDetailScreen extends Component<IProps> {
                     iconHeight={18}
                     iconWidth={18}
                     styling={{ tintColor: colors.white, marginLeft: 20 }}
+                    submitFunction = {saveCurrentEvent}
                   />
                 </View>
               </View>
@@ -317,7 +318,7 @@ export class EventDetailScreen extends Component<IProps> {
 
                 </View>
                 <View style={styles.registerBtnContainer}>
-                  <TouchableOpacity style={styles.registerBtn}>
+                  <TouchableOpacity style={styles.registerBtn} onPress = {registerEvent}>
                     <CustomText textStyle={{ color: colors.white, fontSize: 12 }}>
                       Register
                     </CustomText>

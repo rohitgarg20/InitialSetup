@@ -8,7 +8,6 @@ export const FORM_KEYS = {
   NAME: 'name'
 }
 
-
 export const TEXT_FIELD_KEYS = {
   KEY: 'key',
   INPUT_VALUE: 'inputValue',
@@ -16,7 +15,6 @@ export const TEXT_FIELD_KEYS = {
   IS_PASSWORD_FIELD: 'isPasswordField',
   ERROR_MESSAGE: 'errorMessage'
 }
-
 
 export const MAIN_STACK_KEYS = {
   HOME_STACK: 'homeStack',
@@ -29,7 +27,6 @@ export const MAIN_STACK_KEYS = {
 
 export const BASE_URL = 'http://192.168.1.102:4567'
 // export const BASE_URL = 'http://sdlms.deepthought.education'
-
 
 export const DAYS_NAME = ['Sun', 'Mon', 'Tue', 'Wed', 'Thur', 'Fri', 'Sat']
 export const MONTH_NAMES = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'June', 'July', 'Aug', 'Sept', 'Oct', 'Nov', 'Dec']
@@ -105,12 +102,12 @@ export const USER_LABELS = {
 }
 
 export const USER_KEYS = {
-    VIEW_PROFILE: 'VIEW_PROFILE',
-    SETTINGS: 'SETTINGS',
-    MY_EVENTS: 'MY_EVENTS',
-    SAVED: 'SAVED',
-    SUPPORT: 'SUPPORT',
-    SIGN_OUT: 'SIGN_OUT'
+  VIEW_PROFILE: 'VIEW_PROFILE',
+  SETTINGS: 'SETTINGS',
+  MY_EVENTS: 'MY_EVENTS',
+  SAVED: 'SAVED',
+  SUPPORT: 'SUPPORT',
+  SIGN_OUT: 'SIGN_OUT'
 }
 
 export const OPTIONS_DATA_FOR_SELF_POST = [
@@ -194,7 +191,7 @@ export const SORTING_DATA = [
   {
     name: 'Rigor Rank',
     id: 'rigor_rank'
-  },
+  }
 ]
 
 export const USER_OPTIONS_LIST = [

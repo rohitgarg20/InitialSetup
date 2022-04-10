@@ -67,5 +67,8 @@ export const strings = {
     ABOUT: 'About',
     ONLINE: 'online',
     BACK: 'Back'
-  }
+  },
+  REGISTER_SUCCESS: 'Registeration done for this event',
+  UNREGISTER_SUCCESS: 'You are successfully unregistered for this event'
+
 }

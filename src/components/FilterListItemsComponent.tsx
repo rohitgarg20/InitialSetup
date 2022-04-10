@@ -8,6 +8,7 @@ import { CheckBoxComponent } from "./CheckboxComponent";
 import { IconButtonWrapper } from "./IconButtonWrapper";
 import { icons } from "../common/icons";
 import { colors } from "../common";
+import { log } from "../config";
 
 const styles = StyleSheet.create({
   arrowContainer: {
@@ -30,6 +31,7 @@ const styles = StyleSheet.create({
 
 interface IProps {
   filterCategory?: IFilterListItem
+  onPressFilterItem?: (filterItemKey, checkBoxInitialValue, filterKey) => void
 }
 
 interface IState {
@@ -74,7 +76,7 @@ export class FilterListItemsComponent extends Component<IProps, IState> {
 
 
   renderItemListWithCheckbox = () => {
-    const { filterCategory } = this.props
+    const { filterCategory, onPressFilterItem } = this.props
     const { filterId, listItems, filterType } = filterCategory
     const interpolated = this.heightInterpolated.interpolate({
       inputRange: [0, 1],
@@ -110,7 +112,8 @@ export class FilterListItemsComponent extends Component<IProps, IState> {
                   isCheckBoxSelected={isSelected}
                   isRadioButton={filterType === 'radioButton'}
                   onPressCheckBox={(filterItemKey, checkBoxInitialValue, filterKey) => {
-
+                    log('onPressCheckBoxonPressCheckBox', filterItemKey, checkBoxInitialValue, filterKey)
+                    onPressFilterItem(filterItemKey, checkBoxInitialValue, filterKey)
                   }}
                   // this.onPressCheckBox(filterItemKey, checkBoxInitialValue, filterKey, filterType)
 

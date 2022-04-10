@@ -1,3 +1,4 @@
+import { SaveDataStore } from './../save-store/SaveDataStore';
 import { observable, makeObservable,action } from 'mobx'
 import { strings } from '../../common'
 import { API_END_POINTS, API_IDS } from '../../common/ApiConfiguration'
@@ -59,6 +60,54 @@ export class EventRoomDetailStore implements RESPONSE_CALLBACKS {
     await loginUser.hitGetApi()
   }
 
+  registerEvent = async () => {
+
+    const loginUser = new BaseRequest(this, {
+      methodType: 'PUT',
+      apiEndPoint: API_END_POINTS.REGISTER_EVENT,
+      apiId: API_IDS.REGISTER_EVENT,
+      params: JSON.stringify({
+        id: get(this.eventData, '_id')
+        // limit: PAGE_SIZE,
+        // page: get(this.discussionRoomData, 'current_page', 0) + 1
+      })
+    })
+    await loginUser.setRequestHeaders()
+    await loginUser.hitPutApi()
+  }
+
+  unRegisterEvent = async () => {
+
+    const loginUser = new BaseRequest(this, {
+      methodType: 'PUT',
+      apiEndPoint: API_END_POINTS.UNREGISTER_EVENT,
+      apiId: API_IDS.UNREGISTER_EVENT,
+      params: JSON.stringify({
+        id: get(this.eventData, '_id')
+        // limit: PAGE_SIZE,
+        // page: get(this.discussionRoomData, 'current_page', 0) + 1
+      })
+    })
+    await loginUser.setRequestHeaders()
+    await loginUser.hitPutApi()
+  }
+
+  saveCurrentEvent = async () => {
+    log('saveCurrentEventsaveCurrentEvent')
+    const saveEvent = new SaveDataStore(this)
+    const params = JSON.stringify({
+      item_name: get(this.eventData, 'category')
+    })
+    log('saveCurrentEventsaveCurrentEvent 2', params)
+
+    const urlParams = {
+      id: get(this.eventData, '_id')
+    }
+    log('saveCurrentEventsaveCurrentEvent 3', urlParams)
+
+    await saveEvent.saveAnEvent(params, urlParams)
+  }
+
 
   updateFetchingStatus = (value) => {
     this.isFetching = value
@@ -103,6 +152,8 @@ export class EventRoomDetailStore implements RESPONSE_CALLBACKS {
     log('setEventDetailDatasetEventDetailData', eventData)
   }
 
+
+
   onSuccess(apiId: string, response: any) {
     log('onSuccessonSuccess', response)
     switch (apiId) {
@@ -110,6 +161,12 @@ export class EventRoomDetailStore implements RESPONSE_CALLBACKS {
         const eventDetailData = this.constructEventDetailData(get(response, 'response[0]', {}))
         this.setEventDetailData(eventDetailData)
         this.updateFetchingStatus(false)
+        break
+      case API_IDS.REGISTER_EVENT:
+        showAndroidToastMessage(strings.REGISTER_SUCCESS)
+        break
+      case API_IDS.UNREGISTER_EVENT:
+        showAndroidToastMessage(strings.REGISTER_SUCCESS)
         break
       default:
         break
@@ -119,6 +176,8 @@ export class EventRoomDetailStore implements RESPONSE_CALLBACKS {
     log('onFailureonFailureonFailure', error)
     switch (apiId) {
       case API_IDS.GET_EVENTS_LIST:
+      case API_IDS.REGISTER_EVENT:
+      case API_IDS.UNREGISTER_EVENT:
         showAndroidToastMessage(get(error, 'data', strings.ERROR_MESSAGES.SOME_ERROR_OCCURED))
         this.updateFetchingStatus(false)
 

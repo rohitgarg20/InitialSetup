@@ -31,6 +31,7 @@
     "react-native-rename": "^2.9.0",
     "react-native-safe-area-context": "^3.3.2",
     "react-native-screens": "^3.10.2",
+    "react-native-share": "^7.3.7",
     "react-native-shimmer-placeholder-1": "^1.0.2",
     "reactotron-react-native": "^5.0.1",
     "rn-tooltip-advance": "^1.0.1"

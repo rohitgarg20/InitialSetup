@@ -1,10 +1,10 @@
-import { IFilterItems, SORTING_DATA } from './../../common/constant'
+import { IFilterItems, IFilterListItem, SORTING_DATA } from './../../common/constant'
 import { action, makeObservable, observable } from 'mobx'
 import { strings } from '../../common'
 import { API_END_POINTS, API_IDS } from '../../common/ApiConfiguration'
 import { BaseRequest, RESPONSE_CALLBACKS } from '../../http-layer'
-import { showAndroidToastMessage } from '../../utils/app-utils'
-import { get } from 'lodash'
+import { jsonParseData, showAndroidToastMessage, stringifyData } from '../../utils/app-utils'
+import { get, filter, isEmpty, set } from 'lodash'
 import { log } from '../../config'
 import { FILTER_ITEM_KEYS, FILTER_KEYS } from '../../common/constant'
 
@@ -148,6 +148,147 @@ export class PreferencesDataStore implements RESPONSE_CALLBACKS {
     }).catch(err => {
       log('error while calling', err)
     })
+  }
+
+  updateFilterDataOnPress = (item: IFilterListItem, indexToUpdate, filterItemKey, checkBoxInitialValue, filterKey) => {
+    log('updateFilterDataOnPressupdateFilterDataOnPress', item, indexToUpdate, filterItemKey, checkBoxInitialValue, filterKey)
+    const tempPreferences = [...this.preferencesListData]
+    const categoryToUpdate = get(tempPreferences, `[${indexToUpdate}]`, {})
+    const filterType = get(categoryToUpdate, `${FILTER_ITEM_KEYS.FILTER_TYPE}`, '')
+    const filterListItems = [ ...get(categoryToUpdate, `${FILTER_ITEM_KEYS.LIST_ITEMS}`, [])]
+    let currentSelectedFilterValuesList = get(categoryToUpdate, `${FILTER_ITEM_KEYS.CURRENT_SELECTED_FILTER_VALUES}`, [])
+    const updatedValue = !checkBoxInitialValue
+    switch (filterType) {
+      case FILTER_ITEM_KEYS.CHECKBOX_TYPE:
+        filterListItems.forEach((filterSubItem) => {
+          if (filterSubItem.id === filterItemKey) {
+            filterSubItem.isSelected = updatedValue
+          }
+        })
+        if (updatedValue) {
+          currentSelectedFilterValuesList.push({ id: filterItemKey })
+        } else {
+          currentSelectedFilterValuesList = filter(
+            currentSelectedFilterValuesList,
+            (filterListObj) => filterListObj.id !== filterItemKey
+          )
+        }
+        break
+      case FILTER_ITEM_KEYS.RADIO_BUTTON_TYPE:
+        filterListItems.forEach((filterSubItem) => {
+          if (filterSubItem.id === filterItemKey) {
+            filterSubItem.isSelected = updatedValue
+          } else {
+            filterSubItem.isSelected = false
+          }
+        })
+        currentSelectedFilterValuesList = []
+        if (updatedValue) {
+          currentSelectedFilterValuesList.push({ id: filterItemKey })
+        }
+        break
+      default:
+
+    }
+    categoryToUpdate[FILTER_ITEM_KEYS.LIST_ITEMS] = [ ...filterListItems]
+    categoryToUpdate[FILTER_ITEM_KEYS.CURRENT_SELECTED_FILTER_VALUES] = [...currentSelectedFilterValuesList]
+    tempPreferences[indexToUpdate] = {
+      ...categoryToUpdate
+    }
+    this.setPreferencesListData(tempPreferences)
+  }
+
+
+  checkIsCurrentSelectedAndPreviousSelectedFiltersSame = () => {
+    let areFiltersSame = true
+    for (let index = 0; index < get(this.preferencesListData, 'length', 0); index++) {
+      const preferenceItem = get(this.preferencesListData, `[${index}]`, {})
+      const currentSelectedFilterList = get(
+        preferenceItem,
+        `[${FILTER_ITEM_KEYS.CURRENT_SELECTED_FILTER_VALUES}]`,
+        []
+      )
+      const previousSelectedFilterList = get(
+        preferenceItem,
+        `[${FILTER_ITEM_KEYS.PREVIOUS_SELECTED_FILTER_VALUES}]`,
+        []
+      )
+      log(
+        'currentSelectedFilterListcurrentSelectedFilterList',
+        currentSelectedFilterList,
+        previousSelectedFilterList
+      )
+      if (get(currentSelectedFilterList, 'length', 0) !== get(previousSelectedFilterList, 'length', 0)) {
+        areFiltersSame = false
+        break
+      }
+      const isFiltersPresentInPrevious = currentSelectedFilterList.every((selectedFilterObj) => {
+        const { id } = selectedFilterObj || {}
+        const isPresentInPreviousFilter = previousSelectedFilterList.find(
+          (previousFilter) => get(previousFilter, 'id') === id
+        )
+        if (!isEmpty(isPresentInPreviousFilter)) {
+          return true
+        } else {
+          return false
+        }
+      })
+      if (!isFiltersPresentInPrevious) {
+        areFiltersSame = false
+        break
+      }
+    }
+    return areFiltersSame
+  }
+
+  setPreviousSelectedFilterList = () => {
+    this.preferencesListData.forEach((filterKey) => {
+      const currentSelectedFilterList = [...get(filterKey, `[${FILTER_ITEM_KEYS.CURRENT_SELECTED_FILTER_VALUES}]`, [])]
+      set(
+        filterKey,
+        `[${FILTER_ITEM_KEYS.PREVIOUS_SELECTED_FILTER_VALUES}]`,
+        jsonParseData(stringifyData([...currentSelectedFilterList]))
+      )
+    })
+  }
+
+  updateFilterDataOnReset = () => {
+    const tempPrefeerncesData = [...this.preferencesListData ]
+    tempPrefeerncesData.forEach(preference => {
+      preference[FILTER_ITEM_KEYS.CURRENT_SELECTED_FILTER_VALUES] = []
+      const filterListItems = [ ...get(preference, `${FILTER_ITEM_KEYS.LIST_ITEMS}`, [])]
+      filterListItems.forEach((filterItem) => {
+        filterItem.isSelected = false
+      })
+
+    })
+    this.setPreferencesListData(tempPrefeerncesData)
+  }
+
+  @action
+  setInitialFilterData = () => {
+    const tempPreferencesData = jsonParseData(stringifyData([...this.preferencesListData ]))
+    tempPreferencesData.forEach((categoryToUpdate) => {
+      const filterListItems = [ ...get(categoryToUpdate, `${FILTER_ITEM_KEYS.LIST_ITEMS}`, [])]
+      let previousSelectedFilterValuesList = get(categoryToUpdate, `${FILTER_ITEM_KEYS.PREVIOUS_SELECTED_FILTER_VALUES}`, [])
+
+      set(categoryToUpdate, `[${FILTER_ITEM_KEYS.CURRENT_SELECTED_FILTER_VALUES}]`,
+        jsonParseData(stringifyData([...previousSelectedFilterValuesList]))
+      )
+      filterListItems.forEach((item) => {
+        const filterObj = previousSelectedFilterValuesList.find(
+          (previousFilter) => get(previousFilter, 'id') === get(item, 'id')
+        )
+        if (!isEmpty(filterObj)) {
+          set(item, 'isSelected', true)
+        } else {
+          set(item, 'isSelected', false)
+        }
+      })
+      set(categoryToUpdate, `[${FILTER_ITEM_KEYS.LIST_ITEMS}]`, [...filterListItems])
+    })
+    this.setPreferencesListData(tempPreferencesData)
+
   }
 
 

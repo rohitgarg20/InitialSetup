@@ -100,10 +100,14 @@ export class HomeScreen extends Component {
     )
   }
 
+
   renderPostsCard = ({ item, index }) => {
     log('renderPostsCardrenderPostsCard', item)
+    const { onClickPostOption } = postListStore
     return (
-      <PostCardComponent postData={item} />
+      <PostCardComponent postData={item}
+        onClickPostOption = {(optionKey) => onClickPostOption(optionKey, item)}
+      />
     )
   }
 

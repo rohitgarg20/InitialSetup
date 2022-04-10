@@ -1,4 +1,6 @@
-import { INudgeListItem, IPostItem } from './../interfaces';
+import { POST_KEYS } from './../../common/constant'
+import Share  from 'react-native-share'
+import { INudgeListItem, IPostItem } from './../interfaces'
 import { action, makeObservable, observable } from 'mobx'
 import { get, map } from 'lodash'
 import { strings } from '../../common'
@@ -6,7 +8,9 @@ import { API_END_POINTS, API_IDS } from '../../common/ApiConfiguration'
 import { log } from '../../config'
 import { BaseRequest, RESPONSE_CALLBACKS } from '../../http-layer'
 import { showAndroidToastMessage, toDateTime } from '../../utils/app-utils'
-import { POST_TYPES } from '../../common/constant';
+import { POST_TYPES } from '../../common/constant'
+import { SaveDataStore } from '../save-store'
+import { userDataStore } from '..'
 
 const PAGE_SIZE = 10
 
@@ -57,18 +61,22 @@ export class PostListStore implements RESPONSE_CALLBACKS {
   }
 
   constructPostsListScreen = (responseData) => {
+    log('**************', userDataStore.getUserId())
     const tempPostsData = { ...this.postsData }
     const postsList = get(responseData, 'data', [])
     const currentPage = get(responseData, 'current_page', 0)
     const lastPage = get(responseData, 'last_page', 0)
+    const loggedInUserId = userDataStore.getUserId()
     const formattedData: IPostItem[] = map(postsList, (post) => {
       const attachmentType = get(post, 'attachment.type', '')
       const discussionRoomLink = get(post, 'attachment.link', '')
       const userIdOfPost = get(post, 'uid', '')
+      log('constructPostsListScreenconstructPostsListScreen', userIdOfPost, loggedInUserId)
       return {
         ...post,
         postDate: toDateTime(get(post, 'timestamp')),
-        isDiscussionRoomAvailable: attachmentType === POST_TYPES.DISCUSSION_ROOM && discussionRoomLink?.length > 0 && userIdOfPost !== 1
+        isDiscussionRoomAvailable: attachmentType === POST_TYPES.DISCUSSION_ROOM && discussionRoomLink?.length > 0 && userIdOfPost !== loggedInUserId,
+        isPostByLoggedInUser: userIdOfPost === loggedInUserId
       }
     })
     return {
@@ -82,6 +90,61 @@ export class PostListStore implements RESPONSE_CALLBACKS {
   setPostsListData = (postData) => {
     this.postsData = { ...postData}
     log('this.eventDatathis.eventData', this.postsData)
+  }
+
+  onClickShareVia = () => {
+    // const _id = this.getContentId()
+    // const proContent = this.getProContent()
+    // const tags = this.getTags()
+    // const questionContentSubstring = proContent
+    //   .replace(/[^a-zA-Z0-9 ]/g, '')
+    //   .replace(/ /g, '-')
+    //   .substr(0, 100)
+    // const shareUrl = `${QUESTION_SHARE_URL}/${questionContentSubstring}?qid=${_id}?tag=${get(tags, '[0].tag', '')}`
+    const shareUrl = `queestion share url`
+
+    let shareOptions = {
+      url: shareUrl,
+      title: '',
+      message: '',
+      subject: shareUrl // subject of the message needs when sending mail
+    }
+    Share.open(shareOptions)
+      .then((res) => {
+        //
+      })
+      .catch((err) => {
+        log('error while sharing link', err)
+      })
+  }
+
+  onClickPostOption = (optionSelected, cardData) => {
+    const { SAVE, SHARE } = POST_KEYS
+    switch (optionSelected) {
+      case SAVE:
+        this.saveCurrentPost(cardData)
+        break
+      case SHARE:
+        this.onClickShareVia()
+        break
+      default:
+    }
+  }
+
+  saveCurrentPost = async (cardData) => {
+    log('saveCurrentEventsaveCurrentEvent')
+    const saveEvent = new SaveDataStore(this)
+    const params = JSON.stringify({
+      item_name: get(cardData, 'type')
+    })
+    log('saveCurrentEventsaveCurrentEvent 2', params)
+
+    const urlParams = {
+      id: get(cardData, '_id')
+    }
+    log('saveCurrentEventsaveCurrentEvent 3', urlParams)
+
+    await saveEvent.saveAnEvent(params, urlParams)
   }
 
   onSuccess(apiId: string, response: any) {

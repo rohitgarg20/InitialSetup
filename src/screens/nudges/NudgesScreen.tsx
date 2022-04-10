@@ -102,7 +102,7 @@ export class NudgesScreen extends Component {
   }
 
   renderNudgeSwiperView = () => {
-    const { nudgesData, updateCurrentIndex } = nudgesListDataStore
+    const { nudgesData, updateCurrentIndex, saveCurrentNudge } = nudgesListDataStore
     const nudgesList = nudgesData?.nudgesList || []
     if (nudgesList.length === 0) {
       return null
@@ -125,8 +125,12 @@ export class NudgesScreen extends Component {
             )
           }}
           onSwiped={(cardIndex) => {
+            log('onSwipedonSwipedonSwiped', cardIndex)
             updateCurrentIndex()
-            console.log(cardIndex)
+          }}
+          onSwipedRight = {(cardIndex) => {
+            log('onSwipedRightonSwipedRight', cardIndex)
+            saveCurrentNudge(cardIndex)
           }}
           onSwipedAll={() => {
             console.log('onSwipedAll')
@@ -236,6 +240,7 @@ export class NudgesScreen extends Component {
 
   moveToNextNudge = (key) => {
     if (key === ACTION_TYPE.NEXT) {
+
       this.swiper.swipeRight()
     } else {
       this.swiper.swipeLeft()

@@ -1,4 +1,5 @@
 import { action, makeObservable, observable } from "mobx"
+import { get } from 'lodash'
 
 const DEFAULT_SETTING = {
   userInfoData: {},
@@ -24,4 +25,9 @@ export class UserDataStore {
   setUserInfoData = async (userInfoData) => {
     this.userInfoData = { ...userInfoData }
   }
+
+  getUserId = () => {
+    return get(this.userInfoData, 'uid', '')
+  }
+
 }

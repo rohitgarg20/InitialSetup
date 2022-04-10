@@ -84,6 +84,7 @@ export interface IPostItem{
   attachment: IAttachment
   isDiscussionRoomAvailable: boolean
   postDate: Date
+  isPostByLoggedInUser?: boolean
 }
 
 export interface OptionsData {
