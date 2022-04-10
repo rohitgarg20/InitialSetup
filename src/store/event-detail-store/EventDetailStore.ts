@@ -6,6 +6,7 @@ import { BaseRequest, RESPONSE_CALLBACKS } from '../../http-layer'
 import { showAndroidToastMessage, toDateTime } from '../../utils/app-utils'
 import { get } from 'lodash'
 import { IEventListItem } from '../interfaces'
+import { eventDetail } from '../ApiRespData'
 
 const DEFAULT_SETTINGS = {
   isFetching: false,

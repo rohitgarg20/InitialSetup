@@ -7,6 +7,7 @@ import { NudgesScreen } from '../../screens/nudges/NudgesScreen'
 import { PreferencesScreen } from '../../screens/preferences/PreferencesScreen'
 import { TAB_KEYS } from './TabConstant'
 import { BottomTabBarComponent } from '../../components'
+import { log } from '../../config'
 
 
 const bottomTabBarStack = () => {
@@ -33,7 +34,6 @@ const bottomTabBarStack = () => {
       <Tab.Screen name={TAB_KEYS.DISCUSSION_TAB} component = {DiscussionRoomListScreen} options = {{
         unmountOnBlur: true
       }}  />
-      {/* <Tab.Screen name={TAB_KEYS.PREFERENCES_TAB} component = {PreferencesScreen} /> */}
       <Tab.Screen name={TAB_KEYS.PREFERENCES_TAB} component = {PreferencesScreen} />
 
     </Tab.Navigator>

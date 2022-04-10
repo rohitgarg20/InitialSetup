@@ -27,7 +27,7 @@ export const MAIN_STACK_KEYS = {
   TAB_BAR_STACK: 'tabBarStack'
 }
 
-export const BASE_URL = 'http://192.168.99.164:4567'
+export const BASE_URL = 'http://192.168.1.102:4567'
 // export const BASE_URL = 'http://sdlms.deepthought.education'
 
 
@@ -86,7 +86,6 @@ export const POST_KEYS = {
 
 }
 
-
 export const LABELS = {
   EDIT: 'Edit',
   SHARE: 'Share',
@@ -94,6 +93,24 @@ export const LABELS = {
   REPORT: 'Report',
   DELETE: 'Delete',
   REPOST: 'REPOST'
+}
+
+export const USER_LABELS = {
+  VIEW_PROFILE: 'View Profile',
+  SETTINGS: 'Settings',
+  MY_EVENTS: 'My events',
+  SAVED: 'Saved',
+  SUPPORT: 'Support',
+  SIGN_OUT: 'Sign out'
+}
+
+export const USER_KEYS = {
+    VIEW_PROFILE: 'VIEW_PROFILE',
+    SETTINGS: 'SETTINGS',
+    MY_EVENTS: 'MY_EVENTS',
+    SAVED: 'SAVED',
+    SUPPORT: 'SUPPORT',
+    SIGN_OUT: 'SIGN_OUT'
 }
 
 export const OPTIONS_DATA_FOR_SELF_POST = [
@@ -180,6 +197,40 @@ export const SORTING_DATA = [
   },
 ]
 
+export const USER_OPTIONS_LIST = [
+  {
+    key: USER_KEYS.VIEW_PROFILE,
+    icon: icons.EDIT_ICON,
+    heading: USER_LABELS.VIEW_PROFILE
+  },
+  {
+    key: USER_KEYS.SETTINGS,
+    icon: icons.SHARE_ICON,
+    heading: USER_LABELS.SETTINGS
+  },
+  {
+    key: USER_KEYS.MY_EVENTS,
+    icon: icons.SAVE_ICON,
+    heading: USER_LABELS.MY_EVENTS
+  },
+  {
+    key: USER_KEYS.SAVED,
+    icon: icons.REPOST_ICON,
+    heading: USER_LABELS.SAVED
+  },
+  {
+    key: USER_KEYS.SUPPORT,
+    icon: icons.DELETE_ICON,
+    heading: USER_LABELS.SUPPORT
+  },
+  {
+    key: USER_KEYS.SIGN_OUT,
+    icon: icons.DELETE_ICON,
+    heading: USER_LABELS.SIGN_OUT
+  }
+
+]
+
 export interface IFilterItems {
   id: string
   isSelected: boolean
@@ -193,3 +244,5 @@ export interface IFilterListItem{
   filterType: 'checkBoxType' | 'radioButton'
   filterId: string
 }
+
+export const HEADER_HEIGHT = 50

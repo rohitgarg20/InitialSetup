@@ -9,8 +9,10 @@ import  stores from './store'
 import { LogBox, SafeAreaView } from 'react-native'
 import { GestureHandlerRootView } from 'react-native-gesture-handler'
 import { Loader } from './components'
+import { GenericDrawerComponent } from './components/GenericDrawerComponent'
+import { GenericDrawer } from './components/GenericDrawer'
 
-const servicesContainer = [<Loader/>]
+const servicesContainer = [<Loader/>, <GenericDrawer/>]
 @observer
 export class App extends Component {
 

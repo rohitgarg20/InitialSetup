@@ -20,6 +20,7 @@ const mainStack = () => {
     >
       <Stack.Screen name= {MAIN_STACK_KEYS.TAB_BAR_STACK} component={bottomTabBarStack} />
       <Stack.Screen name= {MAIN_STACK_KEYS.HOME_STACK} component={homeStack} />
+
       <Stack.Screen name= {MAIN_STACK_KEYS.EVENTS_STACK} component={eventStack} />
       <Stack.Screen name= {MAIN_STACK_KEYS.DISCUSSION_STACK} component={discussionStack} />
     </Stack.Navigator>

@@ -1,13 +1,13 @@
 import { observer } from 'mobx-react'
 import React, { Component } from 'react'
-import { Animated, FlatList, ScrollView, StyleSheet, TouchableOpacity, View } from 'react-native'
+import { Animated, BackHandler, FlatList, ScrollView, StyleSheet, TouchableOpacity, View } from 'react-native'
 import { colors, fontDimens } from '../../common'
 import { IFilterItems, IFilterListItem } from '../../common/constant'
 import { icons } from '../../common/icons'
 import { CheckBoxComponent, CustomText, FilterListItemsComponent, FlatListWrapper, IconButtonWrapper } from '../../components'
 import { AnimatedCardComponent } from '../../components/AnimatedCardComponent'
 import { log } from '../../config'
-import { preferencesDataStore } from '../../store'
+import { genericDrawerStore, preferencesDataStore } from '../../store'
 
 const styles = StyleSheet.create({
   transparantBg: {
@@ -60,13 +60,43 @@ const styles = StyleSheet.create({
   }
 })
 
+interface IProps {
+  navigation?: any
+}
 @observer
-export class PreferencesScreen extends Component {
+export class PreferencesScreen extends Component<IProps> {
 
   heightInterpolated = new Animated.Value(0)
+  constructor(props) {
+    super(props)
+  }
+
+  // componentDidMount() {
+  //   preferencesDataStore.getUserPreferencesAndCategoryData()
+  // }
+
+
+
+  screenFocusListener
+  screenBlurListener
 
   componentDidMount() {
-    preferencesDataStore.getUserPreferencesAndCategoryData()
+    this.addListeners()
+  }
+
+  addListeners = () => {
+    BackHandler.addEventListener('hardwareBackPress', this.handleBackPressed)
+  }
+
+  handleBackPressed = () => {
+    log('onBackPressedonBackPressedonBackPressed')
+    genericDrawerStore.disableDrawer()
+    return true
+  }
+
+  componentWillUnmount() {
+    log('componentWillUnmountcomponentWillUnmount')
+    BackHandler.removeEventListener('hardwareBackPress', this.handleBackPressed)
   }
 
   renderAccordianHeaderView = (showInFullMode) => {

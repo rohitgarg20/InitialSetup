@@ -7,6 +7,7 @@ import { showAndroidToastMessage, toDateTime } from '../../utils/app-utils'
 import { get } from 'lodash'
 import { IEventListItem } from '../interfaces'
 import { timeFromNow } from '../../utils/DateHelper'
+import { discussion_data } from '../ApiRespData'
 
 const DEFAULT_SETTINGS = {
   isFetching: false,

@@ -4,12 +4,14 @@ import { View, TouchableOpacity, StyleSheet } from 'react-native'
 import { get, map } from 'lodash'
 import { CustomText } from './CustomText'
 import { IconButtonWrapper } from './IconButtonWrapper'
-import { navigationDataStore } from '../store'
+import { genericDrawerStore, navigationDataStore } from '../store'
 import { MAIN_STACK_KEYS } from '../common/constant'
 import { colors } from '../common'
 import { TAB_KEYS } from '../navigator/bottom-tab/TabConstant'
 import { icons } from '../common/icons'
 import { log } from '../config'
+import { DrawerActions } from '@react-navigation/native'
+import { PreferencesScreen } from '../screens/preferences/PreferencesScreen'
 
 const styles = StyleSheet.create({
   mainContainer: {
@@ -53,8 +55,14 @@ const TAB_BAR_KEY: Map<string, any> = new Map([
 const bottomTabBarComponent = ({ state, descriptors, navigation, insets }) => {
 
   const onPressTabItem = (stackName, tabName) => {
-    navigationDataStore.setActiveTabName(stackName)
-    navigation.navigate(tabName)
+    if (tabName === TAB_KEYS.PREFERENCES_TAB) {
+      genericDrawerStore.enableDrawer()
+      genericDrawerStore.setRenderingComponent(<PreferencesScreen navigation={navigation}/>)
+    } else {
+      navigationDataStore.setActiveTabName(stackName)
+      navigation.navigate(tabName)
+    }
+
   }
 
   // eslint-disable-next-line react-hooks/rules-of-hooks

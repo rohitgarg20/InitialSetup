@@ -5,7 +5,7 @@ import { get } from 'lodash'
 import { log } from '../config'
 import { STACK_NAMES } from '../navigator'
 import { storeUserInfoData } from '../utils/auth-utils'
-import { userDataStore } from '../store'
+import { preferencesDataStore, userDataStore } from '../store'
 
 const getUserProfileDetails = async () => {
 
@@ -23,15 +23,13 @@ export const getScreenNameToNavigateToOnLogin = async () => {
   return new Promise(async (resolve, reject) => {
     showLoader()
     getUserProfileDetails().then(async (userInfoResponse) => {
-      log('getUserProfileDetailsgetUserProfileDetails', userInfoResponse)
       const userDataResponse = get(userInfoResponse, 'data.response', null)
-      log('getUserProfileDetails', userDataResponse)
       storeUserInfoData(userDataResponse)
-      log('storeUserInfoDatastoreUserInfoData')
+      await preferencesDataStore.getUserPreferencesAndCategoryData()
+      resolve(STACK_NAMES.BOTTOM_TAB_BAR)
       await userDataStore.setUserInfoData(userDataResponse)
       log('after await storeUserInfoDatastoreUserInfoData')
       // await userDataStore.getUserData()
-      resolve(STACK_NAMES.BOTTOM_TAB_BAR)
     }).catch(_err => {
       log('getScreenNameToNavigateToOnLogin', _err)
       resolve(STACK_NAMES.LOGIN_STACK)

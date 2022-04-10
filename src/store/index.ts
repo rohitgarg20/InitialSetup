@@ -1,3 +1,4 @@
+import { GenericDrawerStore } from './generic-drawer-store/GenericDrawerStore';
 import { EventRoomDetailStore } from './event-detail-store/EventDetailStore';
 import { DiscussionRoomDetailStore } from './discussion-detail-store/DiscussionRoomDetailStore';
 import { UserDataStore } from './user-data-store/UserDataStore';
@@ -27,6 +28,7 @@ const preferencesDataStore = new PreferencesDataStore()
 const userDataStore = new UserDataStore()
 const discussionRoomDetailStore = new DiscussionRoomDetailStore()
 const eventDetailStore = new EventRoomDetailStore()
+const genericDrawerStore = new GenericDrawerStore()
 
 export * from './LoaderDataStore'
 export * from './login'
@@ -42,6 +44,7 @@ export * from './preferences'
 export * from './user-data-store'
 export * from './discussion-detail-store'
 export * from './event-detail-store'
+export * from './generic-drawer-store'
 
 export {
   loaderDataStore,
@@ -57,7 +60,8 @@ export {
   preferencesDataStore,
   userDataStore,
   discussionRoomDetailStore,
-  eventDetailStore
+  eventDetailStore,
+  genericDrawerStore
 }
 
 export default {
@@ -74,5 +78,6 @@ export default {
   preferencesDataStore,
   userDataStore,
   discussionRoomDetailStore,
-  eventDetailStore
+  eventDetailStore,
+  genericDrawerStore
 }

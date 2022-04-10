@@ -10,6 +10,7 @@ import axios from 'axios'
 import { setAuthToken } from '../../utils/auth-utils';
 import { showAndroidToastMessage } from '../../utils/app-utils';
 import { setInititalStackName } from '../../service';
+import { getScreenNameToNavigateToOnLogin } from '../../service/UserNavigationService';
 // tslint:disable-next-line: no-var-requires
 // import * as https from 'https'
 
@@ -119,7 +120,7 @@ export class LoginDataStore implements RESPONSE_CALLBACKS{
     switch (apiId) {
       case API_IDS.LOGIN:
         setInititalStackName('bottomTabBar')
-        this.getLoggedInUserInfo()
+        getScreenNameToNavigateToOnLogin()
         break
       default:
         break

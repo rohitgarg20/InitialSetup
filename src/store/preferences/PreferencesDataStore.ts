@@ -62,23 +62,25 @@ export class PreferencesDataStore implements RESPONSE_CALLBACKS {
     this.preferencesListData = [ ...preferencesList]
   }
 
-  getUserPreferencesAndCategoryData = () => {
+  getUserPreferencesAndCategoryData = async () => {
     const promisesArr = [
       this.getUserPreferencesData(),
       this.getCategoryListData()
     ]
     let formattedListData = []
-    Promise.all(promisesArr).then((response) => {
+    await Promise.all(promisesArr).then((response) => {
       const userPreferencesList = get(response, '[0].data.response', [])
       const userCategoryList = userPreferencesList.find((item) => {
         return Object.keys(item).find((itemType) => itemType === 'category')
       })
       const categoryData = get(userCategoryList, 'category', {})
       const categoryListData =  get(response, '[1].data.response', [])
+      log('categoryListDatacategoryListData', userCategoryList, categoryData)
       formattedListData = categoryListData.map((category) => {
         const { name = '', cid = '', sub_categories = [] } = category || {}
-        const selectedCategoryUserData = get(categoryData, `${name}`)
-        const selectedSubCatList = get(selectedCategoryUserData, 'cid') === cid ?  get(selectedCategoryUserData, 'sub_categories', []) : []
+        const selectedCategoryUserData = categoryData.preferences.find((item) => get(item, 'cid') === cid) || {}
+        log('selectedCategoryUserDataselectedCategoryUserData', selectedCategoryUserData)
+        const selectedSubCatList = get(selectedCategoryUserData, 'sub_categories', [])
         let selectedCid = []
         const formatedSubCategory: IFilterItems[] = sub_categories.map((item) => {
           const itemCid = get(item, 'cid', '')
@@ -111,13 +113,13 @@ export class PreferencesDataStore implements RESPONSE_CALLBACKS {
       const sortingCategoryList = userPreferencesList.find((item) => {
         return Object.keys(item).find((itemType) => itemType === 'sorting')
       })
-
-      const selectedSortingFilter = get(sortingCategoryList, 'sorting.sorting', [])
+      log('sortingCategoryListsortingCategoryList', sortingCategoryList)
+      const selectedSortingFilter = get(sortingCategoryList, 'sorting', {})
       let selectedSortingFilters = []
       SORTING_DATA.forEach((item) => {
         const sortingKey = get(item, 'id', '')
-        const isUserSelected = selectedSortingFilter.findIndex((selSort) => selSort === sortingKey)
-        if (isUserSelected !== -1) {
+        const isUserSelected = sortingKey === get(selectedSortingFilter, 'sorting')
+        if (isUserSelected) {
           selectedSortingFilters = [
             ...selectedSortingFilters,
             {
@@ -127,7 +129,7 @@ export class PreferencesDataStore implements RESPONSE_CALLBACKS {
         }
         sortingFormattedValues.push({
           id: sortingKey,
-          isSelected: isUserSelected !== -1 ? true : false,
+          isSelected: isUserSelected ? true : false,
           displayLabel: get(item, 'name', '')
         })
       })

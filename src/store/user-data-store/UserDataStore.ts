@@ -1,12 +1,15 @@
 import { action, makeObservable, observable } from "mobx"
 
 const DEFAULT_SETTING = {
-  userInfoData: {}
+  userInfoData: {},
+  userOptionsList: []
 }
 
 
 export class UserDataStore {
   @observable userInfoData: any
+  @observable userOptionsList
+
   constructor() {
     this.init()
     makeObservable(this)

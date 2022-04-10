@@ -11,7 +11,8 @@ const colors = {
   borderColor: '#D0D0D0',
   lightestGrey: '#999999',
   lightBlack: '#4D4D4D',
-  whiteSmock: '#F5F5F5'
+  whiteSmock: '#F5F5F5',
+  drawerBackGroundGray: 'rgba(52, 52, 52, 0.6)',
 
 }
 

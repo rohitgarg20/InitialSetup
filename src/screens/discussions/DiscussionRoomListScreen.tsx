@@ -109,6 +109,7 @@ export class DiscussionRoomListScreen extends Component<IProps> {
 
   renderEventCard = ({ item }) => {
     const { name, tagline, description, startDate, image, author, category, tid } = item as IEventListItem
+
     const { userName, lastActiveTime, status } = author || {}
 
     return (
