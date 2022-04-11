@@ -180,7 +180,7 @@ export class RegisterUserScreen extends Component<{}, I_STATE> {
   renderCopyRightView = () => {
     const { COPYYRIGHT, TERMS_OF_USE, AND, APPLY, SERVICE_APPLY } = strings.LOGIN_SCREEN
     return (
-      <View style={[styles.buttonView, { paddingTop: 40 }]}>
+      <View style={[styles.buttonView, { paddingVertical: 20 }]}>
         <CustomText textStyle={styles.termsAndPolicy}>
           {COPYYRIGHT}
         </CustomText>
