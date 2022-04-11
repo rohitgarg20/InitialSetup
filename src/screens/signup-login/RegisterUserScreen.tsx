@@ -91,6 +91,7 @@ const styles = StyleSheet.create({
     borderTopWidth: 1,
     borderColor: colors.grey,
     paddingVertical: 10,
+    // backgroundColor: 'orange',
     // height: '100%'
     // justifyContent: 'flex-end',
     // height: heightToDp('20%')
@@ -108,6 +109,10 @@ export class RegisterUserScreen extends Component<{}, I_STATE> {
 
   state = {
     selectedPageIndex: 0
+  }
+
+  componentWillUnmount() {
+    signupDataStore.init()
   }
   renderLogoComponent = () => {
     return (
@@ -239,24 +244,20 @@ export class RegisterUserScreen extends Component<{}, I_STATE> {
         {this.renderBackArrowContainer()}
 
         <ScrollView
-          contentContainerStyle = {{
+          style = {{
             flex: 1
           }}
-        // style = {{
-        //   flex: 1
-        // }}
-        // contentContainerStyle = {{
-        //   // paddingBottom: 20
-        // }}
+          contentContainerStyle = {{
+            flexGrow: 1, justifyContent: 'space-between', flexDirection: 'column'
+          }}
         >
+
           {this.renderSignUpForm()}
           {this.renderRegisterButton()}
           {this.renderCopyRightView()}
           <View style = {{
-          //  bottom: 0,
            justifyContent: 'flex-end',
-           flex: 1,
-          //  height: heightToDp('15%'),
+           height: '20%'
           }}>
           {this.renderPagerView()}
           </View>
