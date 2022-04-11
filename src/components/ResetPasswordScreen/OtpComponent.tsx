@@ -1,7 +1,8 @@
 import React, { Component } from 'react'
 import { StyleSheet, TouchableOpacity, View } from 'react-native'
 import { CustomText, OtpInputComponent } from '..'
-import { colors, fontDimens, strings } from '../../common'
+import { colors, fontDimens, fontDimensPer, strings } from '../../common'
+import { widthToDp } from '../../utils/Responsive'
 
 interface IProps {
   emailId?: string
@@ -16,7 +17,8 @@ interface IState {
 
 const styles = StyleSheet.create({
   heading: {
-    fontSize: fontDimens.big,
+    fontSize: widthToDp(fontDimensPer.large),
+    fontFamily: 'Poppins-SemiBold',
     color: colors.black,
     fontWeight: '600',
     lineHeight: 24,
@@ -24,14 +26,15 @@ const styles = StyleSheet.create({
     paddingBottom: 5
   },
   otpSend: {
-    fontSize: fontDimens.medium,
+    fontSize: widthToDp(fontDimensPer.medium),
+    fontFamily: 'Poppins-Regular',
     color: colors.labelColor,
     fontWeight: '400',
-    lineHeight: 20,
     textAlign: 'center'
   },
   email: {
-    fontSize: fontDimens.medium,
+    fontSize: widthToDp(fontDimensPer.medium),
+    fontFamily: 'Poppins-Regular',
     color: colors.lightBlue,
     fontWeight: '400',
     lineHeight: 16
@@ -57,16 +60,20 @@ const styles = StyleSheet.create({
     minWidth: 100
   },
   submitLabel: {
-    fontSize: fontDimens.small,
+    // fontSize: fontDimens.small,
     color: colors.white,
     fontWeight: '500',
-    lineHeight: 15
+    lineHeight: 15,
+    fontSize:  widthToDp(fontDimensPer.medium),
+    fontFamily: 'Poppins-Medium',
   },
   resendLabel: {
-    fontSize: fontDimens.small,
+    // fontSize: fontDimens.small,
     color: colors.black,
     fontWeight: '500',
-    lineHeight: 15
+    lineHeight: 15,
+    fontSize:  widthToDp(fontDimensPer.medium),
+    fontFamily: 'Poppins-Medium',
   },
   rowContainer: {
     flexDirection: 'row',

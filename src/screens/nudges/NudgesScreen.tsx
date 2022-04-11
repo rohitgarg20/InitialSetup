@@ -1,8 +1,8 @@
 import { observer } from 'mobx-react'
 import React, { Component } from 'react'
-import { Button, StyleSheet, Text, View, TouchableOpacity } from 'react-native'
+import { Button, StyleSheet, Text, View, TouchableOpacity, ScrollView } from 'react-native'
 import Swiper from 'react-native-deck-swiper'
-import { colors, fontDimens } from '../../common'
+import { colors, fontDimens, fontDimensPer } from '../../common'
 import { ACTION_TYPE, BASE_URL, FETCHING_ARR } from '../../common/constant'
 import { icons } from '../../common/icons'
 import { CustomText, FlatListWrapper, IconButtonWrapper, ImageWithLoaderComponent, ShimmerComponent } from '../../components'
@@ -10,6 +10,7 @@ import { HeaderCardComponent } from '../../components/HeaderCardComponent'
 import { log } from '../../config'
 import { nudgesListDataStore } from '../../store'
 import { INudgeListItem } from '../../store/interfaces'
+import { widthToDp } from '../../utils/Responsive'
 
 const PADDING_HORIZONTAL = 20
 const PADDING_VERTIACAL = 10
@@ -39,9 +40,9 @@ const styles = StyleSheet.create({
   },
   swipeLabel: {
     fontWeight: '600',
-    fontSize: fontDimens.medium,
-    lineHeight: 16,
-    color: colors.white
+    fontSize: widthToDp(fontDimensPer.medium),
+    color: colors.white,
+    fontFamily: 'Poppins-SemiBold',
   },
   footerContainer: {
     paddingHorizontal: PADDING_HORIZONTAL,
@@ -52,16 +53,19 @@ const styles = StyleSheet.create({
     justifyContent: 'space-between'
   },
   rowContainer: {
-    flexDirection: 'row'
+    flexDirection: 'row',
+    alignItems: 'center'
   },
   nudgesLabel: {
     borderBottomWidth: 1,
     borderBottomColor: colors.black,
     fontWeight: '400',
-    fontSize: fontDimens.small,
-    lineHeight: 12,
+    fontSize: widthToDp(fontDimensPer.small),
+    // lineHeight: 12,
     color: colors.black,
-    paddingBottom: 5
+    paddingBottom: 5,
+    fontFamily: 'OpenSans-VariableFont_wdth,wght'
+
   },
   descContainer: {
     paddingHorizontal: PADDING_HORIZONTAL,
@@ -70,18 +74,21 @@ const styles = StyleSheet.create({
     flex: 1
   },
   description: {
-    fontWeight: '600',
-    fontSize: fontDimens.small,
-    lineHeight: 16,
-    color: colors.black
+    fontWeight: '400',
+    // lineHeight: 16,
+    color: colors.black,
+    fontSize: widthToDp(fontDimensPer.medium),
+    fontFamily: 'OpenSans-VariableFont_wdth,wght'
   },
   nudgesNotes: {
-    fontSize: fontDimens.small,
-    lineHeight: 16,
+    fontSize: widthToDp(fontDimensPer.medium),
     color: colors.labelColor,
     paddingTop: 25,
     paddingBottom: 30,
-    textAlign: 'center'
+    textAlign: 'center',
+    fontFamily: 'Poppins-Regular',
+    fontWeight: '400',
+
   }
 })
 
@@ -129,7 +136,7 @@ export class NudgesScreen extends Component {
             updateCurrentIndex()
           }}
           onSwipedRight = {(cardIndex) => {
-            log('onSwipedRightonSwipedRight', cardIndex)
+            log('onSwipedRightonSwipedRight')
             saveCurrentNudge(cardIndex)
           }}
           onSwipedAll={() => {
@@ -290,7 +297,7 @@ export class NudgesScreen extends Component {
             styling={{
               marginLeft: 5,
               tintColor: colors.black,
-              marginTop: 1
+              // marginTop: 1
             }}
           />
         </TouchableOpacity>
@@ -334,13 +341,15 @@ export class NudgesScreen extends Component {
       )
     }
     return (
-      <>
+      <ScrollView contentContainerStyle = {{
+        flex: 1
+      }}>
         <CustomText textStyle={styles.nudgesNotes}>Note: Click on the poster to check event details.</CustomText>
         {this.renderNudgeSwiperView()}
         {this.renderNudeSkipAcceptSection()}
         {this.renderFooterComponent()}
         {this.renderNudgeContentContainer()}
-      </>
+      </ScrollView>
     )
 
   }

@@ -81,9 +81,10 @@ export class SetPasswordDataStore implements RESPONSE_CALLBACKS {
     return isButtonDisabled
   }
 
-  setNewPassword = async () => {
+  setNewPassword = async (code) => {
     const body = {
       'password': this.formData[FORM_KEYS.PASSWORD][TEXT_FIELD_KEYS.INPUT_VALUE] || '',
+      'code': code
     }
     const registerUserRequest = new BaseRequest(this, {
       methodType: 'POST',

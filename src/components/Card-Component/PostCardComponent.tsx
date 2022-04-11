@@ -3,11 +3,11 @@ import { Dimensions, ImageBackground, StyleSheet, View, TouchableOpacity } from 
 import  Share  from 'react-native-share'
 
 import { get } from 'lodash'
-import { colors, fontDimens } from '../../common'
+import { colors, fontDimens, fontDimensPer } from '../../common'
 import { BASE_URL, FOOTER_KEYS, FOOTER_LIST_ITEMS, OPTIONS_DATA_FOR_OTHER_POST, OPTIONS_DATA_FOR_SELF_POST, POST_TYPES } from '../../common/constant'
 import { icons } from '../../common/icons'
 import { IPostItem, IUserObj } from '../../store/interfaces'
-import { formatDate } from '../../utils/app-utils'
+import { capitalizeFirstLetterOnly, formatDate } from '../../utils/app-utils'
 import { CustomText } from '../CustomText'
 import { IconButtonWrapper } from '../IconButtonWrapper'
 import { UserAvatar } from '../UserAvtar'
@@ -15,33 +15,41 @@ import { log } from '../../config'
 import { InfoToolTip } from '../InfoToolTip'
 import { CommunityOptionsComponent } from '../OptionsListComponent'
 import { ImageWithLoaderComponent } from '../ImageWithLoaderComponent'
+import { widthToDp } from '../../utils/Responsive'
 
 const styles = StyleSheet.create({
   withoutImageColor: {
     backgroundColor: '#cccccc'
   },
   nameLabel: {
-    fontSize: fontDimens.normal,
-    lineHeight: 20,
+    fontSize: widthToDp(fontDimensPer.large),
+    // lineHeight: 20,
     color: colors.black,
-    fontWeight: '500'
+    fontWeight: '500',
+    fontFamily: 'Poppins-Medium',
+    // lineHeight: 18
   },
   aboutUser: {
-    fontSize: fontDimens.extraSmall,
-    lineHeight: 16,
+    fontSize: widthToDp(fontDimensPer.medium),
+    // lineHeight: 16,
     color: colors.lightBlue,
+    fontWeight: '400',
+    fontFamily: 'Poppins-Regular',
     // width: '50%'
   },
   dateView: {
-    fontSize: fontDimens.extraSmall,
-    lineHeight: 16,
-    color: colors.labelColor
+    fontSize: widthToDp(fontDimensPer.small),
+    // lineHeight: 16,
+    color: colors.labelColor,
+    fontWeight: '400',
+    fontFamily: 'Poppins-Regular',
+    // paddingTop: 2,
   },
   contentView: {
-    fontSize: fontDimens.small,
-    lineHeight: 16,
+    fontSize: widthToDp(fontDimensPer.medium),
     color: colors.black,
-    fontWeight: '400'
+    fontWeight: '400',
+    fontFamily: 'OpenSans-VariableFont_wdth,wght'
   },
   postTime: {
     padding: 10,
@@ -161,7 +169,7 @@ export default class PostCardComponent extends Component<IProps> {
     return displayname ? (
       <View style={[styles.avtarContainer]}>
         <UserAvatar
-          size={'45'}
+          size={'50'}
           imageStyle={[styles.withoutImageColor, { width: '100%', height: '100%' }]}
           showBorderRadius={true}
           name={displayname.toUpperCase()}
@@ -176,7 +184,7 @@ export default class PostCardComponent extends Component<IProps> {
     const { displayname = '', picture = '' } = userObj || {}
     return (
       <CustomText textStyle={styles.nameLabel}>
-        {displayname}
+        {capitalizeFirstLetterOnly(displayname)}
       </CustomText>
     )
   }
@@ -228,7 +236,7 @@ export default class PostCardComponent extends Component<IProps> {
     return (
       <View style={styles.postTime}>
         <View>
-          <CustomText textStyle={styles.contentView}>{title}</CustomText>
+          <CustomText textStyle={styles.contentView}>{capitalizeFirstLetterOnly(title)}</CustomText>
           <CustomText textStyle={styles.aboutUser}>2 min read</CustomText>
         </View>
         <View style={styles.rowContainer}>
@@ -291,7 +299,9 @@ export default class PostCardComponent extends Component<IProps> {
     const subLabel = comment_count === 1 ? `${comment_count} comment` : `${comment_count} comments`
     return (
       <View style={styles.otherInfo}>
-        <CustomText textStyle={styles.dateView}>{subLabel}</CustomText>
+        <CustomText textStyle={[styles.dateView, {
+          paddingTop: 0
+        }]}>{subLabel}</CustomText>
       </View>
     )
   }
@@ -362,7 +372,7 @@ export default class PostCardComponent extends Component<IProps> {
   renderUserInfoView = () => {
     return (
       <View style={styles.userInfoView}>
-        <View style={[styles.rowContainer, { flex: 8 }]}>
+        <View style={[styles.rowContainer, { flex: 8, alignItems: 'flex-start' }]}>
           {this.renderRoundedAvtar()}
           {this.renderUserDetails()}
         </View>
@@ -442,7 +452,7 @@ export default class PostCardComponent extends Component<IProps> {
         customToolTipView={this.renderOptionsListComponent}
         customView={this.renderCustomView}
         customWidth={120}
-        customHeight={180}
+        customHeight={200}
         mainViewStyle={{ ...styles.mainViewStyle }}
         useAsDropDownView={true}
         withPointer={false}

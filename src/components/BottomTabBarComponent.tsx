@@ -6,12 +6,13 @@ import { CustomText } from './CustomText'
 import { IconButtonWrapper } from './IconButtonWrapper'
 import { genericDrawerStore, navigationDataStore } from '../store'
 import { MAIN_STACK_KEYS } from '../common/constant'
-import { colors } from '../common'
+import { colors, fontDimensPer } from '../common'
 import { TAB_KEYS } from '../navigator/bottom-tab/TabConstant'
 import { icons } from '../common/icons'
 import { log } from '../config'
 import { DrawerActions } from '@react-navigation/native'
 import { PreferencesScreen } from '../screens/preferences/PreferencesScreen'
+import { widthToDp } from '../utils/Responsive'
 
 const styles = StyleSheet.create({
   mainContainer: {
@@ -85,7 +86,9 @@ const bottomTabBarComponent = ({ state, descriptors, navigation, insets }) => {
     }
     let textStyle = {
       color: colors.black,
-      paddingVertical: 5
+      paddingVertical: 5,
+      fontWeight: '500',
+      fontFamily: 'Poppins-Medium'
     }
     if (isTabActive) {
       activeIconStyle = {
@@ -93,7 +96,9 @@ const bottomTabBarComponent = ({ state, descriptors, navigation, insets }) => {
       }
       textStyle = {
         color: colors.lightBlue,
-        paddingVertical: 5
+        paddingVertical: 5,
+        fontWeight: '500',
+        fontFamily: 'Poppins-Medium'
       }
     }
 
@@ -109,7 +114,7 @@ const bottomTabBarComponent = ({ state, descriptors, navigation, insets }) => {
           iconWidth={20}
           styling={activeIconStyle}
         />
-        <CustomText textStyle={{...textStyle, fontSize: 10 }}>
+        <CustomText textStyle={{...textStyle, fontSize: widthToDp(fontDimensPer.small) }}>
           {routeName}
         </CustomText>
       </TouchableOpacity>

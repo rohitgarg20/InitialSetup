@@ -1,8 +1,10 @@
 import React from 'react'
 import { StyleSheet, View } from 'react-native'
 import { CustomText, IconButtonWrapper } from '.'
-import { colors, strings } from '../common'
+import { colors, fontDimensPer, strings } from '../common'
 import { icons } from '../common/icons'
+import { goBack } from '../service'
+import { widthToDp } from '../utils/Responsive'
 
 const styles = StyleSheet.create({
   rowContainer: {
@@ -12,16 +14,18 @@ const styles = StyleSheet.create({
   },
   deepLabel: {
     fontWeight: '400',
-    fontSize: 12,
-    lineHeight: 18,
+    fontSize: widthToDp(fontDimensPer.medium),
+    fontFamily: 'Poppins',
+    // lineHeight: 18,
     color: colors.black
   },
   thoughtLabel: {
     fontWeight: '700',
-    fontSize: 12,
-    lineHeight: 18,
+    fontSize: widthToDp(fontDimensPer.medium),
+    // lineHeight: 18,
     color: colors.lightBlue,
-    paddingLeft: 4
+    paddingLeft: 4,
+    fontFamily: 'Poppins-SemiBold',
   }
 })
 
@@ -32,6 +36,11 @@ interface IProps {
 
 const logoComponent = (props: IProps) => {
   const { logoIconStyle = {}, textStyling = {} } = props
+
+  const goBackToPreviousScreen = () => {
+    goBack(undefined)
+  }
+
   const renderIconComponent = () => {
     return (
       <IconButtonWrapper
@@ -39,6 +48,7 @@ const logoComponent = (props: IProps) => {
         iconHeight = {20}
         iconWidth = {20}
         styling = {logoIconStyle}
+        submitFunction = {goBackToPreviousScreen}
       />
     )
   }

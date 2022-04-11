@@ -1,13 +1,14 @@
 import { observer } from 'mobx-react'
 import React, { Component } from 'react'
 import { Animated, BackHandler, FlatList, ScrollView, StyleSheet, TouchableOpacity, View } from 'react-native'
-import { colors, fontDimens } from '../../common'
+import { colors, fontDimens, fontDimensPer } from '../../common'
 import { IFilterItems, IFilterListItem } from '../../common/constant'
 import { icons } from '../../common/icons'
 import { CheckBoxComponent, CustomText, FilterListItemsComponent, FlatListWrapper, IconButtonWrapper } from '../../components'
 import { AnimatedCardComponent } from '../../components/AnimatedCardComponent'
 import { log } from '../../config'
 import { genericDrawerStore, preferencesDataStore } from '../../store'
+import { widthToDp } from '../../utils/Responsive'
 
 const styles = StyleSheet.create({
   transparantBg: {
@@ -28,9 +29,11 @@ const styles = StyleSheet.create({
     paddingVertical: 10
   },
   categoryName: {
-    fontSize: fontDimens.normal,
+    // fontSize: fontDimens.normal,
     fontWeight: '700',
-    color: colors.white
+    color: colors.white,
+    fontSize: widthToDp(fontDimensPer.large),
+    fontFamily: 'Poppins-SemiBold',
   },
   categoryContainer: {
     // borderWidth: 0,
@@ -75,12 +78,18 @@ const styles = StyleSheet.create({
     minWidth: 70,
     paddingVertical: 6,
     justifyContent: 'center',
-    alignItems: 'center'
+    alignItems: 'center',
+
   },
   btnResetText: {
     color: colors.black,
-    fontSize: fontDimens.small,
-    fontWeight: '500'
+    // fontSize: fontDimens.small,
+    fontWeight: '500',
+    fontSize: widthToDp(fontDimensPer.small),
+    // lineHeight: 16,
+    // fontWeight: '400',
+    // color: colors.lightBlue,
+    fontFamily: 'Poppins-Regular'
   },
   btnApply: {
     backgroundColor: colors.lightBlue,
@@ -92,8 +101,10 @@ const styles = StyleSheet.create({
   },
   btnApplyText: {
     color: colors.white,
-    fontSize: fontDimens.small,
-    fontWeight: '500'
+    fontSize: widthToDp(fontDimensPer.small),
+    fontWeight: '500',
+    fontFamily: 'Poppins-Regular'
+
   }
 })
 

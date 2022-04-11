@@ -1,6 +1,6 @@
 import React, { Component } from 'react'
 import { ScrollView, StyleSheet, TouchableOpacity, View } from 'react-native'
-import { colors, fontDimens, strings } from '../../common'
+import { colors, fontDimens, fontDimensPer, strings } from '../../common'
 import { icons } from '../../common/icons'
 import { getHeight } from '../../common/scaling'
 import { BackButtonComponent, CustomText, IconButtonWrapper, LogoComponent, TextInputComponent, UserReviewComponent, ViewPager } from '../../components'
@@ -11,6 +11,7 @@ import { KeyboardAwareScrollViewComponent } from '../../components/KeyboardAware
 import { I_TEXT_FIELD } from '../../common/Interfaces'
 import { log } from '../../config'
 import { die } from 'mobx/dist/errors'
+import { heightToDp, widthToDp } from '../../utils/Responsive'
 
 const styles = StyleSheet.create({
   mainContainer: {
@@ -26,8 +27,9 @@ const styles = StyleSheet.create({
     paddingVertical: 30
   },
   formHeading: {
-    fontSize: fontDimens.normal,
-    lineHeight: 20,
+    fontSize: widthToDp(fontDimensPer.large),
+    fontFamily: 'Poppins-SemiBold',
+    // lineHeight: 20,
     fontWeight: '600',
     color: colors.black,
     paddingBottom: 20
@@ -55,8 +57,11 @@ const styles = StyleSheet.create({
   },
   buttonLabel: {
     color: colors.white,
-    fontSize: fontDimens.normal,
-    lineHeight: 15
+    // fontSize: fontDimens.normal,
+    // lineHeight: 15,
+    fontSize:  widthToDp(fontDimensPer.medium),
+    fontWeight: '400',
+    fontFamily: 'Poppins-Regular',
   },
 
   // buttonLabel: {
@@ -72,8 +77,11 @@ const styles = StyleSheet.create({
     color: colors.lightBlue
   },
   termsAndPolicy: {
-    fontSize: fontDimens.medium,
-    lineHeight: 20
+    // fontSize: fontDimens.medium,
+    // lineHeight: 20,
+    fontSize:  widthToDp(fontDimensPer.small),
+    fontWeight: '300',
+    fontFamily: 'Poppins-Regular',
   },
   rowView: {
     flexDirection: 'row',
@@ -82,8 +90,11 @@ const styles = StyleSheet.create({
   footerPagerView: {
     borderTopWidth: 1,
     borderColor: colors.grey,
-    paddingVertical: 20,
-    flex: 1
+    paddingVertical: 10,
+    // height: '100%'
+    // justifyContent: 'flex-end',
+    // height: heightToDp('20%')
+    // flex: 1
   }
 
 })
@@ -148,10 +159,10 @@ export class RegisterUserScreen extends Component<{}, I_STATE> {
 
   renderRegisterButton = () => {
     const { CREATE_ACCOUNT_BUTTON } = strings.SIGN_UP_SCREEN
-    const { registerUser } = signupDataStore
+    const { validateFormFields } = signupDataStore
     return (
       <View style={styles.buttonView}>
-        <TouchableOpacity style={styles.signInButton} onPress={registerUser}>
+        <TouchableOpacity style={styles.signInButton} onPress={validateFormFields}>
           <CustomText textStyle={styles.buttonLabel}>
             {CREATE_ACCOUNT_BUTTON}
           </CustomText>
@@ -164,7 +175,7 @@ export class RegisterUserScreen extends Component<{}, I_STATE> {
   renderCopyRightView = () => {
     const { COPYYRIGHT, TERMS_OF_USE, AND, APPLY, SERVICE_APPLY } = strings.LOGIN_SCREEN
     return (
-      <View style={[styles.buttonView, { paddingTop: 20 }]}>
+      <View style={[styles.buttonView, { paddingTop: 40 }]}>
         <CustomText textStyle={styles.termsAndPolicy}>
           {COPYYRIGHT}
         </CustomText>
@@ -226,12 +237,31 @@ export class RegisterUserScreen extends Component<{}, I_STATE> {
       <View style={styles.mainContainer}>
         {this.renderLogoComponent()}
         {this.renderBackArrowContainer()}
-        <ScrollView>
+
+        <ScrollView
+          contentContainerStyle = {{
+            flex: 1
+          }}
+        // style = {{
+        //   flex: 1
+        // }}
+        // contentContainerStyle = {{
+        //   // paddingBottom: 20
+        // }}
+        >
           {this.renderSignUpForm()}
           {this.renderRegisterButton()}
           {this.renderCopyRightView()}
+          <View style = {{
+          //  bottom: 0,
+           justifyContent: 'flex-end',
+           flex: 1,
+          //  height: heightToDp('15%'),
+          }}>
+          {this.renderPagerView()}
+          </View>
+
         </ScrollView>
-        {this.renderPagerView()}
       </View>
     )
   }

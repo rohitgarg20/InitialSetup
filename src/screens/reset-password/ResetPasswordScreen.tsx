@@ -2,13 +2,14 @@ import { observer } from 'mobx-react'
 import React, { Component } from 'react'
 import { StyleSheet, TouchableOpacity, View } from 'react-native'
 import { map } from 'lodash'
-import { colors, fontDimens, strings } from '../../common'
+import { colors, fontDimens, fontDimensPer, strings } from '../../common'
 import { icons } from '../../common/icons'
 import { I_TEXT_FIELD } from '../../common/Interfaces'
 import { BackButtonComponent, CustomText, IconButtonWrapper, LogoComponent, OtpComponent, TextInputComponent } from '../../components'
 import { resetPasswordDataStore } from '../../store'
 import { KeyboardAwareScrollViewComponent } from '../../components/KeyboardAwareScrollViewComponent'
 import { navigateSimple } from '../../service'
+import { widthToDp } from '../../utils/Responsive'
 
 const styles = StyleSheet.create({
   mainContainer: {
@@ -37,18 +38,20 @@ const styles = StyleSheet.create({
     paddingTop: 40
   },
   heading: {
-    fontSize: fontDimens.big,
+    fontSize: widthToDp(fontDimensPer.large),
+    fontFamily: 'Poppins-SemiBold',
     color: colors.black,
     paddingBottom: 10,
-    lineHeight: 24,
+    // lineHeight: 24,
     fontWeight: '600'
   },
   content: {
-    fontSize: fontDimens.small,
+    fontSize: widthToDp(fontDimensPer.medium),
     color: colors.labelColor,
     paddingBottom: 20,
     lineHeight: 16,
-    fontWeight: '400'
+    fontWeight: '400',
+    fontFamily: 'Poppins-Regular',
   },
   signInButton: {
     // borderWidth: 1,
@@ -65,8 +68,11 @@ const styles = StyleSheet.create({
   },
   buttonLabel: {
     color: colors.white,
-    fontSize: fontDimens.normal,
-    lineHeight: 15
+    // fontSize: fontDimens.normal,
+    lineHeight: 15,
+    fontSize:  widthToDp(fontDimensPer.medium),
+    fontWeight: '400',
+    fontFamily: 'Poppins-Regular',
   }
 })
 

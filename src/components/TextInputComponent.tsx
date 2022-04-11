@@ -1,8 +1,9 @@
 import React, { Component } from 'react'
 import { Animated, Easing, StyleSheet, TextInput, TextInputProps, View } from 'react-native'
 import { CustomText, IconButtonWrapper } from '.'
-import { borderRadius, colors, fontDimens } from '../common'
+import { borderRadius, colors, fontDimens, fontDimensPer } from '../common'
 import { icons } from '../common/icons'
+import { widthToDp } from '../utils/Responsive'
 
 const styles = StyleSheet.create({
   inputContainer: {
@@ -20,7 +21,11 @@ const styles = StyleSheet.create({
     padding: 0,
     margin: 0,
     flex: 1,
-    color: colors.labelColor
+    color: colors.black,
+    fontSize:  widthToDp(fontDimensPer.medium),
+    fontWeight: '400',
+    fontFamily: 'Poppins-Regular',
+    lineHeight: 1.5 * widthToDp(fontDimensPer.medium)
   },
   labelContainer: {
     position: 'absolute',
@@ -29,14 +34,19 @@ const styles = StyleSheet.create({
     backgroundColor: colors.white
   },
   labelText: {
-    fontSize: fontDimens.normal,
-    // lineHeight: 34,
+    fontSize: widthToDp(fontDimensPer.small),
     color: colors.labelColor,
-    paddingHorizontal: 5
+    paddingHorizontal: 5,
+    fontWeight: '400',
+    fontFamily: 'Poppins-Regular',
   },
   errorMsg: {
     color: colors.red,
-    paddingVertical: 2
+    paddingVertical: 2,
+    fontWeight: '400',
+    fontFamily: 'Poppins-Regular',
+    fontSize: widthToDp(fontDimensPer.small),
+    paddingBottom: 5
   }
 })
 
@@ -158,7 +168,7 @@ export class TextInputComponent extends Component<IProps, IState> {
 
       }]}>
         <CustomText textStyle={{ ...styles.labelText,
-          color: labelColor
+          color: labelColor,
         }}
         useAnimatedText>{label}</CustomText>
       </Animated.View>

@@ -124,12 +124,15 @@ export class ResetPasswordDataStore implements RESPONSE_CALLBACKS {
   }
 
   onSuccess(apiId: string, response: any) {
+    log('onSuccessonSuccess', response,  get(response, 'response.code'))
     switch (apiId) {
       case API_IDS.SEND_OTP_EMAIL:
         this.updateOtpViewState(true)
         break
       case API_IDS.VERIFY_OTP:
-        // navigateSimple(undefined, '')
+        navigateSimple(undefined, 'SetPasswordScreen', {
+          code: get(response, 'response.code')
+        })
         break
       default:
         break

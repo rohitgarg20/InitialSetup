@@ -1,9 +1,10 @@
 import React, { PureComponent } from 'react'
 import { StyleSheet, TouchableOpacity, View } from 'react-native'
-import { colors, fontDimens, strings } from '../../common'
+import { colors, fontDimens, fontDimensPer, strings } from '../../common'
 import { BASE_URL, CARD_HEIGHT, EVENT_CARD_HEIGHT, POST_TYPES, USER_STATUS } from '../../common/constant'
 import { icons } from '../../common/icons'
-import { formatDate } from '../../utils/app-utils'
+import { capitalizeFirstLetterOnly, formatDate } from '../../utils/app-utils'
+import { widthToDp } from '../../utils/Responsive'
 import { CustomText } from '../CustomText'
 import { IconButtonWrapper } from '../IconButtonWrapper'
 import { ImageWithLoaderComponent } from '../ImageWithLoaderComponent'
@@ -19,7 +20,7 @@ const styles = StyleSheet.create({
     // flex: 10
   },
   iconContainer: {
-    flex: 2,
+    flex: 2.5,
     height: '100%',
     borderRadius: 8,
     borderWidth: 1,
@@ -45,30 +46,36 @@ const styles = StyleSheet.create({
     alignItems: 'center'
   },
   nameText: {
-    fontSize: fontDimens.medium,
-    lineHeight: 20,
+    // fontSize: fontDimens.medium,
+    // lineHeight: 20,
     fontWeight: '600',
-    color: colors.black
+    color: colors.black,
+    fontSize: widthToDp(fontDimensPer.large),
+    fontFamily: 'Poppins-SemiBold',
   },
   tagLine: {
-    fontSize: fontDimens.extraSmall,
-    lineHeight: 16,
+    // fontSize: fontDimens.extraSmall,
+    // lineHeight: 16,
     fontWeight: '400',
     color: colors.black,
-    paddingVertical: 2
+    // paddingVertical: 2,
+    fontSize: widthToDp(fontDimensPer.medium),
+    // lineHeight: 16,
+    fontFamily: 'Poppins-Regular',
   },
   date: {
-    fontSize: fontDimens.extraSmall,
-    lineHeight: 16,
+    fontSize: widthToDp(fontDimensPer.small),
+    // lineHeight: 16,
     fontWeight: '400',
     color: colors.lightBlue,
-    paddingBottom: 15
+    fontFamily: 'Poppins-Regular'
+    // paddingBottom: 15
   },
   description: {
-    fontSize: fontDimens.small,
-    lineHeight: 16,
+    fontSize: widthToDp(fontDimensPer.medium),
     fontWeight: '400',
-    color: colors.black
+    color: colors.black,
+    fontFamily: 'OpenSans-VariableFont_wdth,wght'
   },
   rowContainer: {
     flexDirection: 'row',
@@ -84,8 +91,10 @@ const styles = StyleSheet.create({
     marginRight: 5
   },
   userActive: {
-    fontSize: fontDimens.small,
-    color: colors.labelColor
+    fontSize: widthToDp(fontDimensPer.small),
+    color: colors.labelColor,
+    fontWeight: '400',
+    fontFamily: 'Poppins-Regular'
   }
 })
 
@@ -119,18 +128,18 @@ export class EventCardComponent extends PureComponent<IProps> {
 
   renderContentContainer = () => {
     const { name, tagline, description, startDate, category, authorName } = this.props
-    const subLabel = category === POST_TYPES.DISCUSSION_ROOM ? `by ${authorName}` : formatDate(startDate)
+    const subLabel = category === POST_TYPES.DISCUSSION_ROOM ? `by ${capitalizeFirstLetterOnly(authorName)}` : formatDate(startDate)
     return (
       <View style={styles.rowContainer}>
         <View style={styles.contentContainer}>
           <View>
-            <CustomText textStyle={styles.nameText} numberOfLines={1} ellipsizeMode={'tail'}>{name}</CustomText>
-            <CustomText textStyle={styles.tagLine} numberOfLines={1} ellipsizeMode={'tail'}>{tagline}</CustomText>
+            <CustomText textStyle={styles.nameText} numberOfLines={1} ellipsizeMode={'tail'}>{capitalizeFirstLetterOnly(name)}</CustomText>
+            <CustomText textStyle={styles.tagLine} numberOfLines={1} ellipsizeMode={'tail'}>{capitalizeFirstLetterOnly(tagline)}</CustomText>
             <CustomText textStyle={styles.date}>{subLabel}</CustomText>
           </View>
           <View>
             <CustomText numberOfLines={2} ellipsizeMode={'tail'} textStyle={styles.description}>
-              {description}
+              {capitalizeFirstLetterOnly(description)}
             </CustomText>
           </View>
         </View>

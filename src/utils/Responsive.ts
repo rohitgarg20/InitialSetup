@@ -1,4 +1,5 @@
 import { PixelRatio, Dimensions } from 'react-native'
+import { log } from '../config'
 
 const {
   width: SCREEN_WIDTH,
@@ -9,6 +10,7 @@ const {
 const widthToDp = widthNumber => {
   let width = typeof widthNumber === 'number' ? widthNumber : parseFloat(widthNumber)
   const value =  Math.round(PixelRatio.roundToNearestPixel(width * SCREEN_WIDTH) / 100)
+  log('valuevaluevaluevalue afterr', widthNumber,  value)
   return value
 }
 
@@ -22,3 +24,7 @@ export {
   widthToDp,
   heightToDp
 }
+
+// 16px means 4%
+// 14 px means 3.5%
+// 12 px means 3%

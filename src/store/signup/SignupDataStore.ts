@@ -7,6 +7,7 @@ import { BaseRequest, RESPONSE_CALLBACKS } from '../../http-layer'
 import { showAndroidToastMessage } from '../../utils/app-utils'
 import { get } from 'lodash'
 import { navigateSimple } from '../../service'
+import { emailIdValidator } from '../../utils/validator'
 
 const DEFAULT_SETTINGS = {
   formData: {
@@ -108,13 +109,50 @@ export class SignupDataStore implements RESPONSE_CALLBACKS {
       case FORM_KEYS.CONFIRM_PASSWORD:
         tempFormData[key] = {
           ...tempFormData[key],
-          [TEXT_FIELD_KEYS.INPUT_VALUE]: value
+          [TEXT_FIELD_KEYS.INPUT_VALUE]: value,
+          [TEXT_FIELD_KEYS.ERROR_MESSAGE]: ''
         }
         break
       default:
         break
     }
     this.updateFormData(tempFormData)
+  }
+
+  validateFormFields = () => {
+    const emailId = (this.formData[FORM_KEYS.EMAIL][TEXT_FIELD_KEYS.INPUT_VALUE] || '').trim()
+    const isEmailValid = emailIdValidator(emailId)
+    const username = (this.formData[FORM_KEYS.NAME][TEXT_FIELD_KEYS.INPUT_VALUE] || '').trim()
+    const isUserNameValid = username?.length > 2
+    const newPassword = this.formData[FORM_KEYS.PASSWORD][TEXT_FIELD_KEYS.INPUT_VALUE] || ''
+    const confirmPassword = this.formData[FORM_KEYS.CONFIRM_PASSWORD][TEXT_FIELD_KEYS.INPUT_VALUE] || ''
+    const isPasswordValid = newPassword?.length > 0 && newPassword === confirmPassword
+    if (isEmailValid && isUserNameValid && isPasswordValid) {
+      this.registerUser()
+    } else {
+      const tempFormData = { ...this.formData}
+      if (!isEmailValid) {
+        tempFormData[FORM_KEYS.EMAIL] = {
+          ...tempFormData[FORM_KEYS.EMAIL],
+          [TEXT_FIELD_KEYS.ERROR_MESSAGE]: strings.ERROR_MESSAGES.VALID_EMAIL_ID
+        }
+      } if (!isUserNameValid) {
+        tempFormData[FORM_KEYS.NAME] = {
+          ...tempFormData[FORM_KEYS.NAME],
+          [TEXT_FIELD_KEYS.ERROR_MESSAGE]: strings.ERROR_MESSAGES.INVALID_USERNAME
+        }
+      } if (!isPasswordValid) {
+        tempFormData[FORM_KEYS.PASSWORD] = {
+          ...tempFormData[FORM_KEYS.PASSWORD],
+          [TEXT_FIELD_KEYS.ERROR_MESSAGE]: strings.ERROR_MESSAGES.INAVALID_PASSWORD
+        }
+        tempFormData[FORM_KEYS.CONFIRM_PASSWORD] = {
+          ...tempFormData[FORM_KEYS.CONFIRM_PASSWORD],
+          [TEXT_FIELD_KEYS.ERROR_MESSAGE]: strings.ERROR_MESSAGES.INAVALID_PASSWORD
+        }
+      }
+      this.updateFormData(tempFormData)
+    }
   }
 
   registerUser = async () => {
@@ -133,6 +171,8 @@ export class SignupDataStore implements RESPONSE_CALLBACKS {
     await registerUserRequest.setRequestHeaders()
     await registerUserRequest.hitPostApi()
   }
+
+
 
   onSuccess(apiId: string, response: any) {
     switch (apiId) {

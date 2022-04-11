@@ -2,7 +2,7 @@ import { observer } from 'mobx-react'
 import React, { Component } from 'react'
 import { ActivityIndicator, StyleSheet, View } from 'react-native'
 import { get } from 'lodash'
-import { colors } from '../../common'
+import { colors, fontDimensPer } from '../../common'
 import { CARD_HEIGHT, FETCHING_ARR } from '../../common/constant'
 import { CustomText, EventCardComponent, FlatListWrapper, IconButtonWrapper, ShimmerComponent } from '../../components'
 import { eventsListStore } from '../../store'
@@ -11,6 +11,7 @@ import { HeaderCardComponent } from '../../components/HeaderCardComponent'
 import { TouchableOpacity } from 'react-native-gesture-handler'
 import { icons } from '../../common/icons'
 import { navigateSimple } from '../../service'
+import { widthToDp } from '../../utils/Responsive'
 
 const styles = StyleSheet.create({
   container: {
@@ -29,9 +30,13 @@ const styles = StyleSheet.create({
     alignItems: 'center'
   },
   subheadingStyle: {
-    fontSize: 16,
-    fontWeight: '700',
-    color: colors.black
+    // fontSize: 16,
+    // fontWeight: '700',
+    // color: colors.black,
+    fontSize: widthToDp(fontDimensPer.large),
+    fontWeight: '600',
+    color: colors.black,
+    fontFamily: 'Poppins-SemiBold',
   }
 
 })

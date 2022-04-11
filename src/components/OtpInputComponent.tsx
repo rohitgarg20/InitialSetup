@@ -1,10 +1,11 @@
 import React, { useEffect, useRef, useState } from 'react'
 import { Keyboard, StyleSheet, TextInput, View } from 'react-native'
-import { colors } from '../common'
+import { colors, fontDimensPer } from '../common'
 import { log } from '../config'
 import { isEmpty } from 'lodash'
 import { TouchableWithoutFeedback } from 'react-native-gesture-handler'
 import { isNumbers } from '../common/validator'
+import { widthToDp } from '../utils/Responsive'
 
 const styles = StyleSheet.create({
   mainContainer: {
@@ -19,6 +20,9 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'center',
     textAlign: 'center',
+    fontSize:  widthToDp(fontDimensPer.medium),
+    fontWeight: '400',
+    fontFamily: 'Poppins-Regular',
   },
   otpItemContainer: {
     // borderWidth: 1,

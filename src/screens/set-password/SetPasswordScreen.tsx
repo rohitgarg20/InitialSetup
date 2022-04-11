@@ -1,13 +1,15 @@
 import { observer } from 'mobx-react'
 import React, { Component } from 'react'
 import { Dimensions, ScrollView, StyleSheet, TouchableOpacity, View } from 'react-native'
-import { colors, fontDimens, strings } from '../../common'
+import { get } from 'lodash'
+import { colors, fontDimens, fontDimensPer, strings } from '../../common'
 import { FORM_KEYS } from '../../common/constant'
 import { icons } from '../../common/icons'
 import { ATLEAST_ONE_NUMBER_REGEX, ATLEAST_ONE_SPECIAL_CHAR_REGEX, ATLEAST_ONE_UPAR_CASE_REGEX, MIN_LENGTH } from '../../common/validator'
 import { BackButtonComponent, CustomText, IconButtonWrapper, LogoComponent, TextInputComponent } from '../../components'
 import { KeyboardAwareScrollViewComponent } from '../../components/KeyboardAwareScrollViewComponent'
 import { setPasswordDataStore } from '../../store'
+import { widthToDp } from '../../utils/Responsive'
 
 const styles = StyleSheet.create({
   centerView: {
@@ -50,8 +52,10 @@ const styles = StyleSheet.create({
   },
   descriptionText: {
     paddingLeft: 10,
-    fontSize: fontDimens.normal,
-    color: colors.grey
+    fontSize: widthToDp(fontDimensPer.small),
+    fontFamily: 'Poppins-Regular',
+    color: colors.grey,
+    fontWeight: '400'
   },
   signInButton: {
     // borderWidth: 1,
@@ -60,7 +64,8 @@ const styles = StyleSheet.create({
     paddingVertical: 10,
     borderRadius: 10,
     justifyContent: 'center',
-    alignItems: 'center'
+    alignItems: 'center',
+    minWidth: 90
   },
   buttonView: {
     alignItems: 'center',
@@ -68,20 +73,27 @@ const styles = StyleSheet.create({
   },
   buttonLabel: {
     color: colors.white,
-    fontSize: fontDimens.normal,
-    lineHeight: 15
+    // fontSize: fontDimens.normal,
+    // lineHeight: 15,
+    fontSize:  widthToDp(fontDimensPer.medium),
+    fontWeight: '400',
+    fontFamily: 'Poppins-Regular',
   },
   heading: {
-    fontSize: fontDimens.big,
-    lineHeight: 24,
+    fontSize: widthToDp(fontDimensPer.large),
+    fontFamily: 'Poppins-SemiBold',
+    // lineHeight: 24,
     fontWeight: '600',
     color: colors.black,
     paddingBottom: 16
   }
 })
 
+interface IProps {
+  route?: any
+}
 @observer
-export class SetPasswordScreen extends Component {
+export class SetPasswordScreen extends Component<IProps> {
 
   componentWillUnmount() {
     setPasswordDataStore.init()
@@ -235,16 +247,21 @@ export class SetPasswordScreen extends Component {
     )
   }
 
+  setPassword = () => {
+    const { route } = this.props
+    const { setNewPassword, isSubmitButtonDisabled } = setPasswordDataStore
+    setNewPassword(get(route, 'params.code', ''))
+  }
 
   renderSubmitButton = () => {
     const { PASSWORD_VALIDATIONS } = strings
     const { SUBMIT }  = PASSWORD_VALIDATIONS
-    const { setNewPassword, isSubmitButtonDisabled } = setPasswordDataStore
+    const { isSubmitButtonDisabled } = setPasswordDataStore
     return <View style = {styles.buttonView}>
       <TouchableOpacity style = {[styles.signInButton, {
         opacity: isSubmitButtonDisabled ? 0.5 : 1
       }]}
-      onPress = {setNewPassword}
+      onPress = {this.setPassword}
       disabled = {isSubmitButtonDisabled}
       >
         <CustomText textStyle={styles.buttonLabel}>

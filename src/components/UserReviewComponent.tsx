@@ -55,7 +55,7 @@ const styles = StyleSheet.create({
     lineHeight: 19,
     fontWeight: '600',
     color: colors.black,
-    paddingBottom: 15
+    // paddingBottom: 15
   }
 })
 
@@ -134,10 +134,11 @@ const userReviewComponent = (props: IProps) => {
 
   return (
     <View style = {{
-      flex: 1,
+      // flex: 1,
       width: getWidth() * 0.85,
       paddingLeft: 30,
-      paddingBottom: 10
+      paddingBottom: 10,
+      height: '100%'
     }}>
       <CustomText textStyle={styles.heading}>
         {heading}

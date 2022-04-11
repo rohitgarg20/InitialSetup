@@ -6,9 +6,10 @@ import { inject, observer } from 'mobx-react'
 import { FlatListWrapper } from './FlatListWrapper'
 import { CustomText } from './CustomText'
 import { IconButtonWrapper } from './IconButtonWrapper'
-import { colors } from '../common'
+import { colors, fontDimensPer } from '../common'
 import { OptionsData } from '../store/interfaces'
 import { log } from '../config'
+import { widthToDp } from '../utils/Responsive'
 
 const styles = StyleSheet.create({
   listItem: {
@@ -19,10 +20,10 @@ const styles = StyleSheet.create({
 
   },
   heading: {
-    fontSize: 12,
+    fontSize: widthToDp(fontDimensPer.small),
     color: colors.black,
     fontWeight: '400',
-    lineHeight: 12
+    fontFamily: 'Poppins-Regular',
   },
   subHeading: {
     fontSize: 14,
@@ -81,8 +82,8 @@ export class CommunityOptionsComponent extends PureComponent<Props, State> {
         <View>
           <IconButtonWrapper
             iconImage={icon}
-            iconWidth={16}
-            iconHeight={16}
+            iconWidth={20}
+            iconHeight={20}
             styling={iconStyle}
           />
         </View>

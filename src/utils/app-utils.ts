@@ -4,7 +4,11 @@ import { DAYS_NAME, MONTH_NAMES } from '../common/constant'
 import { log } from '../config'
 
 export const computeFontStyle = (textStyle) => {
-  // const fontFamilyFromProps = get(textStyle, 'fontFamily')
+  const fontSizeFromProps = get(textStyle, 'fontSize', 14)
+  textStyle = {
+    ...textStyle,
+    lineHeight: 1.5 * fontSizeFromProps
+  }
   // let fontFamilyToShow = ''
   // const fontWeight = get(textStyle, 'fontWeight', 400)
   // const fontWeightNumber = +fontWeight ? +fontWeight : fontWeight
@@ -147,3 +151,5 @@ export const isValidJSONString = (str) => {
 export const jsonParseData = (data) => isValidJSONString(data) ? JSON.parse(data) : null
 
 export const stringifyData = (data) => JSON.stringify(data)
+
+export const capitalizeFirstLetterOnly = (value) => value ? value.charAt(0).toUpperCase() + value.substr(1) : ''

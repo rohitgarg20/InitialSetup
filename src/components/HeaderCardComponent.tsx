@@ -110,13 +110,13 @@ export class HeaderCardComponent extends Component {
     const { username = '', picture = '' } = userInfoData || {}
     return (
       <View style={styles.userIcon}>
-       <UserAvatar
+      {username?.length > 0 && <UserAvatar
           size={'20'}
           imageStyle={[styles.withoutImageColor, { width: '80%', height: '80%' }]}
           showBorderRadius={true}
           name={username.toUpperCase()}
           src={`${BASE_URL}${picture}`}
-        />
+        />}
       </View>
     )
   }

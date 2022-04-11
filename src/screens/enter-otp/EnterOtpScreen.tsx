@@ -1,11 +1,12 @@
 import { observer } from 'mobx-react'
 import React, { Component } from 'react'
 import { ScrollView, StyleSheet, TouchableOpacity, View } from 'react-native'
-import { colors, fontDimens, strings } from '../../common'
+import { colors, fontDimens, fontDimensPer, strings } from '../../common'
 import { icons } from '../../common/icons'
 import { LogoComponent, BackButtonComponent, CustomText, OtpComponent, IconButtonWrapper } from '../../components'
 import { KeyboardAwareScrollViewComponent } from '../../components/KeyboardAwareScrollViewComponent'
 import { resetPasswordDataStore } from '../../store'
+import { widthToDp } from '../../utils/Responsive'
 
 interface IProps {
 
@@ -38,15 +39,19 @@ const styles = StyleSheet.create({
   },
   otpResendDescription: {
     color: colors.black,
-    fontSize: fontDimens.normal,
-    lineHeight: 21,
+    fontSize: widthToDp(fontDimensPer.large),
+    // lineHeight: 21,
     textAlign: 'center',
-    paddingHorizontal: 20
+    paddingHorizontal: 20,
+    fontWeight: '400',
+    fontFamily: 'Poppins-Regular',
   },
   otpNoReceived: {
     color: colors.black,
-    fontSize: fontDimens.small,
-    lineHeight: 15,
+    fontSize: widthToDp(fontDimensPer.small),
+    fontWeight: '400',
+    fontFamily: 'Poppins-Regular',
+    // lineHeight: 15,
     textAlign: 'center',
     paddingBottom: 20
   },
@@ -61,10 +66,13 @@ const styles = StyleSheet.create({
   },
   contactUsLabel: {
     color: colors.black,
-    fontSize: fontDimens.small,
-    lineHeight: 15,
+    // fontSize: fontDimens.small,
+    // lineHeight: 15,
     textAlign: 'center',
-    paddingLeft: 10
+    paddingLeft: 10,
+    fontSize: widthToDp(fontDimensPer.medium),
+    fontWeight: '400',
+    fontFamily: 'Poppins-Medium',
   },
   contactUsContainer: {
     alignItems: 'center'

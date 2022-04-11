@@ -2,7 +2,7 @@ import { observer } from 'mobx-react'
 import React, { Component } from 'react'
 import { KeyboardAvoidingView, ScrollView, StyleSheet, Text, View, TouchableOpacity } from 'react-native'
 import { map } from 'lodash'
-import { colors, fontDimens, fontWeight, strings } from '../../common'
+import { colors, fontDimens, fontDimensPer, fontWeight, strings } from '../../common'
 import { icons } from '../../common/icons'
 import { getHeight } from '../../common/scaling'
 import { CustomText, IconButtonWrapper, TextInputComponent } from '../../components'
@@ -10,6 +10,7 @@ import { loginDataStore } from '../../store'
 import { KeyboardAwareScrollViewComponent } from '../../components/KeyboardAwareScrollViewComponent'
 import { I_TEXT_FIELD } from '../../common/Interfaces'
 import { navigateSimple } from '../../service'
+import { widthToDp } from '../../utils/Responsive'
 
 
 const styles = StyleSheet.create({
@@ -24,16 +25,17 @@ const styles = StyleSheet.create({
     backgroundColor: colors.darkBlue
   },
   headingStyle: {
-    fontSize: fontDimens.extraLarge,
+    fontSize: widthToDp(fontDimensPer.large),
+    fontFamily: 'Poppins-SemiBold',
     color: colors.white,
-    lineHeight: 30,
     fontWeight: '600'
   },
   subHeading: {
-    fontSize: fontDimens.medium,
+    fontSize:  widthToDp(fontDimensPer.medium),
     color: colors.white,
-    lineHeight: 18,
-    fontWeight: '400'
+    // lineHeight: 18,
+    fontWeight: '400',
+    fontFamily: 'Poppins-Regular',
   },
   flexEnd: {
     paddingTop: 30,
@@ -52,11 +54,13 @@ const styles = StyleSheet.create({
     borderBottomWidth: 0
   },
   formHeading: {
+    fontSize: widthToDp(fontDimensPer.large),
+    fontFamily: 'Poppins-SemiBold',
     paddingBottom: 16,
     fontWeight: '600',
     color: colors.black,
-    fontSize: fontDimens.medium,
-    lineHeight: 18
+    // fontSize: fontDimens.medium,
+    // lineHeight: 18
   },
   fieldSeperator: {
     paddingBottom: 12
@@ -67,12 +71,17 @@ const styles = StyleSheet.create({
   },
   bottomButtonLabel: {
     color: colors.lightBlue,
-    fontSize: fontDimens.normal,
-    lineHeight: 20
+    // fontSize: fontDimens.normal,
+    // lineHeight: 20,
+    fontSize:  widthToDp(fontDimensPer.medium),
+    // color: colors.white,
+    // lineHeight: 18,
+    fontWeight: '400',
+    fontFamily: 'Poppins-Regular',
   },
   signInButton: {
     backgroundColor: colors.lightBlue,
-    paddingHorizontal: 15,
+    paddingHorizontal: 16,
     paddingVertical: 10,
     borderRadius: 10,
     justifyContent: 'center',
@@ -84,8 +93,12 @@ const styles = StyleSheet.create({
   },
   buttonLabel: {
     color: colors.white,
-    fontSize: fontDimens.normal,
-    lineHeight: 15
+    // fontSize: fontDimens.normal,
+    lineHeight: 1.5 * widthToDp(fontDimensPer.medium),
+    fontSize:  widthToDp(fontDimensPer.medium),
+    fontWeight: '400',
+    fontFamily: 'Poppins-Regular',
+
   },
   clickabkeText: {
     borderBottomColor: colors.lightBlue,
@@ -95,8 +108,14 @@ const styles = StyleSheet.create({
     color: colors.lightBlue,
   },
   termsAndPolicy: {
-    fontSize: fontDimens.medium,
-    lineHeight: 20
+    // fontSize: fontDimens.medium,
+    // lineHeight: 20,
+    fontSize:  widthToDp(fontDimensPer.small),
+    fontWeight: '300',
+    fontFamily: 'Poppins-Regular',
+  },
+  maxWidth: {
+    maxWidth: widthToDp('40%')
   }
 
 })
@@ -170,7 +189,7 @@ export class LoginScreen extends Component<IProps> {
   renderForgetPasswordView = () => {
     const { FORGET_PASSWORD } = strings.LOGIN_SCREEN
     return (
-      <TouchableOpacity onPress={this.navigateToResetPassword}>
+      <TouchableOpacity onPress={this.navigateToResetPassword} style = {styles.maxWidth}>
         <CustomText textStyle={styles.bottomButtonLabel}>{FORGET_PASSWORD}</CustomText>
       </TouchableOpacity>
     )
@@ -183,7 +202,7 @@ export class LoginScreen extends Component<IProps> {
   renderCreateAccountView = () => {
     const { CREATE_ACCOUNT } = strings.LOGIN_SCREEN
     return (
-      <TouchableOpacity onPress={this.navigateToRegister}>
+      <TouchableOpacity onPress={this.navigateToRegister} style = {styles.maxWidth}>
         <CustomText textStyle={styles.bottomButtonLabel}>{CREATE_ACCOUNT}</CustomText>
       </TouchableOpacity>
     )

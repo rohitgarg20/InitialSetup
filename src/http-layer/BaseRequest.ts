@@ -1,8 +1,8 @@
-import { BASE_URL } from './../common/constant';
-import { getAuthToken } from './../utils/auth-utils';
+import { BASE_URL } from './../common/constant'
+import { getAuthToken } from './../utils/auth-utils'
 import Reactotron  from 'reactotron-react-native'
 import axios from 'axios'
-import { get } from 'lodash'
+import { get, isEmpty } from 'lodash'
 import { log } from '../config'
 import { hideLoader, showLoader } from '../service/LoaderDataService'
 export const  RESPONSE_CODE = {
@@ -56,7 +56,7 @@ export class BaseRequest {
       baseURL: this.baseUrl,
       timeout: this.timeOut,
       headers: this.reqHeaders,
-      withCredentials: true,
+      withCredentials: true
       // xsrfCookieName: '_csrf',
       // xsrfHeaderName: 'X-CSRFToken'
     })
@@ -102,7 +102,7 @@ export class BaseRequest {
       hideLoader()
       throw new Error('error while making api call')
     }
-}
+  }
 
 setRequestHeaders = async () => {
   const xsrfToken = await getAuthToken()
@@ -122,26 +122,30 @@ setRequestHeaders = async () => {
 }
 
 hitPostApi = async () => {
-  log('reqParamsreqParamsreqParamsreqParams', this.apiEndPoint)
-  const paramKeys = JSON.parse(this.params)
-  const urlParamKeys = []
-  let match
-  let index = 0
-  const regex = /:\w*/g
-  // tslint:disable-next-line:no-conditional-assignment
-  while (match = regex.exec(this.apiEndPoint)) {
-      urlParamKeys[index++] = match[0]
-  }
-  urlParamKeys.forEach(key => {
-    log('inside foreach loop', key)
-    let keyText = key.substring(1, key.length)
-    if (paramKeys.hasOwnProperty(keyText)) {
-      this.apiEndPoint = this.apiEndPoint.replace(key, paramKeys[keyText])
+  log('reqParamsreqParamsreqParamsreqParams', this.apiEndPoint, this.params)
+  if (!isEmpty(this.params)) {
+    const paramKeys = JSON.parse(this.params)
+    log('reqParamsreqParamsreqParamsreqParams', paramKeys)
 
-    } else {
-      throw new Error(keyText + ' not found')
+    const urlParamKeys = []
+    let match
+    let index = 0
+    const regex = /:\w*/g
+    // tslint:disable-next-line:no-conditional-assignment
+    while (match = regex.exec(this.apiEndPoint)) {
+      urlParamKeys[index++] = match[0]
     }
-  })
+    urlParamKeys.forEach(key => {
+      log('inside foreach loop', key)
+      let keyText = key.substring(1, key.length)
+      if (paramKeys.hasOwnProperty(keyText)) {
+        this.apiEndPoint = this.apiEndPoint.replace(key, paramKeys[keyText])
+
+      } else {
+        throw new Error(keyText + ' not found')
+      }
+    })
+  }
   showLoader()
 
   try {
@@ -158,26 +162,27 @@ hitPostApi = async () => {
 
 hitPutApi = async () => {
   log('reqParamsreqParamsreqParamsreqParams', this.apiEndPoint)
-
-  const paramKeys = JSON.parse(this.params)
-  const urlParamKeys = []
-  let match
-  let index = 0
-  const regex = /:\w*/g
-  // tslint:disable-next-line:no-conditional-assignment
-  while (match = regex.exec(this.apiEndPoint)) {
+  if (!isEmpty(this.params)) {
+    const paramKeys = JSON.parse(this.params)
+    const urlParamKeys = []
+    let match
+    let index = 0
+    const regex = /:\w*/g
+    // tslint:disable-next-line:no-conditional-assignment
+    while (match = regex.exec(this.apiEndPoint)) {
       urlParamKeys[index++] = match[0]
-  }
-  urlParamKeys.forEach(key => {
-    log('inside foreach loop', key)
-    let keyText = key.substring(1, key.length)
-    if (paramKeys.hasOwnProperty(keyText)) {
-      this.apiEndPoint = this.apiEndPoint.replace(key, paramKeys[keyText])
-
-    } else {
-      throw new Error(keyText + ' not found')
     }
-  })
+    urlParamKeys.forEach(key => {
+      log('inside foreach loop', key)
+      let keyText = key.substring(1, key.length)
+      if (paramKeys.hasOwnProperty(keyText)) {
+        this.apiEndPoint = this.apiEndPoint.replace(key, paramKeys[keyText])
+
+      } else {
+        throw new Error(keyText + ' not found')
+      }
+    })
+  }
   showLoader()
 
 

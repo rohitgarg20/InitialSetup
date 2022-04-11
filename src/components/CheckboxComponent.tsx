@@ -1,8 +1,9 @@
 import React, { PureComponent } from 'react'
 import { View, TouchableOpacity, Image, StyleSheet } from 'react-native'
 import { RadioButtons } from '.'
-import { colors, fontDimens } from '../common'
+import { colors, fontDimens, fontDimensPer } from '../common'
 import { icons } from '../common/icons'
+import { widthToDp } from '../utils/Responsive'
 import { CustomText } from './CustomText'
 
 export const styles = StyleSheet.create({
@@ -26,9 +27,10 @@ export const styles = StyleSheet.create({
   },
   checkBoxTitle: {
     paddingLeft: 15,
-    fontSize: fontDimens.small,
     color: colors.black,
-    fontWeight: '400'
+    fontWeight: '400',
+    fontSize: widthToDp(fontDimensPer.small),
+    fontFamily: 'Poppins-Regular'
   },
   outerCircleStyle: {
     borderWidth: 2,

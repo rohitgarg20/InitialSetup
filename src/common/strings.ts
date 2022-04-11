@@ -47,7 +47,9 @@ export const strings = {
   ERROR_MESSAGES: {
     SOME_ERROR_OCCURED: 'Some error occured',
     VALID_EMAIL_ID: 'Please enter a valid email Id.',
-    ERR_MSG_INVALID_OTP: 'OTP must have length of 6'
+    ERR_MSG_INVALID_OTP: 'OTP must have length of 6',
+    INVALID_USERNAME: 'Please enter a valid user name',
+    INAVALID_PASSWORD: 'Please enter a valid password'
   },
   PASSWORD_VALIDATIONS: {
     NUMBERS: 'Password must contain numbers',

@@ -74,7 +74,7 @@ export class ViewPager extends Component<Props, State> {
           {
             pages.map((item, key) => {
               return(
-                <View key={key} style = {{ width: TOTAL_WIDTH, height: '100%' }}>
+                <View key={key} style = {{ width: TOTAL_WIDTH }}>
                   {item}
                 </View>
               )
@@ -105,7 +105,7 @@ export class ViewPager extends Component<Props, State> {
     }
     render() {
       return (
-        <View style = {{ flex: 1 }} >
+        <View style = {{ height: '100%' }} >
           {this.renderPagerComponent()}
           {this.renderDotIndicator()}
         </View>

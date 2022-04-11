@@ -5,7 +5,7 @@ export const API_END_POINTS = {
   REGISTER_USER: '/register',
   SEND_OTP_EMAIL: '/api/v3/app/reset',
   VERIFY_OTP: '/api/v3/app/verify',
-  SET_NEW_PASSWORD: '/api/v3/app/verify',
+  SET_NEW_PASSWORD: '/api/v3/app/resetpassword',
   GET_EVENTS_LIST: 'api/v3/app/events',
   GET_DISCUSSION_ROOM_LIST: '/api/v3/app/discussion_room',
   GET_NUDGES_LIST: '/api/v3/app/nudge',

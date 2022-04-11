@@ -26,6 +26,12 @@ const fontDimens = {
   extraLarge: 22
 }
 
+const fontDimensPer = {
+  small: '3%',
+  medium: '3.5%',
+  large: '4%'
+}
+
 const fontWeight = {
   regular: 'normal',
   bold: 'bold',
@@ -40,5 +46,6 @@ export {
   colors,
   fontDimens,
   fontWeight,
-  borderRadius
+  borderRadius,
+  fontDimensPer
 }
