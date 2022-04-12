@@ -276,7 +276,7 @@ export class RegisterUserScreen extends Component<IProps, I_STATE> {
           {this.renderCopyRightView()}
           <View style = {{
            justifyContent: 'flex-end',
-           height: '20%'
+           height: '23%'
           }}>
           {this.renderPagerView()}
           </View>
