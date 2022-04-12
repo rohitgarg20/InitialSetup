@@ -7,7 +7,8 @@ export const computeFontStyle = (textStyle) => {
   const fontSizeFromProps = get(textStyle, 'fontSize', 14)
   textStyle = {
     ...textStyle,
-    lineHeight: 1.5 * fontSizeFromProps
+    lineHeight: 1.4 * fontSizeFromProps,
+    minHeight:  1.4 * fontSizeFromProps
   }
   // let fontFamilyToShow = ''
   // const fontWeight = get(textStyle, 'fontWeight', 400)

@@ -1,5 +1,5 @@
 import React, { PureComponent } from 'react'
-import { StyleSheet, TouchableOpacity, View } from 'react-native'
+import { SafeAreaView, StyleSheet, Text, TouchableOpacity, View } from 'react-native'
 import { colors, fontDimens, fontDimensPer, strings } from '../../common'
 import { BASE_URL, CARD_HEIGHT, EVENT_CARD_HEIGHT, POST_TYPES, USER_STATUS } from '../../common/constant'
 import { icons } from '../../common/icons'
@@ -30,7 +30,8 @@ const styles = StyleSheet.create({
   contentContainer: {
     justifyContent: 'space-between',
     paddingHorizontal: 10,
-    backgroundColor: colors.white
+    backgroundColor: colors.white,
+    flex: 5
   },
   arrowContainer: {
     justifyContent: 'flex-end',
@@ -48,20 +49,27 @@ const styles = StyleSheet.create({
   nameText: {
     // fontSize: fontDimens.medium,
     // lineHeight: 20,
-    fontWeight: '600',
+      fontWeight: '600',
     color: colors.black,
     fontSize: widthToDp(fontDimensPer.large),
     fontFamily: 'Poppins-SemiBold',
+    fontStyle: 'normal',
+    // paddingBottom: 1
+
+    // backgroundColor: 'red',
+    // textAlignVertical: 'top',
   },
   tagLine: {
     // fontSize: fontDimens.extraSmall,
     // lineHeight: 16,
     fontWeight: '400',
+    // paddingBottom: 2,
     color: colors.black,
     // paddingVertical: 2,
     fontSize: widthToDp(fontDimensPer.medium),
     // lineHeight: 16,
     fontFamily: 'Poppins-Regular',
+    // flexShrink: 1
   },
   date: {
     fontSize: widthToDp(fontDimensPer.small),
@@ -130,7 +138,7 @@ export class EventCardComponent extends PureComponent<IProps> {
     const { name, tagline, description, startDate, category, authorName } = this.props
     const subLabel = category === POST_TYPES.DISCUSSION_ROOM ? `by ${capitalizeFirstLetterOnly(authorName)}` : formatDate(startDate)
     return (
-      <View style={styles.rowContainer}>
+      <SafeAreaView style={styles.rowContainer}>
         <View style={styles.contentContainer}>
           <View>
             <CustomText textStyle={styles.nameText} numberOfLines={1} ellipsizeMode={'tail'}>{capitalizeFirstLetterOnly(name)}</CustomText>
@@ -143,10 +151,12 @@ export class EventCardComponent extends PureComponent<IProps> {
             </CustomText>
           </View>
         </View>
-        <View>
+        <View style = {{
+          right: -15
+        }}>
           {this.renderUserStatus()}
         </View>
-      </View>
+      </SafeAreaView>
     )
   }
 
@@ -204,10 +214,11 @@ export class EventCardComponent extends PureComponent<IProps> {
   }
 
 
+
   render() {
     return (
       <>
-        {this.renderEventCard()}
+       {this.renderEventCard()}
       </>
     )
   }
