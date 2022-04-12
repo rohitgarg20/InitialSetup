@@ -11,6 +11,8 @@ import { KeyboardAwareScrollViewComponent } from '../../components/KeyboardAware
 import { I_TEXT_FIELD } from '../../common/Interfaces'
 import { navigateSimple } from '../../service'
 import { widthToDp } from '../../utils/Responsive'
+import { navigateToWebView, PRIVACY_POLICY_KEY, TERMS_OF_USE_KEY } from '../../common/constant'
+import { log } from '../../config'
 
 
 const styles = StyleSheet.create({
@@ -231,6 +233,20 @@ export class LoginScreen extends Component<IProps> {
     )
   }
 
+  navigateToWebViewScreen = (optionKey) => {
+    log('navigateToWebViewScreennavigateToWebViewScreen', optionKey)
+    switch (optionKey) {
+      case PRIVACY_POLICY_KEY:
+      case TERMS_OF_USE_KEY:
+        navigateToWebView({
+          navigation: this.props.navigation,
+          pageUrl: 'https://sdlms.deepthought.education'
+        })
+        break
+      default:
+    }
+  }
+
   renderCopyRightView = () => {
     const { COPYYRIGHT, TERMS_OF_USE, AND, APPLY, SERVICE_APPLY } = strings.LOGIN_SCREEN
     return (
@@ -239,7 +255,7 @@ export class LoginScreen extends Component<IProps> {
           {COPYYRIGHT}
         </CustomText>
         <View style = {styles.rowView}>
-          <TouchableOpacity style = {styles.clickabkeText}>
+          <TouchableOpacity style = {styles.clickabkeText} onPress = {() => this.navigateToWebViewScreen(TERMS_OF_USE_KEY)}>
             <CustomText textStyle={{...styles.clickableText, ...styles.termsAndPolicy }}>
               {TERMS_OF_USE}
             </CustomText>
@@ -247,7 +263,7 @@ export class LoginScreen extends Component<IProps> {
           <CustomText textStyle={styles.termsAndPolicy}>
             {AND}
           </CustomText>
-          <TouchableOpacity style = {styles.clickabkeText}>
+          <TouchableOpacity style = {styles.clickabkeText} onPress = {() => this.navigateToWebViewScreen(PRIVACY_POLICY_KEY)}>
             <CustomText textStyle={{...styles.clickableText, ...styles.termsAndPolicy }}>
               {SERVICE_APPLY}
             </CustomText>

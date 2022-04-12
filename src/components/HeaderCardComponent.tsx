@@ -3,11 +3,14 @@ import React, { Component } from 'react'
 import { StyleSheet, View } from 'react-native'
 import { TouchableOpacity } from 'react-native-gesture-handler'
 import { colors } from '../common'
-import { BASE_URL, HEADER_HEIGHT, OPTIONS_DATA_FOR_SELF_POST, USER_OPTIONS_LIST } from '../common/constant'
+import { BASE_URL, HEADER_HEIGHT, navigateToWebView, OPTIONS_DATA_FOR_SELF_POST, USER_KEYS, USER_OPTIONS_LIST } from '../common/constant'
 import { icons } from '../common/icons'
 import { getWidth } from '../common/scaling'
 import { log } from '../config'
-import { userDataStore } from '../store'
+import { STACK_NAMES } from '../navigator'
+import { setInititalStackName } from '../service'
+import { navigationDataStore, userDataStore } from '../store'
+import { handleSignOut } from '../utils/auth-utils'
 import { CustomText } from './CustomText'
 import { IconButtonWrapper } from './IconButtonWrapper'
 import { InfoToolTip } from './InfoToolTip'
@@ -92,6 +95,32 @@ export class HeaderCardComponent extends Component {
     this.toolTipRef = ref
   }
 
+  onClickPostOption = (optionKey) => {
+    const { VIEW_PROFILE, SETTINGS, MY_EVENTS, SAVED, SUPPORT, SIGN_OUT } = USER_KEYS
+
+    switch (optionKey) {
+      case VIEW_PROFILE:
+      case SETTINGS:
+      case MY_EVENTS:
+      case SAVED:
+      case SUPPORT:
+        navigateToWebView({
+          navigation: undefined,
+          pageUrl: 'https://sdlms.deepthought.education'
+        })
+        break
+      case SIGN_OUT:
+        handleSignOut()
+        navigationDataStore.setActiveTabName(undefined)
+        setInititalStackName(STACK_NAMES.LOGIN_STACK)
+        break
+      default:
+    }
+    if (this.toolTipRef) {
+      this.toolTipRef.toggleTooltip()
+    }
+  }
+
   renderOptionsListComponent = () => {
     const {  userInfoData } = userDataStore
     const { username = '', picture = '' } = userInfoData || {}
@@ -101,6 +130,7 @@ export class HeaderCardComponent extends Component {
         optionsList={USER_OPTIONS_LIST}
         username = {username}
         picture = {picture}
+        onClickListItem = {this.onClickPostOption}
       />
     )
   }
@@ -125,7 +155,7 @@ export class HeaderCardComponent extends Component {
     return (
       <InfoToolTip
         toolTipRef={(ref) => {
-          if (ref && this.toolTipRef) {
+          if (ref && !this.toolTipRef) {
             this.setToolTipRef(ref)
           }
         }}

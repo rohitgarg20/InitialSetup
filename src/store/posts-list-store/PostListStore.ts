@@ -1,4 +1,4 @@
-import { POST_KEYS } from './../../common/constant'
+import { navigateToWebView, POST_KEYS } from './../../common/constant'
 import Share  from 'react-native-share'
 import { INudgeListItem, IPostItem } from './../interfaces'
 import { action, makeObservable, observable } from 'mobx'
@@ -119,13 +119,20 @@ export class PostListStore implements RESPONSE_CALLBACKS {
   }
 
   onClickPostOption = (optionSelected, cardData) => {
-    const { SAVE, SHARE } = POST_KEYS
+    const { SAVE, SHARE, EDIT, REPOST } = POST_KEYS
     switch (optionSelected) {
       case SAVE:
         this.saveCurrentPost(cardData)
         break
       case SHARE:
         this.onClickShareVia()
+        break
+      case EDIT:
+      case REPOST:
+        navigateToWebView({
+          navigation: undefined,
+          pageUrl: 'https://sdlms.deepthought.education'
+        })
         break
       default:
     }

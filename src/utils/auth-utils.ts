@@ -30,5 +30,6 @@ export const storeUserInfoData = async (obj) => {
 
 export const getUserInfoData = async () => {
   const userInfo = JSON.parse(await AsyncStorage.getItem(PROFILE_KEY)) || {}
+  log('getUserInfoDatagetUserInfoData', userInfo)
   return userInfo
 }

@@ -71,6 +71,8 @@ export const strings = {
     BACK: 'Back'
   },
   REGISTER_SUCCESS: 'Registeration done for this event',
-  UNREGISTER_SUCCESS: 'You are successfully unregistered for this event'
+  UNREGISTER_SUCCESS: 'You are successfully unregistered for this event',
+  NO_BROWSER_AVAILABLE: 'No Browser Available',
+  NO_DETAILS: 'No Details Available'
 
 }

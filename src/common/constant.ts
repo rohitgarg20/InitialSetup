@@ -1,3 +1,4 @@
+import { navigateSimple } from '../service'
 import { icons } from './icons'
 export const REMOVE_LOG = false
 
@@ -243,3 +244,13 @@ export interface IFilterListItem{
 }
 
 export const HEADER_HEIGHT = 50
+
+export const TERMS_OF_USE_KEY = 'TERMS_OF_USE'
+export const PRIVACY_POLICY_KEY = 'PRIVACY_POLICY'
+
+
+export const navigateToWebView = ({ navigation = undefined, pageUrl }) => {
+  navigateSimple(navigation, 'WebViewPage', {
+    pageUrl
+  })
+}

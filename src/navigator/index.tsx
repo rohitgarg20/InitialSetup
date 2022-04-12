@@ -9,6 +9,8 @@ import { navigationDataStore } from '../store'
 import { getUserInfoData } from '../utils/auth-utils'
 import { loginStack } from './LoginStack'
 import { mainStack } from './MainStack'
+import { WebViewPage } from '../screens'
+import { log } from '../config'
 
 export const STACK_NAMES = {
   LOGIN_STACK: 'loginStack',
@@ -33,14 +35,14 @@ const rootStack = () => {
       }}>
         {currentStackName === STACK_NAMES.LOGIN_STACK && <Stack.Screen name ={'LoginStack'} component = {loginStack}/>}
         {currentStackName === STACK_NAMES.BOTTOM_TAB_BAR && <Stack.Screen name ={'BottomStack'} component = {mainStack}/>}
-
       </Stack.Navigator>
     </NavigationContainer>
   )
 }
 
 const routerGenerator = async (cb) => {
-  const userDetails = getUserInfoData()
+  const userDetails = await getUserInfoData()
+  log('userDetailsuserDetails', userDetails)
   if (!isEmpty(userDetails)) {
     const initialRoute =  await getScreenNameToNavigateToOnLogin()
     setInititalStackName(initialRoute)

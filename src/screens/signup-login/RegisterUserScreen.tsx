@@ -12,6 +12,7 @@ import { I_TEXT_FIELD } from '../../common/Interfaces'
 import { log } from '../../config'
 import { die } from 'mobx/dist/errors'
 import { heightToDp, widthToDp } from '../../utils/Responsive'
+import { navigateToWebView, PRIVACY_POLICY_KEY, TERMS_OF_USE_KEY } from '../../common/constant'
 
 const styles = StyleSheet.create({
   mainContainer: {
@@ -104,8 +105,12 @@ interface I_STATE {
   selectedPageIndex?: number
 }
 
+interface IProps {
+  navigation
+}
+
 @observer
-export class RegisterUserScreen extends Component<{}, I_STATE> {
+export class RegisterUserScreen extends Component<IProps, I_STATE> {
 
   state = {
     selectedPageIndex: 0
@@ -176,6 +181,20 @@ export class RegisterUserScreen extends Component<{}, I_STATE> {
     )
   }
 
+  navigateToWebViewScreen = (optionKey) => {
+    log('navigateToWebViewScreennavigateToWebViewScreen', optionKey)
+    switch (optionKey) {
+      case PRIVACY_POLICY_KEY:
+      case TERMS_OF_USE_KEY:
+        navigateToWebView({
+          navigation: this.props.navigation,
+          pageUrl: 'https://sdlms.deepthought.education'
+        })
+        break
+      default:
+    }
+  }
+
 
   renderCopyRightView = () => {
     const { COPYYRIGHT, TERMS_OF_USE, AND, APPLY, SERVICE_APPLY } = strings.LOGIN_SCREEN
@@ -185,7 +204,7 @@ export class RegisterUserScreen extends Component<{}, I_STATE> {
           {COPYYRIGHT}
         </CustomText>
         <View style={styles.rowView}>
-          <TouchableOpacity style={styles.clickabkeText}>
+          <TouchableOpacity style={styles.clickabkeText} onPress = {() => this.navigateToWebViewScreen(TERMS_OF_USE_KEY)}>
             <CustomText textStyle={{ ...styles.clickableText, ...styles.termsAndPolicy }}>
               {TERMS_OF_USE}
             </CustomText>
@@ -193,7 +212,7 @@ export class RegisterUserScreen extends Component<{}, I_STATE> {
           <CustomText textStyle={styles.termsAndPolicy}>
             {AND}
           </CustomText>
-          <TouchableOpacity style={styles.clickabkeText}>
+          <TouchableOpacity style={styles.clickabkeText} onPress = {() => this.navigateToWebViewScreen(PRIVACY_POLICY_KEY)}>
             <CustomText textStyle={{ ...styles.clickableText, ...styles.termsAndPolicy }}>
               {SERVICE_APPLY}
             </CustomText>

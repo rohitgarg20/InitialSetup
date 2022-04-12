@@ -341,8 +341,10 @@ export class PreferencesScreen extends Component<IProps> {
         <View style={styles.container}>
           <TouchableOpacity style={{
             position: 'absolute',
-            right: -28,
-            top: 10
+            right: -38,
+            top: 10,
+            zIndex: 1,
+            padding: 10
           }}
           onPress = {() => {
             genericDrawerStore.disableDrawer()
@@ -353,6 +355,7 @@ export class PreferencesScreen extends Component<IProps> {
               iconHeight={16}
               iconWidth={16}
               styling={{ tintColor: colors.white }}
+              submitFunction = {() => genericDrawerStore.disableDrawer()}
             />
           </TouchableOpacity>
           {this.renderPreferencesList()}

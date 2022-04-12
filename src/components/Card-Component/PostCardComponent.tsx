@@ -4,7 +4,7 @@ import  Share  from 'react-native-share'
 
 import { get } from 'lodash'
 import { colors, fontDimens, fontDimensPer } from '../../common'
-import { BASE_URL, FOOTER_KEYS, FOOTER_LIST_ITEMS, OPTIONS_DATA_FOR_OTHER_POST, OPTIONS_DATA_FOR_SELF_POST, POST_TYPES } from '../../common/constant'
+import { BASE_URL, FOOTER_KEYS, FOOTER_LIST_ITEMS, navigateToWebView, OPTIONS_DATA_FOR_OTHER_POST, OPTIONS_DATA_FOR_SELF_POST, POST_TYPES } from '../../common/constant'
 import { icons } from '../../common/icons'
 import { IPostItem, IUserObj } from '../../store/interfaces'
 import { capitalizeFirstLetterOnly, formatDate } from '../../utils/app-utils'
@@ -30,7 +30,7 @@ const styles = StyleSheet.create({
     // lineHeight: 18
   },
   aboutUser: {
-    fontSize: widthToDp(fontDimensPer.medium),
+    fontSize: widthToDp(fontDimensPer.small),
     // lineHeight: 16,
     color: colors.lightBlue,
     fontWeight: '400',
@@ -328,11 +328,27 @@ export default class PostCardComponent extends Component<IProps> {
     }
   }
 
+  onPressFooterItem = (key) => {
+    const { DISCUSSION, REFLECTION, THOUGHT_PROCESS, COMMENT } = FOOTER_KEYS
+    switch (key){
+      case DISCUSSION:
+      case REFLECTION:
+      case THOUGHT_PROCESS:
+      case COMMENT:
+        navigateToWebView({
+          navigation: undefined,
+          pageUrl: 'https://sdlms.deepthought.education'
+        })
+        break
+      default:
+    }
+  }
+
   renderFooterItem = (item) => {
     const { key, name, icon } = item
     const { buttonContainerStyle = {}, disabled } = this.getButtonStateByType(key)
     return (
-      <TouchableOpacity style={[styles.footerItem, buttonContainerStyle]} disabled = {disabled}>
+      <TouchableOpacity style={[styles.footerItem, buttonContainerStyle]} disabled = {disabled} onPress = {() => this.onPressFooterItem(key)} >
         <IconButtonWrapper
           iconImage={icon}
           iconHeight={20}
