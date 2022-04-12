@@ -55,7 +55,7 @@ const styles = StyleSheet.create({
     lineHeight: 19,
     fontWeight: '600',
     color: colors.black,
-    // paddingBottom: 15
+    paddingBottom: 5
   }
 })
 
@@ -124,8 +124,8 @@ const userReviewComponent = (props: IProps) => {
       <View style = {styles.iconContainer}>
         <IconButtonWrapper
           iconImage={icons.BRICK}
-          iconWidth = {44}
-          iconHeight = {60}
+          iconWidth = {50}
+          iconHeight = {80}
           imageResizeMode = {'cover'}
         />
       </View>
