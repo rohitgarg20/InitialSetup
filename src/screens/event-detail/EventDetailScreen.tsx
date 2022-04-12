@@ -1,16 +1,17 @@
 import { observer } from 'mobx-react'
 import React, { Component } from 'react'
 import { ActivityIndicator, StyleSheet, View, TouchableOpacity, ScrollView } from 'react-native'
-import { colors } from '../../common'
+import { colors, fontDimensPer } from '../../common'
 import { get } from 'lodash'
 import { icons } from '../../common/icons'
 import { BackButtonComponent, CustomText, IconButtonWrapper, ImageWithLoaderComponent, Loader, UserAvatar } from '../../components'
 import { HeaderCardComponent } from '../../components/HeaderCardComponent'
 import { eventDetailStore } from '../../store'
 import { IEventListItem } from '../../store/interfaces'
-import { formatDate, getFormattedTime } from '../../utils/app-utils'
+import { capitalizeFirstLetterOnly, formatDate, getFormattedTime } from '../../utils/app-utils'
 import { BASE_URL } from '../../common/constant'
 import { goBack } from '../../service'
+import { widthToDp } from '../../utils/Responsive'
 
 
 const styles = StyleSheet.create({
@@ -43,8 +44,9 @@ const styles = StyleSheet.create({
   },
   networkTitle: {
     color: colors.white,
-    fontSize: 20,
-    fontWeight: '600'
+    fontWeight: '600',
+    fontSize: widthToDp(fontDimensPer.extraLarge),
+    fontFamily: 'Poppins-SemiBold',
   },
   eventDateTimeContainer: {
     backgroundColor: colors.grey,
@@ -64,7 +66,10 @@ const styles = StyleSheet.create({
     flex: 1
   },
   userGrad: {
-    fontSize: 10,
+    fontSize: widthToDp(fontDimensPer.small),
+    fontWeight: '400',
+    fontFamily: 'Poppins-Regular',
+    // fontSize: 10,
     color: colors.black
   },
   registerBtn: {
@@ -92,33 +97,43 @@ const styles = StyleSheet.create({
     paddingRight: 20
   },
   eventDetailsHeading: {
-    fontSize: 14,
+    fontSize: widthToDp(fontDimensPer.large),
     color: colors.black,
-    fontWeight: '600'
+    fontWeight: '600',
+    fontFamily: 'Poppins-SemiBold',
   },
   eventDescription: {
-    fontSize: 12,
+    fontSize: widthToDp(fontDimensPer.small),
     color: colors.black,
-    lineHeight: 16
+    lineHeight: 16,
+    fontWeight: '400',
+    fontFamily: 'OpenSans-VariableFont_wdth,wght'
   },
   eventDateRow: {
     flexDirection: 'row',
     alignItems: 'center'
   },
   eventDateTimeTextStyle: {
-    fontSize: 10,
+    fontSize: widthToDp(fontDimensPer.small),
+    // lineHeight: 16,
+    fontWeight: '400',
+    fontFamily: 'OpenSans-VariableFont_wdth,wght',
     color: colors.black
   },
   userNameStyle: {
-    fontSize: 12,
+    fontSize: widthToDp(fontDimensPer.small),
+    fontFamily: 'Poppins-SemiBold',
     fontWeight: '600',
     color: colors.lightBlue,
     flexWrap: 'wrap'
   },
   userDescription: {
-    fontSize: 12,
+    // fontSize: 12,
     paddingTop: 13,
-    color: colors.black
+    color: colors.black,
+    fontSize: widthToDp(fontDimensPer.small),
+    fontWeight: '400',
+    fontFamily: 'Poppins-Regular',
   },
   registerBtnContainer: {
     flexDirection: 'row',
@@ -126,14 +141,17 @@ const styles = StyleSheet.create({
     paddingTop: 15
   },
   eventDetailsSubHeading: {
-    fontSize: 12,
+    fontSize: widthToDp(fontDimensPer.large),
+    color: colors.black,
     fontWeight: '600',
-    color: colors.black
+    fontFamily: 'Poppins-SemiBold',
+    paddingBottom: 10
   },
   eventDetailsDes: {
-    fontSize: 12,
+    fontSize: widthToDp(fontDimensPer.medium),
+    fontWeight: '400',
+    fontFamily: 'OpenSans-VariableFont_wdth,wght',
     color: colors.black,
-    lineHeight: 16
   },
   loaderContainer: {
     flex: 1,
@@ -150,6 +168,12 @@ const styles = StyleSheet.create({
   withoutImageColor: {
     backgroundColor: '#cccccc'
   },
+  registerButtonLabel: {
+    fontSize: widthToDp(fontDimensPer.medium),
+    color: colors.white,
+    fontWeight: '500',
+    fontFamily: 'Poppins-Medium',
+  }
 })
 
 interface IProps {
@@ -226,7 +250,9 @@ export class EventDetailScreen extends Component<IProps> {
                     transform: [{ rotate: '180deg' }]
                   }}
                 />
-                <CustomText textStyle={{ color: colors.white, fontSize: 12 }}>
+                <CustomText textStyle={{ color: colors.white,   fontSize: widthToDp(fontDimensPer.small),
+            fontWeight: '400',
+            fontFamily: 'Poppins-Regular', }}>
                   back
                 </CustomText>
               </TouchableOpacity>
@@ -306,12 +332,12 @@ export class EventDetailScreen extends Component<IProps> {
                   <View style={{ flexDirection: 'row', alignItems: 'center', flex: 1 }}>
                     {this.renderRoundedAvtar()}
                     <View style={{ flex: 1 }}>
-                      <CustomText textStyle={styles.userNameStyle}>{userName}</CustomText>
-                      <CustomText textStyle={styles.userGrad}>{signature}</CustomText>
+                      <CustomText textStyle={styles.userNameStyle}>{capitalizeFirstLetterOnly(userName)}</CustomText>
+                      <CustomText textStyle={styles.userGrad} numberOfLines = {2}>{signature}</CustomText>
                     </View>
 
                   </View>
-                  <CustomText textStyle={styles.userDescription}>
+                  <CustomText textStyle={styles.userDescription} numberOfLines = {3}>
                     {aboutme}
                   </CustomText>
 
@@ -319,7 +345,7 @@ export class EventDetailScreen extends Component<IProps> {
                 </View>
                 <View style={styles.registerBtnContainer}>
                   <TouchableOpacity style={styles.registerBtn} onPress = {registerEvent}>
-                    <CustomText textStyle={{ color: colors.white, fontSize: 12 }}>
+                    <CustomText textStyle={styles.registerButtonLabel}>
                       Register
                     </CustomText>
                   </TouchableOpacity>

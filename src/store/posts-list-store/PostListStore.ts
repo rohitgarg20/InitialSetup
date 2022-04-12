@@ -10,7 +10,7 @@ import { BaseRequest, RESPONSE_CALLBACKS } from '../../http-layer'
 import { showAndroidToastMessage, toDateTime } from '../../utils/app-utils'
 import { POST_TYPES } from '../../common/constant'
 import { SaveDataStore } from '../save-store'
-import { userDataStore } from '..'
+import { preferencesDataStore, userDataStore } from '..'
 
 const PAGE_SIZE = 10
 
@@ -44,17 +44,28 @@ export class PostListStore implements RESPONSE_CALLBACKS {
     this.isFetching = value
   }
 
+  @action
+  resetDataAndHitApi = () => {
+    this.updateFetchingStatus(true)
+    this.postsData = {
+      ...DEFAULT_SETTINGS.postsData
+    }
+    this.getPostsListData()
+  }
 
   getPostsListData = async () => {
-
+    const filterParams  = preferencesDataStore.getApiRequestParams()
+    let urlParams: any = {
+      limit: PAGE_SIZE,
+      page: get(this.postsData, 'current_page', 0) + 1,
+      ...filterParams
+    }
+    log('urlParamsurlParamsurlParams', urlParams)
     const loginUser = new BaseRequest(this, {
       methodType: 'GET',
       apiEndPoint: API_END_POINTS.GET_ALL_POSTS,
       apiId: API_IDS.GET_ALL_POSTS,
-      urlParams: {
-        limit: PAGE_SIZE,
-        page: get(this.postsData, 'current_page', 0) + 1
-      }
+      urlParams
     })
     await loginUser.setRequestHeaders()
     await loginUser.hitGetApi()
@@ -71,7 +82,7 @@ export class PostListStore implements RESPONSE_CALLBACKS {
       const attachmentType = get(post, 'attachment.type', '')
       const discussionRoomLink = get(post, 'attachment.link', '')
       const userIdOfPost = get(post, 'uid', '')
-      log('constructPostsListScreenconstructPostsListScreen', userIdOfPost, loggedInUserId)
+      // log('constructPostsListScreenconstructPostsListScreen', userIdOfPost, loggedInUserId)
       return {
         ...post,
         postDate: toDateTime(get(post, 'timestamp')),
@@ -168,9 +179,12 @@ export class PostListStore implements RESPONSE_CALLBACKS {
   }
   onFailure(apiId: string, error: any) {
     log('onFailureonFailureonFailure', error)
+    const errMsg = get(error, 'data.status.message',  strings.ERROR_MESSAGES.SOME_ERROR_OCCURED)
+    const displayMsg = typeof errMsg === 'string' ? errMsg : strings.ERROR_MESSAGES.SOME_ERROR_OCCURED
+
     switch (apiId) {
       case API_IDS.GET_ALL_POSTS:
-        showAndroidToastMessage(get(error, 'data', strings.ERROR_MESSAGES.SOME_ERROR_OCCURED))
+        showAndroidToastMessage(displayMsg)
         this.updateFetchingStatus(false)
 
         break

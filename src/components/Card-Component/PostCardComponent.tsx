@@ -431,7 +431,7 @@ export default class PostCardComponent extends Component<IProps> {
   renderOptionsListComponent = () => {
     const { postData } = this.props
     const  { isPostByLoggedInUser = false } = postData
-    log('isPostByLoggedInUserisPostByLoggedInUser', isPostByLoggedInUser)
+    // log('isPostByLoggedInUserisPostByLoggedInUser', isPostByLoggedInUser)
     return (
       <CommunityOptionsComponent
         optionsList={isPostByLoggedInUser ? OPTIONS_DATA_FOR_SELF_POST : OPTIONS_DATA_FOR_OTHER_POST}

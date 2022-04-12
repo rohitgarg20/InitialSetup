@@ -29,7 +29,8 @@ const fontDimens = {
 const fontDimensPer = {
   small: '3%',
   medium: '3.5%',
-  large: '4%'
+  large: '4%',
+  extraLarge: '5%'
 }
 
 const fontWeight = {

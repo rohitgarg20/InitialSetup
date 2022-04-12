@@ -58,7 +58,6 @@ const bottomTabBarComponent = ({ state, descriptors, navigation, insets }) => {
   const onPressTabItem = (stackName, tabName) => {
     if (tabName === TAB_KEYS.PREFERENCES_TAB) {
       genericDrawerStore.enableDrawer()
-      genericDrawerStore.setRenderingComponent(<PreferencesScreen navigation={navigation}/>)
     } else {
       navigationDataStore.setActiveTabName(stackName)
       navigation.navigate(tabName)

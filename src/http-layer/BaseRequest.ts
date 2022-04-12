@@ -2,7 +2,7 @@ import { BASE_URL } from './../common/constant'
 import { getAuthToken } from './../utils/auth-utils'
 import Reactotron  from 'reactotron-react-native'
 import axios from 'axios'
-import { get, isEmpty } from 'lodash'
+import { get, isEmpty, isArray, forOwn } from 'lodash'
 import { log } from '../config'
 import { hideLoader, showLoader } from '../service/LoaderDataService'
 export const  RESPONSE_CODE = {
@@ -33,6 +33,32 @@ const DEFAULT_SETTING = {
   reqParams: {},
   promisify: false,
   params: {}
+}
+
+const isObject = obj => typeof obj === 'object'
+const toFixed = (num, decimalPlaces = 2) =>
+  num % 1 !== 0 ? +num.toFixed(decimalPlaces) : num
+function sanitizeNumerals(obj, updater = toFixed) {
+  if (obj) {
+    if (isArray(obj)) {
+      return obj.map(item => sanitizeNumerals(item, updater))
+    } else if (typeof obj === 'object') {
+      const primitiveNumberKeys = []
+      forOwn(obj, (value, key) => {
+        if (typeof value === 'number') {
+
+          primitiveNumberKeys.push(key)
+        } else if (isArray(value) || isObject(value)) {
+          obj[key] = sanitizeNumerals(obj[key], updater)
+        }
+      })
+      primitiveNumberKeys.forEach(key => {
+        obj[key] = updater(obj[key])
+      })
+      return obj
+    }
+    return obj
+  }
 }
 
 export class BaseRequest {
@@ -87,6 +113,8 @@ export class BaseRequest {
     }
   }
 
+
+
   hitGetApi = async () => {
     try {
       const formattedGetParams = Object.keys(this.urlParams).map((key) => `${key}=${this.urlParams[key]}`).join('&')
@@ -97,10 +125,10 @@ export class BaseRequest {
         this.setApiSuccessResponse(response)
         hideLoader()
       }
-    } catch (err) {
+    } catch (err: any) {
       Reactotron.log('error is', err)
       hideLoader()
-      throw new Error('error while making api call')
+      this.context.onFailure(this.apiId, err.response || '')
     }
   }
 
@@ -147,11 +175,15 @@ hitPostApi = async () => {
     })
   }
   showLoader()
-
+  const formattedUrlParams = Object.keys(this.urlParams).map((key) => `${key}=${this.urlParams[key]}`).join('&')
   try {
-    const response = await this.axiosInstance.post(this.apiEndPoint, this.reqParams,  { headers: this.reqHeaders })
-    this.setApiSuccessResponse(response)
-    hideLoader()
+    if (this.promisify) {
+      return  await this.axiosInstance.post(`${this.apiEndPoint}?${formattedUrlParams}`, this.reqParams, { headers: this.reqHeaders })
+    } else {
+      const response = await this.axiosInstance.post(`${this.apiEndPoint}?${formattedUrlParams}`, this.reqParams,  { headers: this.reqHeaders })
+      this.setApiSuccessResponse(response)
+      hideLoader()
+    }
 
   } catch (err: any) {
     hideLoader()
@@ -185,11 +217,15 @@ hitPutApi = async () => {
   }
   showLoader()
 
-
+  const formattedUrlParams = Object.keys(this.urlParams).map((key) => `${key}=${this.urlParams[key]}`).join('&')
   try {
-    const response = await this.axiosInstance.put(this.apiEndPoint, this.reqParams,  { headers: this.reqHeaders })
-    this.setApiSuccessResponse(response)
-    hideLoader()
+    if (this.promisify) {
+      return  await this.axiosInstance.put(`${this.apiEndPoint}?${formattedUrlParams}`, this.reqParams, { headers: this.reqHeaders })
+    } else {
+      const response = await this.axiosInstance.put(`${this.apiEndPoint}?${formattedUrlParams}`, this.reqParams,  { headers: this.reqHeaders, data: this.reqParams })
+      this.setApiSuccessResponse(response)
+      hideLoader()
+    }
 
   } catch (err: any) {
     hideLoader()

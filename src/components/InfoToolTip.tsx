@@ -144,7 +144,7 @@ export class InfoToolTip extends Component<Props, State> {
       <Tooltip
         ref={(ref) => {
           if (ref && toolTipRef) {
-            log('inside ref function')
+            // log('inside ref function')
             toolTipRef(ref)
           }
         }

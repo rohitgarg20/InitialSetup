@@ -17,7 +17,7 @@ const styles = StyleSheet.create({
     top: 0,
     left: 0,
     right: 0,
-    bottom: 0,
+    bottom: 0
   },
   categoryNameContainer: {
     width: '100%',
@@ -33,7 +33,7 @@ const styles = StyleSheet.create({
     fontWeight: '700',
     color: colors.white,
     fontSize: widthToDp(fontDimensPer.large),
-    fontFamily: 'Poppins-SemiBold',
+    fontFamily: 'Poppins-SemiBold'
   },
   categoryContainer: {
     // borderWidth: 0,
@@ -78,7 +78,7 @@ const styles = StyleSheet.create({
     minWidth: 70,
     paddingVertical: 6,
     justifyContent: 'center',
-    alignItems: 'center',
+    alignItems: 'center'
 
   },
   btnResetText: {
@@ -110,6 +110,7 @@ const styles = StyleSheet.create({
 
 interface IProps {
   navigation?: any
+  onPressApplyFilter?: () => void
 }
 @observer
 export class PreferencesScreen extends Component<IProps> {
@@ -125,7 +126,6 @@ export class PreferencesScreen extends Component<IProps> {
   // }
 
 
-
   screenFocusListener
   screenBlurListener
 
@@ -139,7 +139,7 @@ export class PreferencesScreen extends Component<IProps> {
 
   handleBackPressed = () => {
     log('onBackPressedonBackPressedonBackPressed')
-    genericDrawerStore.disableDrawer()
+    genericDrawerStore.disableDrawer(false)
     return true
   }
 
@@ -271,7 +271,6 @@ export class PreferencesScreen extends Component<IProps> {
   }
 
 
-
   renderItemListWithCheckbox = (item, index) => {
     const { updateFilterDataOnPress } = preferencesDataStore
     return (
@@ -320,13 +319,17 @@ export class PreferencesScreen extends Component<IProps> {
   }
 
   onPressApplyButton = () => {
-    const { checkIsCurrentSelectedAndPreviousSelectedFiltersSame, setPreviousSelectedFilterList, preferencesListData } = preferencesDataStore
+    const { checkIsCurrentSelectedAndPreviousSelectedFiltersSame, setPreviousSelectedFilterList,
+      preferencesListData, saveUserPreferences  } = preferencesDataStore
     const isCurrentFilterSameAsPrevious = checkIsCurrentSelectedAndPreviousSelectedFiltersSame()
+    const { onPressApplyFilter } = this.props
     if (!isCurrentFilterSameAsPrevious) {
       setPreviousSelectedFilterList()
+      onPressApplyFilter()
+      saveUserPreferences()
     }
     log('preferencesListDatapreferencesListData', preferencesListData)
-    genericDrawerStore.disableDrawer()
+    genericDrawerStore.disableDrawer(false)
 
   }
 
@@ -347,7 +350,7 @@ export class PreferencesScreen extends Component<IProps> {
             padding: 10
           }}
           onPress = {() => {
-            genericDrawerStore.disableDrawer()
+            genericDrawerStore.disableDrawer(false)
           }}
           >
             <IconButtonWrapper
@@ -355,7 +358,7 @@ export class PreferencesScreen extends Component<IProps> {
               iconHeight={16}
               iconWidth={16}
               styling={{ tintColor: colors.white }}
-              submitFunction = {() => genericDrawerStore.disableDrawer()}
+              submitFunction = {() => genericDrawerStore.disableDrawer(false)}
             />
           </TouchableOpacity>
           {this.renderPreferencesList()}

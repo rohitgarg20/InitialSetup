@@ -116,12 +116,12 @@ export class EventRoomDetailStore implements RESPONSE_CALLBACKS {
   constructEventDetailData = (responseData) => {
     const { _id = '',  _key = '',  attendees = [], description = '', category = '', image = '', name = '',  schedule = 0,
       tagline = '', viewcount, moderator_data = {}, tid = 0, description_1 = '', description_2 = '',
-      field_1 = '', field_2 = '' } = responseData || {}
+      field_1 = '', field_2 = '', type } = responseData || {}
     const formattedData: IEventListItem = {
       _id,
       _key,
       description,
-      category,
+      category: type,
       image,
       name,
       schedule,

@@ -21,7 +21,7 @@ export class CustomText extends Component<Props> {
   render() {
     const { children = '', text = '', textStyle = {}, useAnimatedText = false, ...restProps } = this.props
     const style = computeFontStyle(textStyle)
-    log('computeFontStylecomputeFontStylecomputeFontStyle', style, children)
+    // log('computeFontStylecomputeFontStylecomputeFontStyle', style, children)
 
     if (isEmpty(text) && !isNumber(text) && isEmpty(children) && !isNumber(children)) {
       return null

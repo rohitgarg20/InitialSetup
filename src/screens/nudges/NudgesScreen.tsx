@@ -8,9 +8,10 @@ import { icons } from '../../common/icons'
 import { CustomText, FlatListWrapper, IconButtonWrapper, ImageWithLoaderComponent, ShimmerComponent } from '../../components'
 import { HeaderCardComponent } from '../../components/HeaderCardComponent'
 import { log } from '../../config'
-import { nudgesListDataStore } from '../../store'
+import { genericDrawerStore, nudgesListDataStore } from '../../store'
 import { INudgeListItem } from '../../store/interfaces'
 import { widthToDp } from '../../utils/Responsive'
+import { PreferencesScreen } from '../preferences/PreferencesScreen'
 
 const PADDING_HORIZONTAL = 20
 const PADDING_VERTIACAL = 10
@@ -92,19 +93,30 @@ const styles = StyleSheet.create({
   }
 })
 
+interface IProps {
+  navigation?: any
+}
 @observer
-export class NudgesScreen extends Component {
+export class NudgesScreen extends Component<IProps> {
   swiper
   constructor(props, state) {
     super(props, state)
     nudgesListDataStore.updateFetchingStatus(true)
   }
 
+  onPressApplyFilter = () => {
+
+    nudgesListDataStore.resetDataAndHitApi()
+  }
   componentDidMount() {
+    const { navigation } = this.props
     nudgesListDataStore.getNudgesListData()
+    genericDrawerStore.setRenderingComponent(<PreferencesScreen navigation={navigation} onPressApplyFilter = {this.onPressApplyFilter}/>)
+
   }
 
   componentWillUnmount() {
+    genericDrawerStore.clearData()
     nudgesListDataStore.init()
   }
 

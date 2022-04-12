@@ -7,6 +7,7 @@ import { log } from '../../config'
 import { BaseRequest, RESPONSE_CALLBACKS } from '../../http-layer'
 import { showAndroidToastMessage, toDateTime } from '../../utils/app-utils'
 import { SaveDataStore } from '../save-store'
+import { preferencesDataStore } from '..'
 
 const PAGE_SIZE = 10
 
@@ -37,6 +38,15 @@ export class NudgesListStore implements RESPONSE_CALLBACKS {
     Object.keys(DEFAULT_SETTINGS).forEach((key) => (this[key] = DEFAULT_SETTINGS[key]))
   }
 
+  @action
+  resetDataAndHitApi = () => {
+    this.updateFetchingStatus(true)
+    this.nudgesData = {
+      ...DEFAULT_SETTINGS.nudgesData
+    }
+    this.getNudgesListData()
+  }
+
 
   updateFetchingStatus = (value) => {
     this.isFetching = value
@@ -44,6 +54,7 @@ export class NudgesListStore implements RESPONSE_CALLBACKS {
 
 
   getNudgesListData = async () => {
+    const filterParams = preferencesDataStore.getApiRequestParams()
 
     const loginUser = new BaseRequest(this, {
       methodType: 'GET',
@@ -53,6 +64,7 @@ export class NudgesListStore implements RESPONSE_CALLBACKS {
         // type: 'latest',
         // limit: PAGE_SIZE,
         // page: get(this.discussionRoomData, 'current_page', 0) + 1
+        ...filterParams
       }
     })
     await loginUser.setRequestHeaders()
@@ -88,7 +100,7 @@ export class NudgesListStore implements RESPONSE_CALLBACKS {
 
   @computed
   get currentNudgeData() {
-    log('currentNudgeDatacurrentNudgeData', this.currentNudeIndex, get(this.nudgesData, `[${this.currentNudeIndex}]`, {}))
+    // log('currentNudgeDatacurrentNudgeData', this.currentNudeIndex, get(this.nudgesData, `[${this.currentNudeIndex}]`, {}))
     return get(this.nudgesData, `nudgesList.[${this.currentNudeIndex}]`, {})
   }
 
@@ -126,9 +138,11 @@ export class NudgesListStore implements RESPONSE_CALLBACKS {
   }
   onFailure(apiId: string, error: any) {
     log('onFailureonFailureonFailure', error)
+    const errMsg = get(error, 'data.status.message',  strings.ERROR_MESSAGES.SOME_ERROR_OCCURED)
+    const displayMsg = typeof errMsg === 'string' ? errMsg : strings.ERROR_MESSAGES.SOME_ERROR_OCCURED
     switch (apiId) {
       case API_IDS.GET_NUDGES_LIST:
-        showAndroidToastMessage(get(error, 'data', strings.ERROR_MESSAGES.SOME_ERROR_OCCURED))
+        showAndroidToastMessage(displayMsg)
         this.updateFetchingStatus(false)
 
         break

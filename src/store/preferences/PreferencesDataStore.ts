@@ -75,11 +75,11 @@ export class PreferencesDataStore implements RESPONSE_CALLBACKS {
       })
       const categoryData = get(userCategoryList, 'category', {})
       const categoryListData =  get(response, '[1].data.response', [])
-      log('categoryListDatacategoryListData', userCategoryList, categoryData)
+      // log('categoryListDatacategoryListData', userCategoryList, categoryData)
       formattedListData = categoryListData.map((category) => {
         const { name = '', cid = '', sub_categories = [] } = category || {}
         const selectedCategoryUserData = categoryData.preferences.find((item) => get(item, 'cid') === cid) || {}
-        log('selectedCategoryUserDataselectedCategoryUserData', selectedCategoryUserData)
+        // log('selectedCategoryUserDataselectedCategoryUserData', selectedCategoryUserData)
         const selectedSubCatList = get(selectedCategoryUserData, 'sub_categories', [])
         let selectedCid = []
         const formatedSubCategory: IFilterItems[] = sub_categories.map((item) => {
@@ -289,6 +289,87 @@ export class PreferencesDataStore implements RESPONSE_CALLBACKS {
     })
     this.setPreferencesListData(tempPreferencesData)
 
+  }
+
+  getPreferencesParamsList = () => {
+    log('getPreferencesParamsListgetPreferencesParamsList', this.preferencesListData)
+    let reqParams = []
+    let sortByParam = ''
+    this.preferencesListData.forEach(category => {
+      const { filterId, currentSelectedFilterValues = [] } = category || {}
+      let selectedSubIds = []
+      if (filterId === 'sortBy') {
+        sortByParam = get(currentSelectedFilterValues, '[0].id', '')
+      } else {
+        currentSelectedFilterValues.forEach(selectedSubItem => {
+          const { id } = selectedSubItem || {}
+          selectedSubIds.push(id)
+        })
+        if (selectedSubIds?.length > 0) {
+          reqParams.push({
+            cid: filterId,
+            sub_cids: selectedSubIds
+          })
+        }
+      }
+    })
+    log('reqParamsreqParamsreqParams', reqParams)
+
+    return {
+      preferences: reqParams,
+      sortByParam
+    }
+  }
+
+  getApiRequestParams = () => {
+    const { preferences = [], sortByParam = ''  } = this.getPreferencesParamsList()
+    let queryParam = ''
+    preferences.forEach((selectedCat) => {
+      const { cid , sub_cids } = selectedCat || {}
+      let subCidsQueryParams = ''
+      subCidsQueryParams = sub_cids.map((subId) => `sub_cid=${subId}`).join('&')
+      if (subCidsQueryParams?.length > 0) {
+        if (queryParam.length > 0) {
+          queryParam = queryParam + `&cid=${cid}&${subCidsQueryParams}`
+        } else {
+          queryParam = `${cid}&${subCidsQueryParams}`
+        }
+      }
+    })
+    let urlParams: any = {}
+    if (queryParam?.length > 0) {
+      urlParams = {
+        ...urlParams,
+        cid: queryParam
+      }
+    }
+    if (sortByParam?.length > 0) {
+      urlParams = {
+        ...urlParams,
+        type: sortByParam
+      }
+    }
+    return urlParams
+  }
+
+  saveUserPreferences = async () => {
+    const { preferences,  sortByParam = 'none' } = this.getPreferencesParamsList()
+    log('saveUserPreferencessaveUserPreferences', sortByParam)
+    const loginUser = new BaseRequest(this, {
+      methodType: 'PUT',
+      apiEndPoint: API_END_POINTS.SAVE_USER_PREFERENCES,
+      apiId: API_IDS.SAVE_USER_PREFERENCES,
+      reqParams: {
+        preferences
+      },
+      urlParams: {
+        sortBy: sortByParam?.length > 0 ? sortByParam : 'none'
+        // limit: PAGE_SIZE,
+        // page: get(this.postsData, 'current_page', 0) + 1
+      }
+    })
+    await loginUser.setRequestHeaders()
+    await loginUser.hitPutApi()
   }
 
 

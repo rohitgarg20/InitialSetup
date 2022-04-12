@@ -5,12 +5,13 @@ import { get } from 'lodash'
 import { colors, fontDimensPer } from '../../common'
 import { CARD_HEIGHT, FETCHING_ARR } from '../../common/constant'
 import { CustomText, EventCardComponent, FlatListWrapper, IconButtonWrapper, ShimmerComponent } from '../../components'
-import { discussionRoomListStore } from '../../store'
+import { discussionRoomListStore, genericDrawerStore } from '../../store'
 import { IEventListItem } from '../../store/interfaces'
 import { HeaderCardComponent } from '../../components/HeaderCardComponent'
 import { icons } from '../../common/icons'
 import { navigateSimple } from '../../service'
 import { widthToDp } from '../../utils/Responsive'
+import { PreferencesScreen } from '../preferences/PreferencesScreen'
 
 const styles = StyleSheet.create({
   container: {
@@ -48,11 +49,17 @@ export class DiscussionRoomListScreen extends Component<IProps> {
     discussionRoomListStore.updateFetchingStatus(true)
   }
 
+  onPressApplyFilter = () => {
+    discussionRoomListStore.resetDataAndHitApi()
+  }
+
   componentDidMount() {
     discussionRoomListStore.getDiscussionRoomsListData()
+    genericDrawerStore.setRenderingComponent(<PreferencesScreen navigation={this.props.navigation} onPressApplyFilter = {this.onPressApplyFilter}/>)
   }
 
   componentWillUnmount() {
+    genericDrawerStore.clearData()
     discussionRoomListStore.init()
   }
 

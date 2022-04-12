@@ -6,11 +6,13 @@ import { inject, observer } from 'mobx-react'
 import { FlatListWrapper } from './FlatListWrapper'
 import { CustomText } from './CustomText'
 import { IconButtonWrapper } from './IconButtonWrapper'
-import { colors, fontDimens } from '../common'
+import { colors, fontDimens, fontDimensPer } from '../common'
 import { OptionsData } from '../store/interfaces'
 import { log } from '../config'
 import { UserAvatar } from './UserAvtar'
 import { BASE_URL, HEADER_HEIGHT } from '../common/constant'
+import { capitalizeFirstLetterOnly } from '../utils/app-utils'
+import { widthToDp } from '../utils/Responsive'
 
 const styles = StyleSheet.create({
   listItem: {
@@ -22,10 +24,12 @@ const styles = StyleSheet.create({
 
   },
   heading: {
-    fontSize: 12,
+    // fontSize: 12,
     color: colors.black,
     fontWeight: '400',
-    lineHeight: 12
+    // lineHeight: 12,
+    fontSize: widthToDp(fontDimensPer.small),
+    fontFamily: 'Poppins-Regular',
   },
   subHeading: {
     fontSize: 14,
@@ -69,9 +73,13 @@ const styles = StyleSheet.create({
     // paddingHorizontal: 10
   },
   userName: {
-    fontSize: fontDimens.medium,
+    // fontSize: fontDimens.medium,
     color: colors.white,
-    flex: 1
+    fontSize: widthToDp(fontDimensPer.small),
+    fontWeight: '400',
+    fontFamily: 'Poppins-Regular',
+    flex: 1,
+
   },
   headerStyle: {
     marginBottom: 10
@@ -119,7 +127,7 @@ export class UserOptionsListComponent extends PureComponent<Props, State> {
           />
         </View>
         <View style={styles.labelContainer}>
-          {heading ? <CustomText textStyle={styles.heading} >{heading}</CustomText> : null}
+          {heading ? <CustomText textStyle={styles.heading}>{heading}</CustomText> : null}
           {subHeading ? <CustomText textStyle={styles.subHeading}>{subHeading}</CustomText> : null}
         </View>
       </TouchableOpacity>
@@ -148,10 +156,10 @@ export class UserOptionsListComponent extends PureComponent<Props, State> {
   }
 
   renderUserName = () => {
-    const { username } = this.props
+    const { username = '' } = this.props
     return (
       <CustomText textStyle={styles.userName}>
-        {username}
+        {capitalizeFirstLetterOnly(username)}
       </CustomText>
     )
   }

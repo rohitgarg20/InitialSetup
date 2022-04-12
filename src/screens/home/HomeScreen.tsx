@@ -5,7 +5,7 @@ import { get } from 'lodash'
 import { colors } from '../../common'
 import { BASE_URL, FETCHING_ARR } from '../../common/constant'
 import { CustomText, FlatListWrapper, IconButtonWrapper, ShimmerComponent } from '../../components'
-import { postListStore } from '../../store'
+import { genericDrawerStore, postListStore } from '../../store'
 import { IPostItem } from '../../store/interfaces'
 import PostCardComponent from '../../components/Card-Component/PostCardComponent'
 import { log } from '../../config'
@@ -13,6 +13,7 @@ import { HeaderCardComponent } from '../../components/HeaderCardComponent'
 import { icons } from '../../common/icons'
 import axios from 'axios'
 import reactotron from 'reactotron-react-native'
+import { PreferencesScreen } from '../preferences/PreferencesScreen'
 
 
 const styles = StyleSheet.create({
@@ -42,18 +43,28 @@ const styles = StyleSheet.create({
   }
 })
 
+interface IProps {
+  navigation?: any
+}
 @observer
-export class HomeScreen extends Component {
+export class HomeScreen extends Component<IProps> {
 
   constructor(props, state) {
     super(props, state)
     postListStore.updateFetchingStatus(true)
   }
+
+  onPressApplyFilter = () => {
+    postListStore.resetDataAndHitApi()
+  }
   componentDidMount() {
+    const { navigation } = this.props
     postListStore.getPostsListData()
+    genericDrawerStore.setRenderingComponent(<PreferencesScreen navigation={navigation} onPressApplyFilter = {this.onPressApplyFilter}/>)
   }
 
   componentWillUnmount() {
+    genericDrawerStore.clearData()
     postListStore.init()
   }
 

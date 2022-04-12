@@ -7,6 +7,7 @@ import { log } from '../../config'
 import { BaseRequest, RESPONSE_CALLBACKS } from '../../http-layer'
 import { showAndroidToastMessage, toDateTime } from '../../utils/app-utils'
 import { timeFromNow } from '../../utils/DateHelper'
+import { preferencesDataStore } from '..'
 
 const PAGE_SIZE = 10
 
@@ -40,8 +41,18 @@ export class DiscussionRoomListStore implements RESPONSE_CALLBACKS {
     this.isFetching = value
   }
 
+  @action
+  resetDataAndHitApi = () => {
+    this.updateFetchingStatus(true)
+    this.discussionRoomData = {
+      ...DEFAULT_SETTINGS.discussionRoomData
+    }
+    this.getDiscussionRoomsListData()
+  }
+
 
   getDiscussionRoomsListData = async () => {
+    const filterParams = preferencesDataStore.getApiRequestParams()
 
     const loginUser = new BaseRequest(this, {
       methodType: 'GET',
@@ -50,7 +61,8 @@ export class DiscussionRoomListStore implements RESPONSE_CALLBACKS {
       urlParams: {
         // type: 'latest',
         limit: PAGE_SIZE,
-        page: get(this.discussionRoomData, 'current_page', 0) + 1
+        page: get(this.discussionRoomData, 'current_page', 0) + 1,
+        ...filterParams
       }
     })
     await loginUser.setRequestHeaders()
@@ -113,9 +125,11 @@ export class DiscussionRoomListStore implements RESPONSE_CALLBACKS {
   }
   onFailure(apiId: string, error: any) {
     log('onFailureonFailureonFailure', error)
+    const errMsg = get(error, 'data.status.message',  strings.ERROR_MESSAGES.SOME_ERROR_OCCURED)
+    const displayMsg = typeof errMsg === 'string' ? errMsg : strings.ERROR_MESSAGES.SOME_ERROR_OCCURED
     switch (apiId) {
       case API_IDS.GET_DISCUSSION_ROOM_LIST:
-        showAndroidToastMessage(get(error, 'data', strings.ERROR_MESSAGES.SOME_ERROR_OCCURED))
+        showAndroidToastMessage(displayMsg)
         this.updateFetchingStatus(false)
 
         break

@@ -5,13 +5,14 @@ import { get } from 'lodash'
 import { colors, fontDimensPer } from '../../common'
 import { CARD_HEIGHT, FETCHING_ARR } from '../../common/constant'
 import { CustomText, EventCardComponent, FlatListWrapper, IconButtonWrapper, ShimmerComponent } from '../../components'
-import { eventsListStore } from '../../store'
+import { eventsListStore, genericDrawerStore } from '../../store'
 import { IEventListItem } from '../../store/interfaces'
 import { HeaderCardComponent } from '../../components/HeaderCardComponent'
 import { TouchableOpacity } from 'react-native-gesture-handler'
 import { icons } from '../../common/icons'
 import { navigateSimple } from '../../service'
 import { widthToDp } from '../../utils/Responsive'
+import { PreferencesScreen } from '../preferences/PreferencesScreen'
 
 const styles = StyleSheet.create({
   container: {
@@ -52,11 +53,21 @@ export class EventsListScreen extends Component<IProps> {
     eventsListStore.updateFetchingStatus(true)
   }
 
+
+  onPressApplyFilter = () => {
+    eventsListStore.resetDataAndHitApi()
+  }
+
   componentDidMount() {
+    const { navigation } = this.props
     eventsListStore.getEventsListData()
+    genericDrawerStore.setRenderingComponent(<PreferencesScreen navigation={navigation} onPressApplyFilter = {this.onPressApplyFilter}/>)
+
   }
 
   componentWillUnmount() {
+    genericDrawerStore.clearData()
+
     eventsListStore.init()
   }
 

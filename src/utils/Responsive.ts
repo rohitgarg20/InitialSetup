@@ -10,7 +10,7 @@ const {
 const widthToDp = widthNumber => {
   let width = typeof widthNumber === 'number' ? widthNumber : parseFloat(widthNumber)
   const value =  Math.round(PixelRatio.roundToNearestPixel(width * SCREEN_WIDTH) / 100)
-  log('valuevaluevaluevalue afterr', widthNumber,  value)
+  // log('valuevaluevaluevalue afterr', widthNumber,  value)
   return value
 }
 
