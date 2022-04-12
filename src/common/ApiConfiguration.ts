@@ -14,7 +14,7 @@ export const API_END_POINTS = {
   GET_CATEGORY_LIST: '/api/v3/app/category',
   REGISTER_EVENT: '/api/v3/app/events/register/:id',
   UNREGISTER_EVENT: '/api/v3/app/events/unregister/:id',
-  SAVE_ITEM: '/api/v3/app/save/event/:item_name'
+  SAVE_ITEM: '/api/v3/app/save/:item_name'
 }
 
 export const API_IDS = {
