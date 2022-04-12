@@ -18,7 +18,7 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'flex-start',
-    paddingLeft: 5
+    paddingLeft: 15
 
   },
   heading: {
@@ -59,17 +59,19 @@ const styles = StyleSheet.create({
     backgroundColor: '#cccccc'
   },
   rowContainer: {
-    paddingLeft: 5,
+    paddingLeft: 10,
     flexDirection: 'row',
     height: HEADER_HEIGHT - 5,
     backgroundColor: colors.black,
     borderBottomEndRadius: 5,
+    borderBottomLeftRadius: 5,
     alignItems: 'center',
     // paddingHorizontal: 10
   },
   userName: {
     fontSize: fontDimens.medium,
-    color: colors.white
+    color: colors.white,
+    flex: 1
   },
   headerStyle: {
     marginBottom: 10

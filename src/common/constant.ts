@@ -25,7 +25,7 @@ export const MAIN_STACK_KEYS = {
   TAB_BAR_STACK: 'tabBarStack'
 }
 
-export const BASE_URL = 'http://192.168.1.102:4567'
+export const BASE_URL = 'http://192.168.99.164:4567'
 // export const BASE_URL = 'http://sdlms.deepthought.education'
 
 export const DAYS_NAME = ['Sun', 'Mon', 'Tue', 'Wed', 'Thur', 'Fri', 'Sat']
@@ -197,32 +197,32 @@ export const SORTING_DATA = [
 export const USER_OPTIONS_LIST = [
   {
     key: USER_KEYS.VIEW_PROFILE,
-    icon: icons.EDIT_ICON,
+    icon: icons.USER_ICON,
     heading: USER_LABELS.VIEW_PROFILE
   },
   {
     key: USER_KEYS.SETTINGS,
-    icon: icons.SHARE_ICON,
+    icon: icons.SETTING_ICON,
     heading: USER_LABELS.SETTINGS
   },
   {
     key: USER_KEYS.MY_EVENTS,
-    icon: icons.SAVE_ICON,
+    icon: icons.EVENTS,
     heading: USER_LABELS.MY_EVENTS
   },
   {
     key: USER_KEYS.SAVED,
-    icon: icons.REPOST_ICON,
+    icon: icons.SAVE_ICON,
     heading: USER_LABELS.SAVED
   },
   {
     key: USER_KEYS.SUPPORT,
-    icon: icons.DELETE_ICON,
+    icon: icons.SUPPORT_ICON,
     heading: USER_LABELS.SUPPORT
   },
   {
     key: USER_KEYS.SIGN_OUT,
-    icon: icons.DELETE_ICON,
+    icon: icons.SIGN_OUT_ICON,
     heading: USER_LABELS.SIGN_OUT
   }
 

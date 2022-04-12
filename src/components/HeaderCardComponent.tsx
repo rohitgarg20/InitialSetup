@@ -77,7 +77,7 @@ const styles = StyleSheet.create({
     position: 'absolute',
     right: -1000,
     zIndex: 1,
-    left: getWidth() - 150,
+    left: getWidth() - 160,
     top: 0
   },
   withoutImageColor: {
@@ -132,7 +132,7 @@ export class HeaderCardComponent extends Component {
         backgroundColor={colors.white}
         customToolTipView={this.renderOptionsListComponent}
         customView={this.renderCustomView}
-        customWidth={150}
+        customWidth={160}
         customHeight={250}
         mainViewStyle={{ ...styles.mainViewStyle }}
         useAsDropDownView={true}
