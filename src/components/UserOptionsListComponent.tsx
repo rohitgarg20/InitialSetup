@@ -21,7 +21,6 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'flex-start',
     paddingLeft: 15
-
   },
   heading: {
     // fontSize: 12,

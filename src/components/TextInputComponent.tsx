@@ -3,6 +3,7 @@ import { Animated, Easing, StyleSheet, TextInput, TextInputProps, View } from 'r
 import { CustomText, IconButtonWrapper } from '.'
 import { borderRadius, colors, fontDimens, fontDimensPer } from '../common'
 import { icons } from '../common/icons'
+import { log } from '../config'
 import { widthToDp } from '../utils/Responsive'
 
 const styles = StyleSheet.create({
@@ -15,7 +16,7 @@ const styles = StyleSheet.create({
     backgroundColor: colors.grey,
     flexDirection: 'row',
     justifyContent: 'space-between',
-    alignItems: 'center'
+    alignItems: 'center',
   },
   textInput: {
     padding: 0,
@@ -25,13 +26,14 @@ const styles = StyleSheet.create({
     fontSize:  widthToDp(fontDimensPer.medium),
     fontWeight: '400',
     fontFamily: 'Poppins-Regular',
-    lineHeight: 1.5 * widthToDp(fontDimensPer.medium)
+    lineHeight: 1.5 * widthToDp(fontDimensPer.medium),
+    height: '100%'
   },
   labelContainer: {
     position: 'absolute',
     // top: -3 - (fontDimens.normal / 2),
     left: 15,
-    backgroundColor: colors.white
+    backgroundColor: colors.white,
   },
   labelText: {
     fontSize: widthToDp(fontDimensPer.small),
@@ -55,6 +57,9 @@ interface IProps extends TextInputProps {
   shouldShowEyeIcon?: boolean
   inputValue?: string
   errorMsg?: string
+  inputContainerStyle?: any
+  labelContainerStyle?: any
+  textInputStyle?: any
 }
 
 interface IState {
@@ -147,13 +152,14 @@ export class TextInputComponent extends Component<IProps, IState> {
   }
 
   renderLabelComponent = () => {
-    const { label, errorMsg } = this.props
+    const { label, errorMsg, labelContainerStyle } = this.props
     let labelColor = this.labelColor
     if (errorMsg) {
       labelColor = colors.red
     }
+    log('renderLabelComponentrenderLabelComponent')
     return (
-      <Animated.View style = {[styles.labelContainer, {
+      <Animated.View style = {[styles.labelContainer, labelContainerStyle, {
         transform: [
           {
             translateY: this.animatedValue.interpolate({
@@ -164,8 +170,7 @@ export class TextInputComponent extends Component<IProps, IState> {
           }
         ],
         zIndex: this.labelViewZIndex,
-        backgroundColor: this.backgroundColor
-
+        backgroundColor: this.backgroundColor,
       }]}>
         <CustomText textStyle={{ ...styles.labelText,
           color: labelColor,
@@ -176,7 +181,7 @@ export class TextInputComponent extends Component<IProps, IState> {
   }
 
   render() {
-    const { inputValue, errorMsg = '', shouldShowEyeIcon, label } = this.props
+    const { inputValue, errorMsg = '', shouldShowEyeIcon, label, inputContainerStyle = {}, textInputStyle = {} } = this.props
     const { isPasswordVisible } = this.state
     let borderColor = this.borderColor
     let labelColor = this.labelColor
@@ -186,8 +191,8 @@ export class TextInputComponent extends Component<IProps, IState> {
     }
     return (
       <>
-        <Animated.View style = {[styles.inputContainer, { borderColor, backgroundColor: this.backgroundColor }]}>
-          <TextInput style = {styles.textInput}
+        <Animated.View style = {[styles.inputContainer, { borderColor, backgroundColor: this.backgroundColor }, inputContainerStyle]}>
+          <TextInput style = {[styles.textInput, textInputStyle]}
             ref = {(ref) => {
               if (!this.textInputRef) {
                 this.textInputRef = ref

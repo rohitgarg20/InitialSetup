@@ -95,3 +95,10 @@ export interface OptionsData {
   showToUser?: boolean
   iconStyle?: any
 }
+
+export interface IJokeItem {
+  content: string
+  authorName: string
+  jokeId: string
+  id: string
+}

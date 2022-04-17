@@ -20,7 +20,8 @@ export const strings = {
     CONFIRRM_PASSWORD: 'Re-type Password',
     EMAIL_ID: 'Email ID',
     NEW_PASSWORD: 'New password',
-    CONFIRM_NEW_PASSWORD: 'Confirm new password'
+    CONFIRM_NEW_PASSWORD: 'Confirm new password',
+    ENTER_JOKE: 'Enter your joke'
   },
   DEEP_THOGHT: {
     DEEP: 'DEEP',
@@ -49,7 +50,8 @@ export const strings = {
     VALID_EMAIL_ID: 'Please enter a valid email Id.',
     ERR_MSG_INVALID_OTP: 'OTP must have length of 6',
     INVALID_USERNAME: 'Please enter a valid user name',
-    INAVALID_PASSWORD: 'Please enter a valid password'
+    INAVALID_PASSWORD: 'Please enter a valid password',
+    INVALID_JOKE_CONTENT: 'Please enter a valid content',
   },
   PASSWORD_VALIDATIONS: {
     NUMBERS: 'Password must contain numbers',
@@ -73,6 +75,10 @@ export const strings = {
   REGISTER_SUCCESS: 'Registeration done for this event',
   UNREGISTER_SUCCESS: 'You are successfully unregistered for this event',
   NO_BROWSER_AVAILABLE: 'No Browser Available',
-  NO_DETAILS: 'No Details Available'
+  NO_DETAILS: 'No Details Available',
+  ADD_JOKE: {
+    HEADING: 'Submit a joke you think your peers will find hilarious',
+    SUBMIT: 'Submit'
+  }
 
 }

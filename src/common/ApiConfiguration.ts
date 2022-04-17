@@ -15,7 +15,8 @@ export const API_END_POINTS = {
   REGISTER_EVENT: '/api/v3/app/events/register/:id',
   UNREGISTER_EVENT: '/api/v3/app/events/unregister/:id',
   SAVE_ITEM: '/api/v3/app/save/:item_name',
-  SAVE_USER_PREFERENCES: '/api/v3/app/preferences'
+  SAVE_USER_PREFERENCES: '/api/v3/app/preferences',
+  ADD_JOKE: '/api/v3/app/joke'
 }
 
 export const API_IDS = {
@@ -35,5 +36,6 @@ export const API_IDS = {
   REGISTER_EVENT: 'REGISTER_EVENT',
   UNREGISTER_EVENT: 'UNREGISTER_EVENT',
   SAVE_ITEM: 'SAVE_ITEM',
-  SAVE_USER_PREFERENCES: 'SAVE_USER_PREFERENCES'
+  SAVE_USER_PREFERENCES: 'SAVE_USER_PREFERENCES',
+  ADD_JOKE: 'ADD_JOKE'
 }

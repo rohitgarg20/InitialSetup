@@ -1,3 +1,4 @@
+import { capitalizeFirstLetterOnly } from './../../utils/app-utils';
 import { observable, makeObservable, action } from 'mobx'
 import { get } from 'lodash'
 import { strings } from '../../common'
@@ -8,6 +9,7 @@ import { BaseRequest, RESPONSE_CALLBACKS } from '../../http-layer'
 import { showAndroidToastMessage } from '../../utils/app-utils'
 import { emailIdValidator, validateOtp } from '../../utils/validator'
 import { navigateSimple } from '../../service'
+import { IJokeItem } from '../interfaces';
 
 const DEFAULT_SETTINGS = {
   formData: {
@@ -18,13 +20,16 @@ const DEFAULT_SETTINGS = {
       [TEXT_FIELD_KEYS.ERROR_MESSAGE]: ''
     }
   },
-  showOtpView: false
+  showOtpView: false,
+  jokesList: []
 }
 
 export class ResetPasswordDataStore implements RESPONSE_CALLBACKS {
 
   @observable formData
   @observable showOtpView
+  @observable jokesList: IJokeItem[]
+
 
   constructor() {
     this.init()
@@ -108,6 +113,16 @@ export class ResetPasswordDataStore implements RESPONSE_CALLBACKS {
     await registerUserRequest.hitPostApi()
   }
 
+  getJokesList = async () => {
+    const registerUserRequest = new BaseRequest(this, {
+      methodType: 'GET',
+      apiEndPoint: API_END_POINTS.ADD_JOKE,
+      apiId: API_IDS.ADD_JOKE,
+    })
+    await registerUserRequest.setRequestHeaders()
+    await registerUserRequest.hitGetApi()
+  }
+
   onSubmitOtpButtonPressed = (otpValue) => {
     const isOtpValid = validateOtp(otpValue)
     log('onSubmitOtpButtonPressedonSubmitOtpButtonPressed', otpValue)
@@ -123,6 +138,24 @@ export class ResetPasswordDataStore implements RESPONSE_CALLBACKS {
     this.showOtpView = value
   }
 
+  @action
+  setJokesList = (jokesList) => {
+    this.jokesList = [ ...jokesList]
+  }
+
+  constructJokesList = (jokesList) => {
+    const formattedList: IJokeItem[] = jokesList.map((jokeItem) => {
+      const { content = '', author_name = '', _id, tid } = jokeItem || {}
+      return {
+        authorName: capitalizeFirstLetterOnly(author_name),
+        content: capitalizeFirstLetterOnly(content),
+        jokeId: tid,
+        id: _id
+      }
+    })
+    return formattedList
+  }
+
   onSuccess(apiId: string, response: any) {
     log('onSuccessonSuccess', response,  get(response, 'response.code'))
     switch (apiId) {
@@ -133,6 +166,10 @@ export class ResetPasswordDataStore implements RESPONSE_CALLBACKS {
         navigateSimple(undefined, 'SetPasswordScreen', {
           code: get(response, 'response.code')
         })
+        break
+      case API_IDS.ADD_JOKE:
+        const list = this.constructJokesList(get(response, 'response.data'))
+        this.setJokesList(list)
         break
       default:
         break

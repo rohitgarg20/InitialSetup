@@ -70,11 +70,14 @@ export class ViewPager extends Component<Props, State> {
           showsHorizontalScrollIndicator = {true}
           testID={scrollViewTestId}
           nestedScrollEnabled
+          contentContainerStyle = {{
+            // flexGrow: 1
+          }}
         >
           {
             pages.map((item, key) => {
               return(
-                <View key={key} style = {{ width: TOTAL_WIDTH }}>
+                <View key={key} style = {{ flex: 1  }}>
                   {item}
                 </View>
               )
@@ -105,7 +108,7 @@ export class ViewPager extends Component<Props, State> {
     }
     render() {
       return (
-        <View style = {{ height: '100%' }} >
+        <View style = {{ height: '100%', flex: 1 }} >
           {this.renderPagerComponent()}
           {this.renderDotIndicator()}
         </View>

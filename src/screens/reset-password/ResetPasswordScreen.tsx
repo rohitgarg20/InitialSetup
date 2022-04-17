@@ -5,11 +5,14 @@ import { map } from 'lodash'
 import { colors, fontDimens, fontDimensPer, strings } from '../../common'
 import { icons } from '../../common/icons'
 import { I_TEXT_FIELD } from '../../common/Interfaces'
-import { BackButtonComponent, CustomText, IconButtonWrapper, LogoComponent, OtpComponent, TextInputComponent } from '../../components'
+import { BackButtonComponent, CustomText, IconButtonWrapper, LogoComponent, OtpComponent, TextInputComponent, UserReviewComponent, ViewPager } from '../../components'
 import { resetPasswordDataStore } from '../../store'
 import { KeyboardAwareScrollViewComponent } from '../../components/KeyboardAwareScrollViewComponent'
 import { navigateSimple } from '../../service'
 import { widthToDp } from '../../utils/Responsive'
+import { IJokeItem } from '../../store/interfaces'
+import { log } from '../../config'
+import { getWidth } from '../../common/scaling'
 
 const styles = StyleSheet.create({
   mainContainer: {
@@ -51,7 +54,7 @@ const styles = StyleSheet.create({
     paddingBottom: 20,
     lineHeight: 16,
     fontWeight: '400',
-    fontFamily: 'Poppins-Regular',
+    fontFamily: 'Poppins-Regular'
   },
   signInButton: {
     // borderWidth: 1,
@@ -72,7 +75,16 @@ const styles = StyleSheet.create({
     lineHeight: 15,
     fontSize:  widthToDp(fontDimensPer.medium),
     fontWeight: '400',
-    fontFamily: 'Poppins-Regular',
+    fontFamily: 'Poppins-Regular'
+  },
+  footerPagerView: {
+    marginHorizontal: 30,
+    marginVertical: 15,
+    padding: 10,
+    justifyContent: 'center',
+    borderRadius: 5,
+    backgroundColor: colors.white,
+    flex: 1
   }
 })
 
@@ -82,6 +94,14 @@ interface IProps {
 
 @observer
 export class ResetPasswordScreen extends Component<IProps> {
+
+  componentDidMount() {
+    resetPasswordDataStore.getJokesList()
+  }
+
+  componentWillUnmount() {
+    resetPasswordDataStore.init()
+  }
 
   renderLogoComponent = () => {
     return (
@@ -124,12 +144,17 @@ export class ResetPasswordScreen extends Component<IProps> {
 
   renderViewJokesView = () => {
     return (
-      <IconButtonWrapper
-        iconImage={icons.BRICK}
-        iconHeight = {200}
-        iconWidth = {'100%'}
-        imageResizeMode = {'cover'}
-      />
+      <View>
+        <IconButtonWrapper
+          iconImage={icons.BRICK}
+          iconHeight = {200}
+          iconWidth = {'100%'}
+          imageResizeMode = {'cover'}
+        />
+        <View style = {{ position: 'absolute', width: '100%', height: 200 }}>
+          {this.renderPagerView()}
+        </View>
+      </View>
     )
   }
 
@@ -209,6 +234,48 @@ export class ResetPasswordScreen extends Component<IProps> {
           onPressResendOtp = {this.onResendOtp}
           emailId = {getEmailId()}
           submitOtp = {onSubmitOtpButtonPressed}
+        />
+      </View>
+    )
+  }
+
+  getReviviwsView = () => {
+    const { jokesList } = resetPasswordDataStore
+    log('jokesListjokesList', jokesList)
+
+    return (
+      jokesList.map((joke: IJokeItem) => {
+        const { authorName, content } = joke || {}
+        return (
+          <View style = {{
+            width: getWidth() * 0.82 ,
+            // flex: 1
+          }}>
+            <CustomText>{content}</CustomText>
+            <CustomText>{authorName}</CustomText>
+          </View>
+        )
+      })
+    )
+  }
+
+
+  // setSelectedPageIndex = (pageIndex) => {
+  //   const { selectedPageIndex } = this.state
+  //   if (pageIndex !== selectedPageIndex) {
+  //     this.setState({
+  //       selectedPageIndex: pageIndex
+  //     })
+  //   }
+  // }
+
+  renderPagerView = () => {
+    const reviewsView = this.getReviviwsView()
+    return (
+      <View style={styles.footerPagerView}>
+        <ViewPager
+          pages={reviewsView}
+          // onPageChange={this.setSelectedPageIndex}
         />
       </View>
     )

@@ -13,6 +13,7 @@ import { SignupDataStore } from './signup/SignupDataStore';
 import { LoginDataStore } from './login/LoginDataStore';
 import { LoaderDataStore } from './LoaderDataStore'
 import { NavigationDataStore } from './navigation';
+import { AddJokeDataStore } from './add-joke-data-store';
 
 const loaderDataStore = new LoaderDataStore()
 const navigationDataStore = new NavigationDataStore()
@@ -29,6 +30,7 @@ const userDataStore = new UserDataStore()
 const discussionRoomDetailStore = new DiscussionRoomDetailStore()
 const eventDetailStore = new EventRoomDetailStore()
 const genericDrawerStore = new GenericDrawerStore()
+const addJokeDataStore = new AddJokeDataStore()
 
 export * from './LoaderDataStore'
 export * from './login'
@@ -45,6 +47,7 @@ export * from './user-data-store'
 export * from './discussion-detail-store'
 export * from './event-detail-store'
 export * from './generic-drawer-store'
+export * from './add-joke-data-store'
 
 export {
   loaderDataStore,
@@ -61,7 +64,8 @@ export {
   userDataStore,
   discussionRoomDetailStore,
   eventDetailStore,
-  genericDrawerStore
+  genericDrawerStore,
+  addJokeDataStore
 }
 
 export default {
@@ -79,5 +83,6 @@ export default {
   userDataStore,
   discussionRoomDetailStore,
   eventDetailStore,
-  genericDrawerStore
+  genericDrawerStore,
+  addJokeDataStore
 }

@@ -1,6 +1,6 @@
 import { createStackNavigator } from '@react-navigation/stack'
 import React  from 'react'
-import { EnterOtpScreen, LoginScreen, MainScreen, RegisterUserScreen, ResetPasswordScreen, SetPasswordScreen, WebViewPage } from '../screens'
+import { AddJokeScreen, EnterOtpScreen, LoginScreen, MainScreen, RegisterUserScreen, ResetPasswordScreen, SetPasswordScreen, WebViewPage } from '../screens'
 
 const Stack = createStackNavigator()
 
@@ -18,6 +18,7 @@ const loginStack = () => {
       <Stack.Screen name = {'EnterOtpScreen'} component = {EnterOtpScreen} />
       <Stack.Screen name = {'SetPasswordScreen'} component = {SetPasswordScreen} />
       <Stack.Screen name = {'WebViewPage'} component = {WebViewPage} />
+      <Stack.Screen name = {'AddJokeScreen'} component = {AddJokeScreen} />
     </Stack.Navigator>
   )
 }

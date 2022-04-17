@@ -30,11 +30,12 @@ const DEFAULT_SETTINGS = {
       [TEXT_FIELD_KEYS.IS_PASSWORD_FIELD]: true,
       [TEXT_FIELD_KEYS.ERROR_MESSAGE]: ''
     }
-  }
+  },
 }
 
 export class LoginDataStore implements RESPONSE_CALLBACKS{
   @observable formData
+
 
   constructor() {
     this.init()
@@ -115,6 +116,8 @@ export class LoginDataStore implements RESPONSE_CALLBACKS{
     await loginUser.setRequestHeaders()
     await loginUser.hitGetApi()
   }
+
+
 
   onSuccess(apiId: string, response: any) {
     switch (apiId) {
