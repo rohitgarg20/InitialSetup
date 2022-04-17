@@ -80,17 +80,18 @@ const styles = StyleSheet.create({
   footerPagerView: {
     marginHorizontal: 30,
     marginVertical: 15,
-    padding: 10,
     justifyContent: 'center',
     borderRadius: 5,
     backgroundColor: colors.white,
-    flex: 1
+    flex: 1,
+    padding: 10
   }
 })
 
 interface IProps {
   navigation?: any
 }
+
 
 @observer
 export class ResetPasswordScreen extends Component<IProps> {
@@ -248,9 +249,10 @@ export class ResetPasswordScreen extends Component<IProps> {
         const { authorName, content } = joke || {}
         return (
           <View style = {{
-            width: getWidth() * 0.82 ,
+            // width: 351,
             // flex: 1
-          }}>
+          }}
+          >
             <CustomText>{content}</CustomText>
             <CustomText>{authorName}</CustomText>
           </View>
@@ -269,14 +271,35 @@ export class ResetPasswordScreen extends Component<IProps> {
   //   }
   // }
 
+  navigateToAddJokeScreen = () => {
+    const { navigation } = this.props
+    navigateSimple(navigation, 'AddJokeScreen')
+  }
+
+  renderAddJokeButton = () => {
+    const { SEND_OTP_SCREEN } = strings
+    const { ADD_YOUR_JOKE }  = SEND_OTP_SCREEN
+    return <View style = {{
+      alignItems: 'center'
+    }}>
+      <TouchableOpacity style = {styles.signInButton} onPress = {this.navigateToAddJokeScreen}>
+        <CustomText textStyle={styles.buttonLabel}>
+          {ADD_YOUR_JOKE}
+        </CustomText>
+      </TouchableOpacity>
+    </View>
+  }
+
   renderPagerView = () => {
     const reviewsView = this.getReviviwsView()
     return (
       <View style={styles.footerPagerView}>
         <ViewPager
           pages={reviewsView}
+          showDotsOnTop = {true}
           // onPageChange={this.setSelectedPageIndex}
         />
+        {this.renderAddJokeButton()}
       </View>
     )
   }

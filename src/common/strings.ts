@@ -34,7 +34,8 @@ export const strings = {
   SEND_OTP_SCREEN: {
     HEADING: 'Reset Password',
     CONTENT: 'Enter the email associated with your account and we’ll send an email with an OTP to reset your password',
-    SEND_OTP: 'Send OTP'
+    SEND_OTP: 'Send OTP',
+    ADD_YOUR_JOKE: 'Add your joke'
   },
   OTP_INPUT_COMPONENT: {
     HEADING: 'Enter OTP',
