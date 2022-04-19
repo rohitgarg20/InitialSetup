@@ -1,5 +1,5 @@
 import { get, isEmpty, isNumber } from 'lodash'
-import { Image, Platform, ToastAndroid } from 'react-native'
+import { Image, InteractionManager, Platform, ToastAndroid } from 'react-native'
 import { DAYS_NAME, MONTH_NAMES } from '../common/constant'
 import { log } from '../config'
 
@@ -154,3 +154,21 @@ export const jsonParseData = (data) => isValidJSONString(data) ? JSON.parse(data
 export const stringifyData = (data) => JSON.stringify(data)
 
 export const capitalizeFirstLetterOnly = (value) => value ? value.charAt(0).toUpperCase() + value.substr(1) : ''
+
+
+export const runAfterInteractions = (
+  func1 = () => {
+    /* */
+  },
+  fucn2 = () => {
+    /* */
+  }
+) => {
+  InteractionManager.runAfterInteractions(() => {
+    log('UTILS runAfterInteractions inside InteractionManager new')
+    func1()
+  }).then(() => {
+    log('UTILS runAfterInteractions InteractionManager new then')
+    fucn2()
+  })
+}

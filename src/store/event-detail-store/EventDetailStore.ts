@@ -47,7 +47,7 @@ export class EventRoomDetailStore implements RESPONSE_CALLBACKS {
   getEventRoomDetailData = async () => {
 
     const loginUser = new BaseRequest(this, {
-      methodType: 'GET',
+      methodType: 'POST',
       apiEndPoint: API_END_POINTS.GET_EVENTS_LIST,
       apiId: API_IDS.GET_EVENTS_LIST,
       urlParams: {
@@ -57,7 +57,7 @@ export class EventRoomDetailStore implements RESPONSE_CALLBACKS {
       }
     })
     await loginUser.setRequestHeaders()
-    await loginUser.hitGetApi()
+    await loginUser.hitPostApi()
   }
 
   registerEvent = async () => {

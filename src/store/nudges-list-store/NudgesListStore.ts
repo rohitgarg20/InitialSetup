@@ -1,3 +1,4 @@
+import { jsonParseData, stringifyData } from './../../utils/app-utils';
 import { INudgeListItem } from './../interfaces'
 import { action, computed, makeObservable, observable } from 'mobx'
 import { get, map, isEmpty } from 'lodash'
@@ -7,15 +8,15 @@ import { log } from '../../config'
 import { BaseRequest, RESPONSE_CALLBACKS } from '../../http-layer'
 import { showAndroidToastMessage, toDateTime } from '../../utils/app-utils'
 import { SaveDataStore } from '../save-store'
-import { preferencesDataStore } from '..'
+import { preferencesDataStore, userDataStore } from '..'
 
 const PAGE_SIZE = 10
 
 const DEFAULT_SETTINGS = {
   nudgesData: {
-    nudgesList: []
-    // current_page: -1,
-    // last_page: undefined
+    nudgesList: [],
+    current_page: -1,
+    last_page: undefined
   },
   isFetching: false,
   currentNudeIndex: 0
@@ -44,6 +45,7 @@ export class NudgesListStore implements RESPONSE_CALLBACKS {
     this.nudgesData = {
       ...DEFAULT_SETTINGS.nudgesData
     }
+    this.currentNudeIndex = 0
     this.getNudgesListData()
   }
 
@@ -53,26 +55,34 @@ export class NudgesListStore implements RESPONSE_CALLBACKS {
   }
 
 
-  getNudgesListData = async () => {
-    const filterParams = preferencesDataStore.getApiRequestParams()
+  getNudgesListData = async (prefetch = false) => {
+    const { preferences,  sortByParam = '' } = preferencesDataStore.getPreferencesParamsList()
+    const { searchText } = userDataStore
 
     const loginUser = new BaseRequest(this, {
-      methodType: 'GET',
+      methodType: 'POST',
       apiEndPoint: API_END_POINTS.GET_NUDGES_LIST,
       apiId: API_IDS.GET_NUDGES_LIST,
       urlParams: {
-        // type: 'latest',
-        // limit: PAGE_SIZE,
-        // page: get(this.discussionRoomData, 'current_page', 0) + 1
-        ...filterParams
-      }
+        limitBy: PAGE_SIZE,
+        page: get(this.nudgesData, 'current_page', 0) + 1,
+        sortBy: sortByParam?.length > 0 ? sortByParam : '',
+        term: searchText
+      },
+      reqParams: {
+        preferences
+      },
+      prefetch
     })
     await loginUser.setRequestHeaders()
-    await loginUser.hitGetApi()
+    await loginUser.hitPostApi()
   }
 
-  constructNudgesListScreen = (nudgesList) => {
-    const tempNudgesData = { ...this.nudgesData }
+  constructNudgesListScreen = (responseData) => {
+    const tempNudgesData = jsonParseData(stringifyData({ ...this.nudgesData }))
+    const nudgesList = get(responseData, 'data', [])
+    const currentPage = get(responseData, 'current_page')
+    const lastPage = get(responseData, 'last_page')
     const formattedData: INudgeListItem[] = map(nudgesList, (nudge) => {
       return {
         ...nudge,
@@ -81,9 +91,9 @@ export class NudgesListStore implements RESPONSE_CALLBACKS {
       }
     })
     return {
-      nudgesList: [...tempNudgesData.nudgesList, ...formattedData]
-      // current_page: currentPage,
-      // last_page: lastPage
+      nudgesList: [...tempNudgesData.nudgesList, ...formattedData],
+      current_page: currentPage,
+      last_page: lastPage
     }
   }
 
@@ -96,6 +106,14 @@ export class NudgesListStore implements RESPONSE_CALLBACKS {
   @action
   updateCurrentIndex = () => {
     this.currentNudeIndex = this.currentNudeIndex + 1
+    const nudesLength = get(this.nudgesData, 'nudgesList.length', 0)
+    const { current_page, last_page } = this.nudgesData
+    if (current_page === last_page) {
+      //
+    } else {
+      if (nudesLength - this.currentNudeIndex <= 3)
+        this.getNudgesListData(true)
+    }
   }
 
   @computed
@@ -120,7 +138,7 @@ export class NudgesListStore implements RESPONSE_CALLBACKS {
       }
       log('saveCurrentEventsaveCurrentEvent 3', urlParams)
 
-      await saveEvent.saveAnEvent(params, urlParams)
+      await saveEvent.saveAnEvent(params, urlParams, false)
     }
   }
 
@@ -128,7 +146,8 @@ export class NudgesListStore implements RESPONSE_CALLBACKS {
     log('onSuccessonSuccess', response)
     switch (apiId) {
       case API_IDS.GET_NUDGES_LIST:
-        const nudgesData = this.constructNudgesListScreen(get(response, 'response', []))
+        const nudgesData = this.constructNudgesListScreen(get(response, 'response', {}))
+        log('nudgesDatanudgesData', nudgesData)
         this.setNudgesListData(nudgesData)
         this.updateFetchingStatus(false)
         break

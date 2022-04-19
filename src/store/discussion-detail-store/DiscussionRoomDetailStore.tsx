@@ -47,7 +47,7 @@ export class DiscussionRoomDetailStore implements RESPONSE_CALLBACKS {
   getDiscussionRoomsDetailData = async () => {
 
     const loginUser = new BaseRequest(this, {
-      methodType: 'GET',
+      methodType: 'POST',
       apiEndPoint: API_END_POINTS.GET_DISCUSSION_ROOM_LIST,
       apiId: API_IDS.GET_DISCUSSION_ROOM_LIST,
       urlParams: {
@@ -55,7 +55,7 @@ export class DiscussionRoomDetailStore implements RESPONSE_CALLBACKS {
       }
     })
     await loginUser.setRequestHeaders()
-    await loginUser.hitGetApi()
+    await loginUser.hitPostApi()
   }
 
 

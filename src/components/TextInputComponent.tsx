@@ -60,6 +60,10 @@ interface IProps extends TextInputProps {
   inputContainerStyle?: any
   labelContainerStyle?: any
   textInputStyle?: any
+  shouldShowIconOrTextInRightSideInputBox?: boolean
+  customRightSideView?: any
+  useAnimated?: boolean
+
 }
 
 interface IState {
@@ -180,18 +184,29 @@ export class TextInputComponent extends Component<IProps, IState> {
     )
   }
 
+  renderIconOrTextInInputBoxRightSide = () => {
+    const { customRightSideView } = this.props
+    return customRightSideView ? customRightSideView() : null
+  }
+
   render() {
-    const { inputValue, errorMsg = '', shouldShowEyeIcon, label, inputContainerStyle = {}, textInputStyle = {} } = this.props
+    const { inputValue, errorMsg = '', shouldShowEyeIcon, label, inputContainerStyle = {}, textInputStyle = {},
+    shouldShowIconOrTextInRightSideInputBox = false, useAnimated = true } = this.props
     const { isPasswordVisible } = this.state
     let borderColor = this.borderColor
     let labelColor = this.labelColor
+    let backgroundColor =  this.backgroundColor
     if (errorMsg) {
       borderColor = colors.red
       labelColor = colors.red
     }
+    if (!useAnimated) {
+      borderColor = colors.grey
+      backgroundColor = colors.white
+    }
     return (
       <>
-        <Animated.View style = {[styles.inputContainer, { borderColor, backgroundColor: this.backgroundColor }, inputContainerStyle]}>
+        <Animated.View style = {[styles.inputContainer, { borderColor, backgroundColor }, inputContainerStyle]}>
           <TextInput style = {[styles.textInput, textInputStyle]}
             ref = {(ref) => {
               if (!this.textInputRef) {
@@ -207,6 +222,7 @@ export class TextInputComponent extends Component<IProps, IState> {
           />
           {this.renderLabelComponent()}
           {shouldShowEyeIcon && this.renderEyeIcon()}
+          {shouldShowIconOrTextInRightSideInputBox ? this.renderIconOrTextInInputBoxRightSide() : null}
         </Animated.View>
         {errorMsg?.length > 0 && ( this.renderErrorMsg() )}
       </>

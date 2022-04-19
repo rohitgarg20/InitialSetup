@@ -255,3 +255,6 @@ export const navigateToWebView = ({ navigation = undefined, pageUrl }) => {
     pageUrl
   })
 }
+
+export const WAITING_TIME = 1000
+export const MINIMUM_TEXT_TO_SEARCH = 3

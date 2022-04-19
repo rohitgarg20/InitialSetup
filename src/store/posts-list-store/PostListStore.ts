@@ -20,7 +20,7 @@ const DEFAULT_SETTINGS = {
     current_page: -1,
     last_page: undefined
   },
-  isFetching: false
+  isFetching: false,
 }
 
 
@@ -54,21 +54,27 @@ export class PostListStore implements RESPONSE_CALLBACKS {
   }
 
   getPostsListData = async () => {
-    const filterParams  = preferencesDataStore.getApiRequestParams()
+    const { preferences,  sortByParam = '' } = preferencesDataStore.getPreferencesParamsList()
+    const { searchText } = userDataStore
     let urlParams: any = {
-      limit: PAGE_SIZE,
+      limitBy: PAGE_SIZE,
       page: get(this.postsData, 'current_page', 0) + 1,
-      ...filterParams
+      term: searchText,
+      type: sortByParam?.length > 0 ? sortByParam : '',
     }
     log('urlParamsurlParamsurlParams', urlParams)
     const loginUser = new BaseRequest(this, {
-      methodType: 'GET',
+      methodType: 'POST',
       apiEndPoint: API_END_POINTS.GET_ALL_POSTS,
       apiId: API_IDS.GET_ALL_POSTS,
-      urlParams
+      urlParams,
+      reqParams: {
+        preferences
+      },
+      prefetch: false
     })
     await loginUser.setRequestHeaders()
-    await loginUser.hitGetApi()
+    await loginUser.hitPostApi()
   }
 
   constructPostsListScreen = (responseData) => {

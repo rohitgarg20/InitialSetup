@@ -19,6 +19,7 @@ interface REQUEST_CONFIG {
   reqParams?: any
   promisify?: boolean
   params?: any
+  prefetch?: boolean
 }
 
 const DEFAULT_SETTING = {
@@ -32,7 +33,8 @@ const DEFAULT_SETTING = {
   apiEndPoint: '',
   reqParams: {},
   promisify: false,
-  params: {}
+  params: {},
+  prefetch: true
 }
 
 const isObject = obj => typeof obj === 'object'
@@ -74,6 +76,7 @@ export class BaseRequest {
   reqParams
   promisify
   params
+  prefetch
 
   constructor(context, reqConfig: REQUEST_CONFIG) {
     Object.keys(DEFAULT_SETTING).forEach((key) => this[key] = DEFAULT_SETTING[key])
@@ -174,7 +177,9 @@ hitPostApi = async () => {
       }
     })
   }
-  showLoader()
+  if (this.prefetch) {
+    showLoader()
+  }
   const formattedUrlParams = Object.keys(this.urlParams).map((key) => `${key}=${this.urlParams[key]}`).join('&')
   try {
     if (this.promisify) {

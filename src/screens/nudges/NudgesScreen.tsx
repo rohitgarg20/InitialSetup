@@ -1,6 +1,6 @@
 import { observer } from 'mobx-react'
 import React, { Component } from 'react'
-import { Button, StyleSheet, Text, View, TouchableOpacity, ScrollView } from 'react-native'
+import { Button, StyleSheet, Text, View, TouchableOpacity, ScrollView, RefreshControl } from 'react-native'
 import Swiper from 'react-native-deck-swiper'
 import { colors, fontDimens, fontDimensPer } from '../../common'
 import { ACTION_TYPE, BASE_URL, FETCHING_ARR } from '../../common/constant'
@@ -43,7 +43,7 @@ const styles = StyleSheet.create({
     fontWeight: '600',
     fontSize: widthToDp(fontDimensPer.medium),
     color: colors.white,
-    fontFamily: 'Poppins-SemiBold',
+    fontFamily: 'Poppins-SemiBold'
   },
   footerContainer: {
     paddingHorizontal: PADDING_HORIZONTAL,
@@ -88,7 +88,7 @@ const styles = StyleSheet.create({
     paddingBottom: 30,
     textAlign: 'center',
     fontFamily: 'Poppins-Regular',
-    fontWeight: '400',
+    fontWeight: '400'
 
   }
 })
@@ -121,7 +121,7 @@ export class NudgesScreen extends Component<IProps> {
   }
 
   renderNudgeSwiperView = () => {
-    const { nudgesData, updateCurrentIndex, saveCurrentNudge } = nudgesListDataStore
+    const { nudgesData, updateCurrentIndex, saveCurrentNudge, currentNudeIndex } = nudgesListDataStore
     const nudgesList = nudgesData?.nudgesList || []
     if (nudgesList.length === 0) {
       return null
@@ -154,7 +154,7 @@ export class NudgesScreen extends Component<IProps> {
           onSwipedAll={() => {
             console.log('onSwipedAll')
           }}
-          cardIndex={0}
+          cardIndex={currentNudeIndex}
           // backgroundColor={'transparent'}
           verticalSwipe={false}
           stackSize={3}
@@ -167,6 +167,7 @@ export class NudgesScreen extends Component<IProps> {
           }}
           animateCardOpacity={true}
           stackSeparation={10}
+          key = {nudgesList.length}
         />
       </View>
     )
@@ -308,7 +309,7 @@ export class NudgesScreen extends Component<IProps> {
             iconWidth={10}
             styling={{
               marginLeft: 5,
-              tintColor: colors.black,
+              tintColor: colors.black
               // marginTop: 1
             }}
           />
@@ -340,10 +341,12 @@ export class NudgesScreen extends Component<IProps> {
   }
 
   renderNudesView = () => {
-    const { currentNudeIndex, nudgesData } = nudgesListDataStore
+    const { currentNudeIndex, nudgesData, resetDataAndHitApi } = nudgesListDataStore
     const nudgesList = nudgesData?.nudgesList || []
     const totalNudges = nudgesList?.length
-    if (currentNudeIndex > totalNudges) {
+    log('currentNudeIndexcurrentNudeIndex', currentNudeIndex, totalNudges)
+
+    if (currentNudeIndex >= totalNudges) {
       return (
         <View>
           <CustomText>
@@ -353,9 +356,19 @@ export class NudgesScreen extends Component<IProps> {
       )
     }
     return (
-      <ScrollView contentContainerStyle = {{
-        flex: 1
-      }}>
+      <ScrollView
+        contentContainerStyle = {{
+          flex: 1
+        }}
+        refreshControl={
+          <RefreshControl
+            refreshing={false}
+            onRefresh={() => {
+              resetDataAndHitApi()
+            }}
+          />
+        }
+      >
         <CustomText textStyle={styles.nudgesNotes}>Note: Click on the poster to check event details.</CustomText>
         {this.renderNudgeSwiperView()}
         {this.renderNudeSkipAcceptSection()}
@@ -368,11 +381,14 @@ export class NudgesScreen extends Component<IProps> {
 
 
   render() {
-    const { isFetching } = nudgesListDataStore
+    const { isFetching, updateFetchingStatus, resetDataAndHitApi  } = nudgesListDataStore
 
     return (
       <>
-        <HeaderCardComponent />
+        <HeaderCardComponent
+          updateFetchingStatus={updateFetchingStatus}
+          hitSearchApi = {resetDataAndHitApi}
+        />
         {
           isFetching ? this.renderFetchingView() : <>
             {this.renderNudesView()}

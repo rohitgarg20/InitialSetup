@@ -9,13 +9,14 @@ export class SaveDataStore {
   }
 
 
-  saveAnEvent = async (params, urlParams) => {
+  saveAnEvent = async (params, urlParams, prefetch = true) => {
     const loginUser = new BaseRequest(this.context, {
       methodType: 'POST',
       apiEndPoint: API_END_POINTS.SAVE_ITEM,
       apiId: API_IDS.SAVE_ITEM,
       params,
-      reqParams: urlParams
+      reqParams: urlParams,
+      prefetch
     })
     await loginUser.setRequestHeaders()
     await loginUser.hitPostApi()

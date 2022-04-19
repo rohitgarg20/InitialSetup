@@ -3,17 +3,24 @@ import { get } from 'lodash'
 
 const DEFAULT_SETTING = {
   userInfoData: {},
-  userOptionsList: []
+  userOptionsList: [],
+  searchText: ''
 }
 
 
 export class UserDataStore {
   @observable userInfoData: any
   @observable userOptionsList
+  @observable searchText
 
   constructor() {
     this.init()
     makeObservable(this)
+  }
+
+  @action
+  updateSearchText = (value) => {
+    this.searchText = value
   }
 
   @action

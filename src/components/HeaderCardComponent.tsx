@@ -1,9 +1,9 @@
 import { observer } from 'mobx-react'
 import React, { Component } from 'react'
-import { StyleSheet, View } from 'react-native'
-import { TouchableOpacity } from 'react-native-gesture-handler'
+import { StyleSheet, View, TouchableOpacity } from 'react-native'
+import { debounce, get } from 'lodash'
 import { colors } from '../common'
-import { BASE_URL, HEADER_HEIGHT, navigateToWebView, OPTIONS_DATA_FOR_SELF_POST, USER_KEYS, USER_OPTIONS_LIST } from '../common/constant'
+import { BASE_URL, HEADER_HEIGHT, MINIMUM_TEXT_TO_SEARCH, navigateToWebView, OPTIONS_DATA_FOR_SELF_POST, USER_KEYS, USER_OPTIONS_LIST, WAITING_TIME } from '../common/constant'
 import { icons } from '../common/icons'
 import { getWidth } from '../common/scaling'
 import { log } from '../config'
@@ -11,6 +11,7 @@ import { STACK_NAMES } from '../navigator'
 import { setInititalStackName } from '../service'
 import { navigationDataStore, userDataStore } from '../store'
 import { handleSignOut } from '../utils/auth-utils'
+import { AnimatedSearchBarComponent } from './AnimatedSearchBarComponent'
 import { CustomText } from './CustomText'
 import { IconButtonWrapper } from './IconButtonWrapper'
 import { InfoToolTip } from './InfoToolTip'
@@ -88,8 +89,12 @@ const styles = StyleSheet.create({
   },
 })
 
+interface IProps {
+  updateFetchingStatus?: (status) => void
+  hitSearchApi?: () => void
+}
 @observer
-export class HeaderCardComponent extends Component {
+export class HeaderCardComponent extends Component<IProps> {
   toolTipRef
   setToolTipRef = (ref) => {
     this.toolTipRef = ref
@@ -172,7 +177,44 @@ export class HeaderCardComponent extends Component {
     )
   }
 
+  onChangeSearchText = (text) => {
+    const { updateFetchingStatus, hitSearchApi } = this.props
+    const { searchText } = userDataStore
+    const searchTextLength = get(searchText, 'length')
+    const textLength = get(text, 'length')
+    if (searchTextLength >= MINIMUM_TEXT_TO_SEARCH && textLength < MINIMUM_TEXT_TO_SEARCH) {
+      log('inside if is called')
+      this.updateSearchTextAndFetchData.cancel()
+      userDataStore.updateSearchText(text)
+      updateFetchingStatus(true)
+      this.updateSearchTextAndFetchData('')
+    } else if (textLength >= MINIMUM_TEXT_TO_SEARCH) {
+      this.updateSearchTextAndFetchData.cancel()
+      userDataStore.updateSearchText(text)
+      updateFetchingStatus(true)
+      this.updateSearchTextAndFetchData(text)
+    } else {
+      userDataStore.updateSearchText(text)
+    }
+  }
+
+  resetSearchData = () => {
+    const { updateFetchingStatus, hitSearchApi } = this.props
+
+    userDataStore.updateSearchText('')
+    updateFetchingStatus(true)
+    hitSearchApi()
+  }
+
+  updateSearchTextAndFetchData = debounce(searchText => {
+    const { updateFetchingStatus, hitSearchApi } = this.props
+
+    updateFetchingStatus(true)
+    hitSearchApi()
+  }, WAITING_TIME)
+
   render() {
+    const { searchText } = userDataStore
     return (
       <View style={styles.headerContainer}>
         <View>
@@ -186,13 +228,20 @@ export class HeaderCardComponent extends Component {
         </View>
 
         <View style={styles.topHeaderRightView}>
-          <TouchableOpacity style={styles.topIconStyle}>
+          {/* <TouchableOpacity style={styles.topIconStyle}>
             <IconButtonWrapper
               iconImage={icons.SEARCH_ICON}
               iconHeight={16}
               iconWidth={16}
             />
-          </TouchableOpacity>
+          </TouchableOpacity> */}
+          <AnimatedSearchBarComponent
+            rightDistance = {180}
+            onChangeSearchText = {this.onChangeSearchText}
+            onCrossButtonClicked = {this.resetSearchData}
+            isSearchBarExpanded = {searchText.length > 0}
+            searchText = {searchText}
+          />
           <TouchableOpacity style={styles.topIconStyle}>
             <IconButtonWrapper
               iconImage={icons.MESSAGE_ICON}

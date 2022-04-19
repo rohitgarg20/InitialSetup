@@ -1,3 +1,4 @@
+import { showLoader } from './../../service/LoaderDataService';
 import { API_IDS, API_END_POINTS } from './../../common/ApiConfiguration';
 import { RESPONSE_CALLBACKS } from './../../http-layer/BaseResponse';
 import { action, makeObservable, observable } from 'mobx'
@@ -117,13 +118,14 @@ export class LoginDataStore implements RESPONSE_CALLBACKS{
     await loginUser.hitGetApi()
   }
 
-
-
-  onSuccess(apiId: string, response: any) {
+  async onSuccess(apiId: string, response: any) {
     switch (apiId) {
       case API_IDS.LOGIN:
-        setInititalStackName('bottomTabBar')
-        getScreenNameToNavigateToOnLogin()
+        showLoader()
+        setTimeout(async () => {
+          const initialRoute =  await getScreenNameToNavigateToOnLogin()
+          setInititalStackName(initialRoute)
+        }, 0)
         break
       default:
         break

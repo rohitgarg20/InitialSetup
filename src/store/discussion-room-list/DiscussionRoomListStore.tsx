@@ -7,7 +7,7 @@ import { log } from '../../config'
 import { BaseRequest, RESPONSE_CALLBACKS } from '../../http-layer'
 import { showAndroidToastMessage, toDateTime } from '../../utils/app-utils'
 import { timeFromNow } from '../../utils/DateHelper'
-import { preferencesDataStore } from '..'
+import { preferencesDataStore, userDataStore } from '..'
 
 const PAGE_SIZE = 10
 
@@ -52,21 +52,27 @@ export class DiscussionRoomListStore implements RESPONSE_CALLBACKS {
 
 
   getDiscussionRoomsListData = async () => {
-    const filterParams = preferencesDataStore.getApiRequestParams()
+    const { preferences,  sortByParam = '' } = preferencesDataStore.getPreferencesParamsList()
+    const { searchText } = userDataStore
+
 
     const loginUser = new BaseRequest(this, {
-      methodType: 'GET',
+      methodType: 'POST',
       apiEndPoint: API_END_POINTS.GET_DISCUSSION_ROOM_LIST,
       apiId: API_IDS.GET_DISCUSSION_ROOM_LIST,
       urlParams: {
-        // type: 'latest',
         limit: PAGE_SIZE,
         page: get(this.discussionRoomData, 'current_page', 0) + 1,
-        ...filterParams
-      }
+        sortBy: sortByParam?.length > 0 ? sortByParam : '',
+        term: searchText
+      },
+      prefetch: false,
+      // reqParams: {
+      //   preferences
+      // },
     })
     await loginUser.setRequestHeaders()
-    await loginUser.hitGetApi()
+    await loginUser.hitPostApi()
   }
 
   constructDiscussionRoomListData = (responseData) => {

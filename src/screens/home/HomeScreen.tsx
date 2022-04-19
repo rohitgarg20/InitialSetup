@@ -1,6 +1,6 @@
 import { observer } from 'mobx-react'
 import React, { Component } from 'react'
-import { ActivityIndicator, StyleSheet, View } from 'react-native'
+import { ActivityIndicator, RefreshControl, StyleSheet, View } from 'react-native'
 import { get } from 'lodash'
 import { colors } from '../../common'
 import { BASE_URL, FETCHING_ARR } from '../../common/constant'
@@ -123,7 +123,7 @@ export class HomeScreen extends Component<IProps> {
   }
 
   renderPostsListScreeen = () => {
-    const { postsData = {}, isFetching } = postListStore
+    const { postsData = {}, isFetching, resetDataAndHitApi } = postListStore
     const { postList } = postsData
     return (
       <View style={styles.mainContainer}>
@@ -135,6 +135,14 @@ export class HomeScreen extends Component<IProps> {
           />
         </View>
         <FlatListWrapper
+          refreshControl={
+            <RefreshControl
+              refreshing={false}
+              onRefresh={() => {
+                resetDataAndHitApi()
+              }}
+            />
+          }
           isFetching={isFetching}
           data={isFetching ? FETCHING_ARR : postList as IPostItem[]}
           renderItem={this.renderPostsCard}
@@ -150,9 +158,13 @@ export class HomeScreen extends Component<IProps> {
   }
 
   render() {
+    const { updateFetchingStatus, resetDataAndHitApi } = postListStore
     return (
       <View style={styles.container}>
-        <HeaderCardComponent />
+        <HeaderCardComponent
+          updateFetchingStatus={updateFetchingStatus}
+          hitSearchApi = {resetDataAndHitApi}
+        />
 
         {this.renderPostsListScreeen()}
       </View>

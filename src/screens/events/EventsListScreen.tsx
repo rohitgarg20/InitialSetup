@@ -1,6 +1,6 @@
 import { observer } from 'mobx-react'
 import React, { Component } from 'react'
-import { ActivityIndicator, StyleSheet, View } from 'react-native'
+import { ActivityIndicator, RefreshControl, StyleSheet, View } from 'react-native'
 import { get } from 'lodash'
 import { colors, fontDimensPer } from '../../common'
 import { CARD_HEIGHT, FETCHING_ARR } from '../../common/constant'
@@ -37,7 +37,7 @@ const styles = StyleSheet.create({
     fontSize: widthToDp(fontDimensPer.large),
     fontWeight: '600',
     color: colors.black,
-    fontFamily: 'Poppins-SemiBold',
+    fontFamily: 'Poppins-SemiBold'
   }
 
 })
@@ -139,7 +139,7 @@ export class EventsListScreen extends Component<IProps> {
   }
 
   renderEventsListScreen = () => {
-    const { eventData = {}, isFetching } = eventsListStore
+    const { eventData = {}, isFetching, resetDataAndHitApi } = eventsListStore
     const { eventsList } = eventData
     return (
       <View style = {{
@@ -156,6 +156,14 @@ export class EventsListScreen extends Component<IProps> {
           </TouchableOpacity>
         </View>
         <FlatListWrapper
+          refreshControl={
+            <RefreshControl
+              refreshing={false}
+              onRefresh={() => {
+                resetDataAndHitApi()
+              }}
+            />
+          }
           isFetching={isFetching}
           data={isFetching ? FETCHING_ARR : eventsList as IEventListItem[]}
           renderItem={this.renderEventCard}
@@ -172,9 +180,14 @@ export class EventsListScreen extends Component<IProps> {
   }
 
   render() {
+    const { updateFetchingStatus, resetDataAndHitApi } = eventsListStore
+
     return (
       <View style={styles.container}>
-        <HeaderCardComponent />
+        <HeaderCardComponent
+          updateFetchingStatus={updateFetchingStatus}
+          hitSearchApi = {resetDataAndHitApi}
+        />
         {this.renderEventsListScreen()}
       </View>
     )

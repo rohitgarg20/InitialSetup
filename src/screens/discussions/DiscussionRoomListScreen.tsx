@@ -1,6 +1,6 @@
 import { observer } from 'mobx-react'
 import React, { Component } from 'react'
-import { ActivityIndicator, StyleSheet, TouchableOpacity, View } from 'react-native'
+import { ActivityIndicator, RefreshControl, StyleSheet, TouchableOpacity, View } from 'react-native'
 import { get } from 'lodash'
 import { colors, fontDimensPer } from '../../common'
 import { CARD_HEIGHT, FETCHING_ARR } from '../../common/constant'
@@ -33,7 +33,7 @@ const styles = StyleSheet.create({
     fontSize: widthToDp(fontDimensPer.large),
     fontWeight: '600',
     color: colors.black,
-    fontFamily: 'Poppins-SemiBold',
+    fontFamily: 'Poppins-SemiBold'
   }
 
 })
@@ -139,13 +139,13 @@ export class DiscussionRoomListScreen extends Component<IProps> {
   }
 
   renderDiscussionList = () => {
-    const { discussionRoomData = {}, isFetching } = discussionRoomListStore
+    const { discussionRoomData = {}, isFetching, resetDataAndHitApi } = discussionRoomListStore
     const { roomsList = [] } = discussionRoomData
     return (
       <View style = {{
         flex: 1
       }}>
-         <View style={styles.subHeaderContainer}>
+        <View style={styles.subHeaderContainer}>
           <CustomText textStyle={styles.subheadingStyle}>My Discussion Room</CustomText>
           <TouchableOpacity>
             <IconButtonWrapper
@@ -156,6 +156,14 @@ export class DiscussionRoomListScreen extends Component<IProps> {
           </TouchableOpacity>
         </View>
         <FlatListWrapper
+          refreshControl={
+            <RefreshControl
+              refreshing={false}
+              onRefresh={() => {
+                resetDataAndHitApi()
+              }}
+            />
+          }
           isFetching={isFetching}
           data={isFetching ? FETCHING_ARR : roomsList as IEventListItem[]}
           renderItem={this.renderEventCard}
@@ -171,9 +179,13 @@ export class DiscussionRoomListScreen extends Component<IProps> {
     )
   }
   render() {
+    const { updateFetchingStatus, resetDataAndHitApi } = discussionRoomListStore
     return (
       <View style={styles.container}>
-        <HeaderCardComponent />
+        <HeaderCardComponent
+          updateFetchingStatus={updateFetchingStatus}
+          hitSearchApi = {resetDataAndHitApi}
+        />
         {this.renderDiscussionList()}
       </View>
     )

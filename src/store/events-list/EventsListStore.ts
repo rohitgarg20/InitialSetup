@@ -6,9 +6,9 @@ import { API_END_POINTS, API_IDS } from '../../common/ApiConfiguration'
 import { log } from '../../config'
 import { BaseRequest, RESPONSE_CALLBACKS } from '../../http-layer'
 import { showAndroidToastMessage, toDateTime } from '../../utils/app-utils'
-import { preferencesDataStore } from '..';
+import { preferencesDataStore, userDataStore } from '..';
 
-const PAGE_SIZE = 10
+const PAGE_SIZE = 1
 
 const DEFAULT_SETTINGS = {
   eventData: {
@@ -49,19 +49,26 @@ export class EventsListStore implements RESPONSE_CALLBACKS {
 
 
   getEventsListData = async () => {
-    const filterParams  = preferencesDataStore.getApiRequestParams()
+    const { preferences,  sortByParam = '' } = preferencesDataStore.getPreferencesParamsList()
+    const { searchText } = userDataStore
+
     const loginUser = new BaseRequest(this, {
-      methodType: 'GET',
+      methodType: 'POST',
       apiEndPoint: API_END_POINTS.GET_EVENTS_LIST,
       apiId: API_IDS.GET_EVENTS_LIST,
       urlParams: {
         limit: PAGE_SIZE,
         page: get(this.eventData, 'current_page', 0) + 1,
-        ...filterParams
-      }
+        sortBy: sortByParam?.length > 0 ? sortByParam : '',
+        term: searchText
+      },
+      reqParams: {
+        preferences
+      },
+      prefetch: false
     })
     await loginUser.setRequestHeaders()
-    await loginUser.hitGetApi()
+    await loginUser.hitPostApi()
   }
 
   constructEventListData = (responseData) => {

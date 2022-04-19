@@ -313,8 +313,11 @@ export class PreferencesDataStore implements RESPONSE_CALLBACKS {
         }
       }
     })
-    log('reqParamsreqParamsreqParams', reqParams)
-
+    // log('reqParamsreqParamsreqParams', reqParams)
+    // reqParams.push({
+    //   cid: 57,
+    //   sub_cids: [134]
+    // })
     return {
       preferences: reqParams,
       sortByParam
