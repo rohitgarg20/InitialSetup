@@ -15,7 +15,7 @@ const styles = StyleSheet.create({
   mainContainer: {
     flex: 1,
     backgroundColor: colors.white,
-    paddingTop: 10
+    paddingTop: 20
   },
   centerView: {
     alignItems: 'center'
@@ -76,7 +76,7 @@ const styles = StyleSheet.create({
     color: colors.white,
     // fontSize: fontDimens.normal,
     lineHeight: 1.5 * widthToDp(fontDimensPer.medium),
-    fontSize:  widthToDp(fontDimensPer.medium),
+    fontSize: widthToDp(fontDimensPer.medium),
     fontWeight: '400',
     fontFamily: 'Poppins-Regular',
 
@@ -88,29 +88,30 @@ export class AddJokeScreen extends Component {
 
   renderLogoComponent = () => {
     return (
-      <View style = {styles.centerView}>
-        <LogoComponent/>
+      <View style={styles.centerView}>
+        <LogoComponent />
       </View>
     )
   }
 
   renderBackArrowContainer = () => {
     return (
-      <View style = {styles.backContainer}>
-        <BackButtonComponent/>
+      <View style={styles.backContainer}>
+        <BackButtonComponent />
       </View>
     )
   }
 
   rendePersonIcon = () => {
     return (
-      <View style = {{
-        zIndex: 99
+      <View style={{
+        zIndex: 99,
+        bottom: -10
       }}>
         <IconButtonWrapper
           iconImage={icons.PERSON}
-          iconHeight = {95}
-          iconWidth = {85}
+          iconHeight={95}
+          iconWidth={85}
         />
       </View>
     )
@@ -120,16 +121,16 @@ export class AddJokeScreen extends Component {
     return (
       <IconButtonWrapper
         iconImage={icons.BRICK}
-        iconHeight = {100}
-        iconWidth = {'100%'}
-        imageResizeMode = {'cover'}
+        iconHeight={100}
+        iconWidth={'100%'}
+        imageResizeMode={'cover'}
       />
     )
   }
 
   renderBackWithPersonIcon = () => {
     return (
-      <View style = {styles.rowContainer}>
+      <View style={styles.rowContainer}>
         {this.renderBackArrowContainer()}
         {this.rendePersonIcon()}
       </View>
@@ -141,13 +142,13 @@ export class AddJokeScreen extends Component {
     return map(Object.keys(formData), (formKey) => {
       const { label, inputValue, key, isPasswordField = false, errorMessage = '' } = formData[formKey] as I_TEXT_FIELD
       return (
-        <View style = {styles.fieldSeperator}>
+        <View style={styles.fieldSeperator}>
           <TextInputComponent
-            label= {label}
-            inputValue = {inputValue}
-            shouldShowEyeIcon = {isPasswordField}
-            errorMsg = {errorMessage}
-            onChangeText = {(value) => onChangeText(key, value)}
+            label={label}
+            inputValue={inputValue}
+            shouldShowEyeIcon={isPasswordField}
+            errorMsg={errorMessage}
+            onChangeText={(value) => onChangeText(key, value)}
           />
         </View>
       )
@@ -160,14 +161,14 @@ export class AddJokeScreen extends Component {
     log('renderJokeInputrenderJokeInput', inputValue)
     return (
       <TextInputComponent
-        label= {label}
-        inputValue = {inputValue}
-        errorMsg = {errorMessage}
-        onChangeText = {(value) => onChangeText(key, value)}
-        multiline = {true}
-        inputContainerStyle = {styles.inputContainer}
-        labelContainerStyle = {styles.labelContainerStyle}
-        textInputStyle = {styles.textInput}
+        label={label}
+        inputValue={inputValue}
+        errorMsg={errorMessage}
+        onChangeText={(value) => onChangeText(key, value)}
+        multiline={true}
+        inputContainerStyle={styles.inputContainer}
+        labelContainerStyle={styles.labelContainerStyle}
+        textInputStyle={styles.textInput}
       />
     )
   }
@@ -175,7 +176,7 @@ export class AddJokeScreen extends Component {
   renderAddJokeForm = () => {
     const { HEADING } = strings.ADD_JOKE
     return (
-      <View style = {styles.formContainer}>
+      <View style={styles.formContainer}>
         <CustomText textStyle={styles.formHeading}>
           {HEADING}
         </CustomText>
@@ -190,8 +191,8 @@ export class AddJokeScreen extends Component {
     const { SUBMIT } = strings.ADD_JOKE
     const { validateFormFields } = addJokeDataStore
     return (
-      <View style = {styles.buttonView}>
-        <TouchableOpacity style = {styles.signInButton} onPress = {validateFormFields}>
+      <View style={styles.buttonView}>
+        <TouchableOpacity style={styles.signInButton} onPress={validateFormFields}>
           <CustomText textStyle={styles.buttonLabel}>
             {SUBMIT}
           </CustomText>
@@ -204,7 +205,7 @@ export class AddJokeScreen extends Component {
 
   render() {
     return (
-      <View style = {styles.mainContainer}>
+      <View style={styles.mainContainer}>
         <KeyboardAwareScrollViewComponent>
           {this.renderLogoComponent()}
           {this.renderBackWithPersonIcon()}
