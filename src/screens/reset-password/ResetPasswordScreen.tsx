@@ -18,7 +18,7 @@ const styles = StyleSheet.create({
   mainContainer: {
     flex: 1,
     backgroundColor: colors.white,
-    paddingTop: 10
+    paddingTop: 20
   },
   centerView: {
     alignItems: 'center'
@@ -79,12 +79,12 @@ const styles = StyleSheet.create({
   },
   footerPagerView: {
     marginHorizontal: 30,
-    marginVertical: 15,
+    marginVertical: 20,
     justifyContent: 'center',
     borderRadius: 5,
     backgroundColor: colors.white,
     flex: 1,
-    padding: 10
+    padding: 15
   }
 })
 
