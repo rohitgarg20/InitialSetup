@@ -152,6 +152,7 @@ export class HomeScreen extends Component<IProps> {
           onEndReachedThreshold={0.001}
           onEndReached={this.loadMoreData}
           customizedShimmerView={this.renderShimmerView}
+          initialNumToRender = {postList?.length || 10}
         />
       </View>
     )

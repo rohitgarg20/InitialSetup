@@ -174,6 +174,7 @@ export class EventsListScreen extends Component<IProps> {
           onEndReachedThreshold={0.001}
           onEndReached={this.loadMoreData}
           customizedShimmerView={this.renderShimmerView}
+          initialNumToRender = {eventsList?.length || 10}
         />
       </View>
     )

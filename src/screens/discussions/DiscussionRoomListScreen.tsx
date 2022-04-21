@@ -174,6 +174,8 @@ export class DiscussionRoomListScreen extends Component<IProps> {
           onEndReachedThreshold={0.001}
           onEndReached={this.loadMoreData}
           customizedShimmerView={this.renderShimmerView}
+          initialNumToRender = {roomsList?.length || 10}
+
         />
       </View>
     )
