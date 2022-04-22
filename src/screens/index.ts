@@ -1,1 +1,3 @@
-export * from './MainScreen'
+export * from './CharactersListScreen'
+export * from './CharacterDetailScreen'
+export * from './EpisodeDetailScreen'

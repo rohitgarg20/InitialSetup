@@ -1,5 +1,6 @@
 import './config/ReactotronConfig'
 import { observer, Provider } from 'mobx-react'
+import { map } from 'lodash'
 import React, { Component }  from 'react'
 import { setRouterHandler } from './navigator'
 import { SplashScreen } from './screens/Splash'
@@ -7,6 +8,9 @@ import { navigationDataStore } from './store'
 import  stores from './store'
 import { LogBox, SafeAreaView } from 'react-native'
 import { GestureHandlerRootView } from 'react-native-gesture-handler'
+import { Loader } from './components'
+
+const servicesContainer = [<Loader/>]
 
 @observer
 export class App extends Component {
@@ -26,6 +30,7 @@ export class App extends Component {
             Router ? <>
               <GestureHandlerRootView style={style}>
                 <Router/>
+                {map(servicesContainer, (service, index) => <>{service}</>)}
               </GestureHandlerRootView>
             </> : <SplashScreen/>
           }

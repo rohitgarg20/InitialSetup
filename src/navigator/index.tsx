@@ -3,10 +3,10 @@ import { createStackNavigator } from "@react-navigation/stack"
 import React from "react"
 import { setInitialStackName } from "../service"
 import { navigationDataStore } from "../store"
-import { loginStack } from "./LoginStack"
+import { mainStack } from "./MainStack"
 
 const STACK_NAMES = {
-  LOGIN_STACK: 'loginStack'
+  MAIN_STACK: 'MainStack'
 }
 
 const Stack = createStackNavigator()
@@ -14,15 +14,17 @@ const rootStack = () => {
   const { currentStackName } = navigationDataStore
   return (
     <NavigationContainer>
-      <Stack.Navigator>
-        {currentStackName === STACK_NAMES.LOGIN_STACK && <Stack.Screen name ={'LoginStack'} component = {loginStack}/>}
+      <Stack.Navigator screenOptions={{
+      headerShown: false
+    }}>
+        {currentStackName === STACK_NAMES.MAIN_STACK && <Stack.Screen name ={'MainStack'} component = {mainStack}/>}
       </Stack.Navigator>
     </NavigationContainer>
   )
 }
 
 const routerGenerator = (cb) => {
-  setInitialStackName(STACK_NAMES.LOGIN_STACK)
+  setInitialStackName(STACK_NAMES.MAIN_STACK)
   cb(rootStack)
 }
 
