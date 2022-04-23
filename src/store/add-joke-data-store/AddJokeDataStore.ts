@@ -115,7 +115,8 @@ export class AddJokeDataStore implements RESPONSE_CALLBACKS{
         const tempFormData = { ...this.formData}
         tempFormData[key] = {
           ...tempFormData[key],
-          [TEXT_FIELD_KEYS.INPUT_VALUE]: value
+          [TEXT_FIELD_KEYS.INPUT_VALUE]: value,
+          [TEXT_FIELD_KEYS.ERROR_MESSAGE]: ''
         }
         this.updateFormData(tempFormData)
         break
@@ -123,7 +124,8 @@ export class AddJokeDataStore implements RESPONSE_CALLBACKS{
         let tempJokeData = { ...this.joke}
         tempJokeData = {
           ...tempJokeData,
-          [TEXT_FIELD_KEYS.INPUT_VALUE]: value
+          [TEXT_FIELD_KEYS.INPUT_VALUE]: value,
+          [TEXT_FIELD_KEYS.ERROR_MESSAGE]: ''
         }
         this.updateJokeData(tempJokeData)
         break
@@ -131,9 +133,6 @@ export class AddJokeDataStore implements RESPONSE_CALLBACKS{
         break
     }
   }
-
-
-
 
   onSuccess(apiId: string, response: any) {
     switch (apiId) {

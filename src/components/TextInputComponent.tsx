@@ -216,7 +216,7 @@ export class TextInputComponent extends Component<IProps, IState> {
             onFocus={this.onFocusTextInput}
             onBlur = {this.onBlurTextInput}
             value = {inputValue}
-            selectionColor = {colors.black}
+            // selectionColor = {colors.black}
             secureTextEntry = {isPasswordVisible}
             {...this.props}
           />

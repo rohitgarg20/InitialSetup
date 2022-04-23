@@ -9,6 +9,7 @@ import { CustomText, IconButtonWrapper, ImageWithLoaderComponent, UserAvatar } f
 import { discussionRoomDetailStore } from '../../store'
 import { observer } from 'mobx-react'
 import { IEventListItem } from '../../store/interfaces'
+import { goBack } from '../../service'
 
 const PADDING_HORIZONTAL = 20
 
@@ -307,10 +308,12 @@ export class DiscussionRoomDetailScreen extends Component<IProps> {
 
   renderDiscussionRoomImage = () => {
     const { discussionRoomData } = discussionRoomDetailStore
+    const { navigation } = this.props
     const { image } = discussionRoomData as IEventListItem
     return (
       <View style={{ position: 'relative' }}>
-        <TouchableOpacity style={styles.backBtn} >
+        <TouchableOpacity style={styles.backBtn}
+        onPress = {() => goBack(navigation)}>
           <IconButtonWrapper
             iconImage={icons.RIGHT_ARROW_ICON}
             iconHeight={10}

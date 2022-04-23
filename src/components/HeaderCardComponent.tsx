@@ -37,8 +37,8 @@ const styles = StyleSheet.create({
     alignContent: 'center',
     justifyContent: 'center',
     // borderRadius: 100,
-    backgroundColor: colors.whiteSmock,
-    marginLeft: 15
+    marginLeft: 15,
+
   },
   serachField: {
     borderWidth: 1,

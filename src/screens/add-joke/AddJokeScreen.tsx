@@ -86,6 +86,10 @@ const styles = StyleSheet.create({
 @observer
 export class AddJokeScreen extends Component {
 
+  componentWillUnmount() {
+    addJokeDataStore.init()
+  }
+
   renderLogoComponent = () => {
     return (
       <View style={styles.centerView}>

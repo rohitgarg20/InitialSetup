@@ -115,7 +115,7 @@ export class EventsListStore implements RESPONSE_CALLBACKS {
     const errMsg = get(error, 'data.status.message',  strings.ERROR_MESSAGES.SOME_ERROR_OCCURED)
     const displayMsg = typeof errMsg === 'string' ? errMsg : strings.ERROR_MESSAGES.SOME_ERROR_OCCURED
     switch (apiId) {
-      case API_IDS.LOGIN:
+      case API_IDS.GET_EVENTS_LIST:
         showAndroidToastMessage(displayMsg)
         this.updateFetchingStatus(false)
 

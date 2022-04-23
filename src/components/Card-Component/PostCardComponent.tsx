@@ -60,7 +60,7 @@ const styles = StyleSheet.create({
   },
   rowContainer: {
     flexDirection: 'row',
-    alignItems: 'center'
+    alignItems: 'center',
   },
   imageContainer: {
     borderRadius: 10,
@@ -235,11 +235,13 @@ export default class PostCardComponent extends Component<IProps> {
     } = attachment
     return (
       <View style={styles.postTime}>
-        <View>
-          <CustomText textStyle={styles.contentView}>{capitalizeFirstLetterOnly(title)}</CustomText>
+        <View style = {{
+          flex: 6.5
+        }}>
+          <CustomText textStyle={styles.contentView} numberOfLines = {2} ellipsizeMode = {'tail'}>{capitalizeFirstLetterOnly(title)}</CustomText>
           <CustomText textStyle={styles.aboutUser}>2 min read</CustomText>
         </View>
-        <View style={styles.rowContainer}>
+        <View style={[styles.rowContainer, { flex: 3.5, justifyContent: 'flex-end' }]}>
           <CustomText textStyle={styles.contentView}>Read more</CustomText>
           <IconButtonWrapper
             iconImage={icons.RIGHT_ARROW}
@@ -456,6 +458,10 @@ export default class PostCardComponent extends Component<IProps> {
   }
 
   renderOptionsComponent = () => {
+    const { postData } = this.props
+
+    const  { isPostByLoggedInUser = false } = postData
+
     return (
       <InfoToolTip
         toolTipRef={(ref) => {
@@ -468,7 +474,7 @@ export default class PostCardComponent extends Component<IProps> {
         customToolTipView={this.renderOptionsListComponent}
         customView={this.renderCustomView}
         customWidth={120}
-        customHeight={200}
+        customHeight={isPostByLoggedInUser ? 200 : 122 }
         mainViewStyle={{ ...styles.mainViewStyle }}
         useAsDropDownView={true}
         withPointer={false}

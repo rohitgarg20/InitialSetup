@@ -80,6 +80,14 @@ export const strings = {
   ADD_JOKE: {
     HEADING: 'Submit a joke you think your peers will find hilarious',
     SUBMIT: 'Submit'
+  },
+  ERROR_SCREEN: {
+    HEADING: 'Uh oh!',
+    MESSAGE: 'Seems like something went wrong',
+    BUTTON_TEXT: 'Try Again',
+    NEED_HELP: 'Need Help?',
+    FUN_FACTS: 'Fun Fact',
+    FUN_FACTS_MSG: 'Did you know, that 60% of the human brain is made of fat.'
   }
 
 }

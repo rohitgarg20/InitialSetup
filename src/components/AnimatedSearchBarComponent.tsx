@@ -85,7 +85,7 @@ interface IProps {
   isSearchBarExpanded?: boolean
 }
 
-const ANIMATION_DURATION = 800
+const ANIMATION_DURATION = 300
 
 // const { SEARCH_BAR, SEARCH_ICON, CROSS_ICON, FILTER_VIEW } = UNIT_TEST_ID.HOME_SCREEN_CARDS.HOME_SEARCH_COMPONENT
 export class AnimatedSearchBarComponent extends Component<IProps> {

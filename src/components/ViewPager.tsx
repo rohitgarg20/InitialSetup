@@ -54,8 +54,12 @@ export class ViewPager extends Component<Props, State> {
   }
     onPageScrollEnd = (event) => {
       const { onPageChange } = this.props
+      const { containerWidth } = this.state
       const { x } = event.nativeEvent.contentOffset
-      const selectedPageIndex = Math.round(x / TOTAL_WIDTH)
+      log('onPageScrollEndonPageScrollEnd', event.nativeEvent.contentOffset)
+      const selectedPageIndex = Math.round(x / containerWidth)
+      log('onPageScrollEndonPageScrollEnd', event.nativeEvent.contentOffset, )
+
       this.setState({
         selectedPageIndex
       })

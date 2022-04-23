@@ -1,6 +1,6 @@
 import { observer } from 'mobx-react'
 import React, { Component } from 'react'
-import { Button, StyleSheet, Text, View, TouchableOpacity, ScrollView, RefreshControl } from 'react-native'
+import { Button, StyleSheet, Text, View, TouchableOpacity, ScrollView, RefreshControl, ToastAndroid } from 'react-native'
 import Swiper from 'react-native-deck-swiper'
 import { colors, fontDimens, fontDimensPer } from '../../common'
 import { ACTION_TYPE, BASE_URL, FETCHING_ARR } from '../../common/constant'
@@ -10,6 +10,7 @@ import { HeaderCardComponent } from '../../components/HeaderCardComponent'
 import { log } from '../../config'
 import { genericDrawerStore, nudgesListDataStore } from '../../store'
 import { INudgeListItem } from '../../store/interfaces'
+import { showAndroidToastMessage } from '../../utils/app-utils'
 import { widthToDp } from '../../utils/Responsive'
 import { PreferencesScreen } from '../preferences/PreferencesScreen'
 
@@ -152,7 +153,10 @@ export class NudgesScreen extends Component<IProps> {
             saveCurrentNudge(cardIndex)
           }}
           onSwipedAll={() => {
-            console.log('onSwipedAll')
+            // console.log('onSwipedAll')
+          }}
+          onSwipedLeft = {() => {
+            showAndroidToastMessage('This nudge has been skipped', ToastAndroid.SHORT)
           }}
           cardIndex={currentNudeIndex}
           // backgroundColor={'transparent'}
@@ -299,7 +303,9 @@ export class NudgesScreen extends Component<IProps> {
   renderFooterComponent = () => {
     return (
       <View style={styles.footerContainer}>
-        <TouchableOpacity onPress={() => this.moveToNextNudge(ACTION_TYPE.NEXT)} style={styles.rowContainer}>
+        <TouchableOpacity onPress={() => {
+
+        }} style={styles.rowContainer}>
           <CustomText textStyle={styles.nudgesLabel}>
             My Nudges
           </CustomText>

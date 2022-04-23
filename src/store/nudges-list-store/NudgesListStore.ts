@@ -1,3 +1,4 @@
+import { ToastAndroid } from 'react-native';
 import { jsonParseData, stringifyData } from './../../utils/app-utils';
 import { INudgeListItem } from './../interfaces'
 import { action, computed, makeObservable, observable } from 'mobx'
@@ -151,6 +152,9 @@ export class NudgesListStore implements RESPONSE_CALLBACKS {
         this.setNudgesListData(nudgesData)
         this.updateFetchingStatus(false)
         break
+      case API_IDS.SAVE_ITEM:
+        showAndroidToastMessage('This nudge has been saved successfully')
+        break
       default:
         break
     }
@@ -163,7 +167,9 @@ export class NudgesListStore implements RESPONSE_CALLBACKS {
       case API_IDS.GET_NUDGES_LIST:
         showAndroidToastMessage(displayMsg)
         this.updateFetchingStatus(false)
-
+        break
+      case API_IDS.SAVE_ITEM:
+        showAndroidToastMessage(displayMsg, ToastAndroid.SHORT)
         break
       default:
         break

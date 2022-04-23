@@ -27,8 +27,8 @@ export const MAIN_STACK_KEYS = {
   TAB_BAR_STACK: 'tabBarStack'
 }
 
-export const BASE_URL = 'http://192.168.1.203:4567'
-// export const BASE_URL = 'http://sdlms.deepthought.education'
+export const BASE_URL = 'http://192.168.1.21:4567'
+// export const BASE_URL = 'http://www.sdlms.deepthought.education'
 
 export const DAYS_NAME = ['Sun', 'Mon', 'Tue', 'Wed', 'Thur', 'Fri', 'Sat']
 export const MONTH_NAMES = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'June', 'July', 'Aug', 'Sept', 'Oct', 'Nov', 'Dec']
