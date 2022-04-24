@@ -16,13 +16,16 @@ const DEFAULT_SETTINGS = {
     current_page: -1,
     last_page: undefined
   },
-  isFetching: false
+  isFetching: false,
+  isApiError: false
 }
 
 export class EventsListStore implements RESPONSE_CALLBACKS {
 
   @observable eventData
   @observable isFetching
+  @observable isApiError
+
 
   constructor() {
     this.init()
@@ -37,14 +40,20 @@ export class EventsListStore implements RESPONSE_CALLBACKS {
   @action
   resetDataAndHitApi = () => {
     this.updateFetchingStatus(true)
+    this.updateApiErrorStatus(false)
     this.eventData = {
       ...DEFAULT_SETTINGS.eventData
     }
     this.getEventsListData()
   }
-
+  @action
   updateFetchingStatus = (value) => {
     this.isFetching = value
+  }
+
+  @action
+  updateApiErrorStatus = (value) => {
+    this.isApiError = value
   }
 
 
@@ -116,9 +125,10 @@ export class EventsListStore implements RESPONSE_CALLBACKS {
     const displayMsg = typeof errMsg === 'string' ? errMsg : strings.ERROR_MESSAGES.SOME_ERROR_OCCURED
     switch (apiId) {
       case API_IDS.GET_EVENTS_LIST:
+        const isEventAvailable = get(this.eventData, 'eventsList.length', 0) > 0
         showAndroidToastMessage(displayMsg)
         this.updateFetchingStatus(false)
-
+        this.updateApiErrorStatus(isEventAvailable ? false : true)
         break
       default:
         break

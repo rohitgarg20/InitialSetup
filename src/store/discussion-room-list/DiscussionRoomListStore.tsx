@@ -17,7 +17,8 @@ const DEFAULT_SETTINGS = {
     current_page: -1,
     last_page: undefined
   },
-  isFetching: false
+  isFetching: false,
+  isApiError: false
 }
 
 
@@ -25,6 +26,7 @@ export class DiscussionRoomListStore implements RESPONSE_CALLBACKS {
 
   @observable discussionRoomData
   @observable isFetching
+  @observable isApiError
 
   constructor() {
     this.init()
@@ -36,14 +38,20 @@ export class DiscussionRoomListStore implements RESPONSE_CALLBACKS {
     Object.keys(DEFAULT_SETTINGS).forEach((key) => (this[key] = DEFAULT_SETTINGS[key]))
   }
 
-
+  @action
   updateFetchingStatus = (value) => {
     this.isFetching = value
   }
 
   @action
+  updateApiErrorStatus = (value) => {
+    this.isApiError = value
+  }
+
+  @action
   resetDataAndHitApi = () => {
     this.updateFetchingStatus(true)
+    this.updateApiErrorStatus(false)
     this.discussionRoomData = {
       ...DEFAULT_SETTINGS.discussionRoomData
     }
@@ -67,9 +75,9 @@ export class DiscussionRoomListStore implements RESPONSE_CALLBACKS {
         term: searchText
       },
       prefetch: false,
-      // reqParams: {
-      //   preferences
-      // },
+      reqParams: {
+        preferences
+      },
     })
     await loginUser.setRequestHeaders()
     await loginUser.hitPostApi()
@@ -135,8 +143,10 @@ export class DiscussionRoomListStore implements RESPONSE_CALLBACKS {
     const displayMsg = typeof errMsg === 'string' ? errMsg : strings.ERROR_MESSAGES.SOME_ERROR_OCCURED
     switch (apiId) {
       case API_IDS.GET_DISCUSSION_ROOM_LIST:
+        const isPostAvailable = get(this.discussionRoomData, 'roomsList.length', 0) > 0
         showAndroidToastMessage(displayMsg)
         this.updateFetchingStatus(false)
+        this.updateApiErrorStatus(isPostAvailable ? false : true)
 
         break
       default:

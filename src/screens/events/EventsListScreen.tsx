@@ -4,7 +4,7 @@ import { ActivityIndicator, RefreshControl, StyleSheet, View } from 'react-nativ
 import { get } from 'lodash'
 import { colors, fontDimensPer } from '../../common'
 import { CARD_HEIGHT, FETCHING_ARR } from '../../common/constant'
-import { CustomText, EventCardComponent, FlatListWrapper, IconButtonWrapper, ShimmerComponent } from '../../components'
+import { CustomText, EventCardComponent, FlatListWrapper, IconButtonWrapper, LoaderWithApiErrorComponent, ShimmerComponent } from '../../components'
 import { eventsListStore, genericDrawerStore } from '../../store'
 import { IEventListItem } from '../../store/interfaces'
 import { HeaderCardComponent } from '../../components/HeaderCardComponent'
@@ -180,6 +180,25 @@ export class EventsListScreen extends Component<IProps> {
     )
   }
 
+  renderContainerContent = () => {
+    const { isFetching, isApiError, resetDataAndHitApi } = eventsListStore
+    if (isFetching || isApiError) {
+      return (
+        <View style = {{
+          flex: 1
+        }}>
+          <LoaderWithApiErrorComponent
+            isFetching = {isFetching}
+            isApiError = {isApiError}
+            onTryAgain = {resetDataAndHitApi}
+          />
+        </View>
+      )
+    }
+
+    return this.renderEventsListScreen()
+  }
+
   render() {
     const { updateFetchingStatus, resetDataAndHitApi } = eventsListStore
 
@@ -189,7 +208,7 @@ export class EventsListScreen extends Component<IProps> {
           updateFetchingStatus={updateFetchingStatus}
           hitSearchApi = {resetDataAndHitApi}
         />
-        {this.renderEventsListScreen()}
+        {this.renderContainerContent()}
       </View>
     )
   }

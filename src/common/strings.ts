@@ -88,6 +88,10 @@ export const strings = {
     NEED_HELP: 'Need Help?',
     FUN_FACTS: 'Fun Fact',
     FUN_FACTS_MSG: 'Did you know, that 60% of the human brain is made of fat.'
+  },
+  LOADING_SCREEN: {
+    LOADING: 'Loading...',
+    ALMOST_THERE: 'Almost there!'
   }
 
 }

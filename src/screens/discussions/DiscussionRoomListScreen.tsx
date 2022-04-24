@@ -4,7 +4,7 @@ import { ActivityIndicator, RefreshControl, StyleSheet, TouchableOpacity, View }
 import { get } from 'lodash'
 import { colors, fontDimensPer } from '../../common'
 import { CARD_HEIGHT, FETCHING_ARR } from '../../common/constant'
-import { CustomText, EventCardComponent, FlatListWrapper, IconButtonWrapper, ShimmerComponent } from '../../components'
+import { CustomText, EventCardComponent, FlatListWrapper, IconButtonWrapper, LoaderWithApiErrorComponent, ShimmerComponent } from '../../components'
 import { discussionRoomListStore, genericDrawerStore } from '../../store'
 import { IEventListItem } from '../../store/interfaces'
 import { HeaderCardComponent } from '../../components/HeaderCardComponent'
@@ -180,6 +180,26 @@ export class DiscussionRoomListScreen extends Component<IProps> {
       </View>
     )
   }
+
+  renderContainerContent = () => {
+    const { isFetching, isApiError, resetDataAndHitApi } = discussionRoomListStore
+    if (isFetching || isApiError) {
+      return (
+        <View style = {{
+          flex: 1
+        }}>
+          <LoaderWithApiErrorComponent
+            isFetching = {isFetching}
+            isApiError = {isApiError}
+            onTryAgain = {resetDataAndHitApi}
+          />
+        </View>
+      )
+    }
+
+    return this.renderDiscussionList()
+  }
+
   render() {
     const { updateFetchingStatus, resetDataAndHitApi } = discussionRoomListStore
     return (
@@ -188,7 +208,7 @@ export class DiscussionRoomListScreen extends Component<IProps> {
           updateFetchingStatus={updateFetchingStatus}
           hitSearchApi = {resetDataAndHitApi}
         />
-        {this.renderDiscussionList()}
+        {this.renderContainerContent()}
       </View>
     )
   }

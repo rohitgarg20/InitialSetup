@@ -12,8 +12,8 @@ import { eventDetail } from '../ApiRespData'
 const DEFAULT_SETTINGS = {
   isFetching: false,
   eventId: '',
-  eventData: {}
-
+  eventData: {},
+  isApiError: false
 }
 
 export class EventRoomDetailStore implements RESPONSE_CALLBACKS {
@@ -21,6 +21,8 @@ export class EventRoomDetailStore implements RESPONSE_CALLBACKS {
   @observable isFetching
   @observable eventId
   @observable eventData
+  @observable isApiError
+
 
 
   constructor() {
@@ -44,12 +46,24 @@ export class EventRoomDetailStore implements RESPONSE_CALLBACKS {
     this.getEventRoomDetailData()
   }
 
+  onRefetchData = () => {
+    this.updateFetchingStatus(true)
+    this.updateApiErrorStatus(false)
+    this.getEventRoomDetailData()
+  }
+
+  @action
+  updateApiErrorStatus = (value) => {
+    this.isApiError = value
+  }
+
   getEventRoomDetailData = async () => {
 
     const loginUser = new BaseRequest(this, {
       methodType: 'POST',
       apiEndPoint: API_END_POINTS.GET_EVENTS_LIST,
       apiId: API_IDS.GET_EVENTS_LIST,
+      prefetch: false,
       urlParams: {
         tid: this.eventId
         // limit: PAGE_SIZE,
@@ -176,6 +190,10 @@ export class EventRoomDetailStore implements RESPONSE_CALLBACKS {
     log('onFailureonFailureonFailure', error)
     switch (apiId) {
       case API_IDS.GET_EVENTS_LIST:
+        this.updateApiErrorStatus(true)
+        showAndroidToastMessage(get(error, 'data', strings.ERROR_MESSAGES.SOME_ERROR_OCCURED))
+        this.updateFetchingStatus(false)
+        break
       case API_IDS.REGISTER_EVENT:
       case API_IDS.UNREGISTER_EVENT:
         showAndroidToastMessage(get(error, 'data', strings.ERROR_MESSAGES.SOME_ERROR_OCCURED))

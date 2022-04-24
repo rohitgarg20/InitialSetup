@@ -85,6 +85,22 @@ const styles = StyleSheet.create({
     backgroundColor: colors.white,
     flex: 1,
     padding: 15
+  },
+  pagerContent: {
+    fontSize: widthToDp(fontDimensPer.medium),
+    color: colors.black,
+    paddingBottom: 10,
+    lineHeight: 16,
+    fontWeight: '500',
+    fontFamily: 'Poppins-Medium',
+    paddingTop: 20
+  },
+  pagerAuthorName: {
+    fontSize: widthToDp(fontDimensPer.medium),
+    color: colors.black,
+    fontWeight: '600',
+    fontFamily: 'Poppins-SemiBold',
+    textAlign: 'right'
   }
 })
 
@@ -148,11 +164,11 @@ export class ResetPasswordScreen extends Component<IProps> {
       <View>
         <IconButtonWrapper
           iconImage={icons.BRICK}
-          iconHeight = {200}
+          iconHeight = {250}
           iconWidth = {'100%'}
           imageResizeMode = {'cover'}
         />
-        <View style = {{ position: 'absolute', width: '100%', height: 200 }}>
+        <View style = {{ position: 'absolute', width: '100%', height: '100%' }}>
           {this.renderPagerView()}
         </View>
       </View>
@@ -253,8 +269,8 @@ export class ResetPasswordScreen extends Component<IProps> {
             // flex: 1
           }}
           >
-            <CustomText>{content}</CustomText>
-            <CustomText>{authorName}</CustomText>
+            <CustomText textStyle={styles.pagerContent} numberOfLines = {3}>{content}</CustomText>
+            <CustomText textStyle={styles.pagerAuthorName} numberOfLines = {1}>by {authorName}</CustomText>
           </View>
         )
       })

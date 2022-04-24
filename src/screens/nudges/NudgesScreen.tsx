@@ -5,7 +5,7 @@ import Swiper from 'react-native-deck-swiper'
 import { colors, fontDimens, fontDimensPer } from '../../common'
 import { ACTION_TYPE, BASE_URL, FETCHING_ARR } from '../../common/constant'
 import { icons } from '../../common/icons'
-import { CustomText, FlatListWrapper, IconButtonWrapper, ImageWithLoaderComponent, ShimmerComponent } from '../../components'
+import { CustomText, FlatListWrapper, IconButtonWrapper, ImageWithLoaderComponent, LoaderWithApiErrorComponent, ShimmerComponent } from '../../components'
 import { HeaderCardComponent } from '../../components/HeaderCardComponent'
 import { log } from '../../config'
 import { genericDrawerStore, nudgesListDataStore } from '../../store'
@@ -385,6 +385,24 @@ export class NudgesScreen extends Component<IProps> {
 
   }
 
+  renderContainerContent = () => {
+    const { isFetching, isApiError, resetDataAndHitApi } = nudgesListDataStore
+    if (isFetching || isApiError) {
+      return (
+        <View style = {{
+          flex: 1
+        }}>
+          <LoaderWithApiErrorComponent
+            isFetching = {isFetching}
+            isApiError = {isApiError}
+            onTryAgain = {resetDataAndHitApi}
+          />
+        </View>
+      )
+    }
+
+    return this.renderNudesView()
+  }
 
   render() {
     const { isFetching, updateFetchingStatus, resetDataAndHitApi  } = nudgesListDataStore
@@ -396,9 +414,7 @@ export class NudgesScreen extends Component<IProps> {
           hitSearchApi = {resetDataAndHitApi}
         />
         {
-          isFetching ? this.renderFetchingView() : <>
-            {this.renderNudesView()}
-          </>
+         this.renderContainerContent()
         }
       </>
     )

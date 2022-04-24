@@ -20,7 +20,8 @@ const DEFAULT_SETTINGS = {
     last_page: undefined
   },
   isFetching: false,
-  currentNudeIndex: 0
+  currentNudeIndex: 0,
+  isApiError: false
 }
 
 
@@ -29,6 +30,7 @@ export class NudgesListStore implements RESPONSE_CALLBACKS {
   @observable nudgesData
   @observable isFetching
   @observable currentNudeIndex
+  @observable isApiError
 
   constructor() {
     this.init()
@@ -41,8 +43,14 @@ export class NudgesListStore implements RESPONSE_CALLBACKS {
   }
 
   @action
+  updateApiErrorStatus = (value) => {
+    this.isApiError = value
+  }
+
+  @action
   resetDataAndHitApi = () => {
     this.updateFetchingStatus(true)
+    this.updateApiErrorStatus(false)
     this.nudgesData = {
       ...DEFAULT_SETTINGS.nudgesData
     }
@@ -167,6 +175,10 @@ export class NudgesListStore implements RESPONSE_CALLBACKS {
       case API_IDS.GET_NUDGES_LIST:
         showAndroidToastMessage(displayMsg)
         this.updateFetchingStatus(false)
+        const isNudgesAvaulable = get(this.nudgesData, 'nudgesList.length', 0) > 0
+
+        this.updateApiErrorStatus(isNudgesAvaulable ? false : true)
+
         break
       case API_IDS.SAVE_ITEM:
         showAndroidToastMessage(displayMsg, ToastAndroid.SHORT)

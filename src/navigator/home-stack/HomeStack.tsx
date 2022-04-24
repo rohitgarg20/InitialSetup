@@ -11,7 +11,6 @@ const homeStack = () => {
     <Stack.Navigator screenOptions={{
       headerShown: false
     }}
-    initialRouteName = {'SignIn'}
     >
       <Stack.Screen name = {'EventDetailScreen'} component = {EventDetailScreen}/>
       <Stack.Screen name = {'DiscussionDetailScreen'} component = {DiscussionRoomDetailScreen}/>

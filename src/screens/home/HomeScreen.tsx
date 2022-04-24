@@ -4,7 +4,7 @@ import { ActivityIndicator, RefreshControl, StyleSheet, View } from 'react-nativ
 import { get } from 'lodash'
 import { colors } from '../../common'
 import { BASE_URL, FETCHING_ARR } from '../../common/constant'
-import { CustomText, FlatListWrapper, IconButtonWrapper, ShimmerComponent } from '../../components'
+import { CustomText, FlatListWrapper, IconButtonWrapper, LoaderWithApiErrorComponent, ShimmerComponent } from '../../components'
 import { genericDrawerStore, postListStore } from '../../store'
 import { IPostItem } from '../../store/interfaces'
 import PostCardComponent from '../../components/Card-Component/PostCardComponent'
@@ -158,6 +158,25 @@ export class HomeScreen extends Component<IProps> {
     )
   }
 
+  renderContainerContent = () => {
+    const { isFetching, isApiError, resetDataAndHitApi } = postListStore
+    if (isFetching || isApiError) {
+      return (
+        <View style = {{
+          flex: 1
+        }}>
+          <LoaderWithApiErrorComponent
+            isFetching = {isFetching}
+            isApiError = {isApiError}
+            onTryAgain = {resetDataAndHitApi}
+          />
+        </View>
+      )
+    }
+
+    return this.renderPostsListScreeen()
+  }
+
   render() {
     const { updateFetchingStatus, resetDataAndHitApi } = postListStore
     return (
@@ -167,7 +186,7 @@ export class HomeScreen extends Component<IProps> {
           hitSearchApi = {resetDataAndHitApi}
         />
 
-        {this.renderPostsListScreeen()}
+        {this.renderContainerContent()}
       </View>
     )
   }

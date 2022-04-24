@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import { StyleSheet, TouchableOpacity, View } from 'react-native'
+import { ImageBackground, StyleSheet, TouchableOpacity, View } from 'react-native'
 import { map } from 'lodash'
 import { colors, fontDimensPer, strings } from '../../common'
 import { icons } from '../../common/icons'
@@ -50,7 +50,7 @@ const styles = StyleSheet.create({
   inputContainer: {
     height: 100,
     alignItems: 'flex-start',
-    padding: 0,
+    padding: 0
 
   },
   labelContainerStyle: {
@@ -78,8 +78,23 @@ const styles = StyleSheet.create({
     lineHeight: 1.5 * widthToDp(fontDimensPer.medium),
     fontSize: widthToDp(fontDimensPer.medium),
     fontWeight: '400',
-    fontFamily: 'Poppins-Regular',
-
+    fontFamily: 'Poppins-Regular'
+  },
+  whiteBorder: {
+    borderWidth: 1,
+    borderRadius: 5,
+    backgroundColor: colors.white,
+    paddingHorizontal: 10,
+    paddingVertical: 5,
+    borderColor: colors.white,
+    justifyContent: 'center',
+    alignItems: 'center'
+  },
+  addJokeLabel: {
+    fontSize:  widthToDp(fontDimensPer.large),
+    fontWeight: '600',
+    fontFamily: 'Poppins-SemiBold',
+    color: colors.black,
   }
 })
 
@@ -123,12 +138,18 @@ export class AddJokeScreen extends Component {
 
   renderViewJokesView = () => {
     return (
-      <IconButtonWrapper
-        iconImage={icons.BRICK}
-        iconHeight={100}
-        iconWidth={'100%'}
-        imageResizeMode={'cover'}
-      />
+      <ImageBackground source={icons.BRICK}  resizeMode = {'cover'} style = {{
+        height: 100,
+        width: '100%',
+        justifyContent: 'center',
+        alignItems: 'center'
+      }}>
+       <View style = {styles.whiteBorder}>
+         <CustomText textStyle={styles.addJokeLabel}>
+         Add your joke!
+         </CustomText>
+       </View>
+      </ImageBackground>
     )
   }
 
@@ -204,7 +225,6 @@ export class AddJokeScreen extends Component {
       </View>
     )
   }
-
 
 
   render() {

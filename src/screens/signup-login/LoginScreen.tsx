@@ -5,14 +5,15 @@ import { map } from 'lodash'
 import { colors, fontDimens, fontDimensPer, fontWeight, strings } from '../../common'
 import { icons } from '../../common/icons'
 import { getHeight } from '../../common/scaling'
-import { CustomText, IconButtonWrapper, TextInputComponent } from '../../components'
-import { loginDataStore } from '../../store'
+import { CustomText, IconButtonWrapper, LoaderWithApiErrorComponent, TextInputComponent } from '../../components'
+import { loginDataStore, postListStore } from '../../store'
 import { KeyboardAwareScrollViewComponent } from '../../components/KeyboardAwareScrollViewComponent'
 import { I_TEXT_FIELD } from '../../common/Interfaces'
 import { navigateSimple } from '../../service'
 import { widthToDp } from '../../utils/Responsive'
 import { navigateToWebView, PRIVACY_POLICY_KEY, TERMS_OF_USE_KEY } from '../../common/constant'
 import { log } from '../../config'
+import { ScreenLoaderComponent } from '../../components/ScreenLoaderComponent'
 
 
 const styles = StyleSheet.create({
@@ -276,7 +277,21 @@ export class LoginScreen extends Component<IProps> {
     )
   }
 
+  renderLoaderWithApiError = () => {
+    const { isFetching } = postListStore
+    return (
+      <LoaderWithApiErrorComponent
+        isFetching = {isFetching}
+      />
+    )
+  }
+
   render() {
+    const { isFetching } = postListStore
+    if (isFetching) {
+      return (this.renderLoaderWithApiError())
+    }
+
     return (
       <View style = {styles.mainContainer}>
         <KeyboardAwareScrollViewComponent>

@@ -5,7 +5,7 @@ import { colors, fontDimens, strings } from '../../common'
 import { get } from 'lodash'
 import { BASE_URL } from '../../common/constant'
 import { icons } from '../../common/icons'
-import { CustomText, IconButtonWrapper, ImageWithLoaderComponent, UserAvatar } from '../../components'
+import { CustomText, IconButtonWrapper, ImageWithLoaderComponent, LoaderWithApiErrorComponent, UserAvatar } from '../../components'
 import { discussionRoomDetailStore } from '../../store'
 import { observer } from 'mobx-react'
 import { IEventListItem } from '../../store/interfaces'
@@ -313,7 +313,7 @@ export class DiscussionRoomDetailScreen extends Component<IProps> {
     return (
       <View style={{ position: 'relative' }}>
         <TouchableOpacity style={styles.backBtn}
-        onPress = {() => goBack(navigation)}>
+          onPress = {() => goBack(navigation)}>
           <IconButtonWrapper
             iconImage={icons.RIGHT_ARROW_ICON}
             iconHeight={10}
@@ -377,23 +377,45 @@ export class DiscussionRoomDetailScreen extends Component<IProps> {
     )
   }
 
+  renderDetailContentView = () => {
+    return (
+      <View>
+        {this.renderDiscussionRoomImage()}
+        {this.renderDiscussionLabel()}
+        {this.renderLabel()}
+        <ScrollView contentContainerStyle={{
+          paddingHorizontal: PADDING_HORIZONTAL
+        }}>
+          {this.renderRoomStats()}
+          {this.renderAboutContainer()}
+        </ScrollView>
+      </View>
+    )
+  }
+
+  renderContainerContent = () => {
+    const { isFetching, isApiError, onRefetchData } = discussionRoomDetailStore
+    if (isFetching || isApiError) {
+      return (
+        <View style = {{
+          flex: 1
+        }}>
+          <LoaderWithApiErrorComponent
+            isFetching = {isFetching}
+            isApiError = {isApiError}
+            onTryAgain = {onRefetchData}
+          />
+        </View>
+      )
+    }
+
+    return this.renderDetailContentView()
+  }
+
   render() {
-    const { isFetching } = discussionRoomDetailStore
     return (
       <>
-        {isFetching ? this.renderFetchingView() : (
-          <View>
-            {this.renderDiscussionRoomImage()}
-            {this.renderDiscussionLabel()}
-            {this.renderLabel()}
-            <ScrollView contentContainerStyle={{
-              paddingHorizontal: PADDING_HORIZONTAL
-            }}>
-              {this.renderRoomStats()}
-              {this.renderAboutContainer()}
-            </ScrollView>
-          </View>
-        )}
+        {this.renderContainerContent()}
       </>
     )
   }

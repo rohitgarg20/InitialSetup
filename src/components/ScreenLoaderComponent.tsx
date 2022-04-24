@@ -1,5 +1,5 @@
 import React from 'react'
-import { StyleSheet, TouchableOpacity, View } from 'react-native'
+import { ActivityIndicator, StyleSheet, TouchableOpacity, View } from 'react-native'
 import { colors, fontDimensPer, strings } from '../common'
 import { icons } from '../common/icons'
 import { widthToDp } from '../utils/Responsive'
@@ -89,25 +89,21 @@ const styles = StyleSheet.create({
   iconContainer: {
     paddingTop: 10,
     paddingBottom: 20
-  }
+  },
+  subHeading: {
+    color: colors.black,
+    fontWeight: '400',
+    fontSize: widthToDp(fontDimensPer.medium),
+    fontFamily: 'Poppins-Regular'
+  },
 
 })
 
 
-export  const apiErrorComponent = ({ onTryAgain}) =>  {
+export  const screenLoaderComponent = () =>  {
+
 
   const renderNeedHelpView = () => {
-    const { BUTTON_TEXT } = strings.ERROR_SCREEN
-    return (
-      <View style = {styles.buttonView}>
-        <TouchableOpacity style = {styles.signInButton} onPress = {onTryAgain}>
-          <CustomText textStyle={styles.bottomButtonLabel}>{BUTTON_TEXT}</CustomText>
-        </TouchableOpacity>
-      </View>
-    )
-  }
-
-  const renderTermsOfUse = () => {
     const { NEED_HELP } = strings.ERROR_SCREEN
 
     return (
@@ -122,24 +118,24 @@ export  const apiErrorComponent = ({ onTryAgain}) =>  {
   }
 
   const renderTopContainer = () => {
-    const { MESSAGE, HEADING }  = strings.ERROR_SCREEN
+    const { LOADING, ALMOST_THERE }  = strings.LOADING_SCREEN
     return (
       <View style = {{
         flex: 1,
         alignItems: 'center',
         justifyContent: 'center'
       }}>
-        <CustomText textStyle={{ ...styles.heading, paddingBottom: 5 }}>{HEADING}</CustomText>
-        <CustomText textStyle={styles.heading}>{MESSAGE}</CustomText>
+        <CustomText textStyle={{ ...styles.heading, paddingBottom: 5 }}>{LOADING}</CustomText>
       <View style = {styles.iconContainer}>
-        <IconButtonWrapper
-          iconImage={icons.BELL_ICON}
-          iconHeight={20}
-          iconWidth={20}
+        <ActivityIndicator
+          animating = {true}
+          color = {colors.lightBlue}
+          size = {'large'}
         />
         </View>
+        <CustomText textStyle={{ ...styles.subHeading, paddingBottom: 10 }}>{ALMOST_THERE}</CustomText>
+
         {renderNeedHelpView()}
-        {renderTermsOfUse()}
       </View>
     )
   }
@@ -165,5 +161,5 @@ export  const apiErrorComponent = ({ onTryAgain}) =>  {
 }
 
 export {
-  apiErrorComponent as ApiErrorComponent
+  screenLoaderComponent as ScreenLoaderComponent
 }

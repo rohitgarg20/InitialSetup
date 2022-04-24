@@ -11,6 +11,7 @@ import { showAndroidToastMessage, toDateTime } from '../../utils/app-utils'
 import { POST_TYPES } from '../../common/constant'
 import { SaveDataStore } from '../save-store'
 import { preferencesDataStore, userDataStore } from '..'
+import { ToastAndroid } from 'react-native'
 
 const PAGE_SIZE = 10
 
@@ -21,6 +22,7 @@ const DEFAULT_SETTINGS = {
     last_page: undefined
   },
   isFetching: false,
+  isApiError: false
 }
 
 
@@ -28,6 +30,7 @@ export class PostListStore implements RESPONSE_CALLBACKS {
 
   @observable postsData
   @observable isFetching
+  @observable isApiError
 
   constructor() {
     this.init()
@@ -40,13 +43,20 @@ export class PostListStore implements RESPONSE_CALLBACKS {
   }
 
 
+  @action
   updateFetchingStatus = (value) => {
     this.isFetching = value
   }
 
   @action
+  updateApiErrorStatus = (value) => {
+    this.isApiError = value
+  }
+
+  @action
   resetDataAndHitApi = () => {
     this.updateFetchingStatus(true)
+    this.updateApiErrorStatus(false)
     this.postsData = {
       ...DEFAULT_SETTINGS.postsData
     }
@@ -60,7 +70,7 @@ export class PostListStore implements RESPONSE_CALLBACKS {
       limitBy: PAGE_SIZE,
       page: get(this.postsData, 'current_page', 0) + 1,
       term: searchText,
-      type: sortByParam?.length > 0 ? sortByParam : '',
+      type: sortByParam?.length > 0 ? sortByParam : ''
     }
     log('urlParamsurlParamsurlParams', urlParams)
     const loginUser = new BaseRequest(this, {
@@ -118,7 +128,7 @@ export class PostListStore implements RESPONSE_CALLBACKS {
     //   .replace(/ /g, '-')
     //   .substr(0, 100)
     // const shareUrl = `${QUESTION_SHARE_URL}/${questionContentSubstring}?qid=${_id}?tag=${get(tags, '[0].tag', '')}`
-    const shareUrl = `queestion share url`
+    const shareUrl = 'queestion share url'
 
     let shareOptions = {
       url: shareUrl,
@@ -179,6 +189,9 @@ export class PostListStore implements RESPONSE_CALLBACKS {
         this.setPostsListData(nudgesData)
         this.updateFetchingStatus(false)
         break
+      case API_IDS.SAVE_ITEM:
+        showAndroidToastMessage('This event has been saved successfully')
+        break
       default:
         break
     }
@@ -190,10 +203,15 @@ export class PostListStore implements RESPONSE_CALLBACKS {
 
     switch (apiId) {
       case API_IDS.GET_ALL_POSTS:
+        const isPostAvailable = get(this.postsData, 'postList.length', 0) > 0
         showAndroidToastMessage(displayMsg)
         this.updateFetchingStatus(false)
+        this.updateApiErrorStatus(isPostAvailable ? false : true)
 
         break
+        case API_IDS.SAVE_ITEM:
+          showAndroidToastMessage(displayMsg, ToastAndroid.SHORT)
+          break
       default:
         break
     }

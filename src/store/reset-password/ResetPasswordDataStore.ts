@@ -118,6 +118,7 @@ export class ResetPasswordDataStore implements RESPONSE_CALLBACKS {
       methodType: 'GET',
       apiEndPoint: API_END_POINTS.ADD_JOKE,
       apiId: API_IDS.ADD_JOKE,
+      prefetch: true
     })
     await registerUserRequest.setRequestHeaders()
     await registerUserRequest.hitGetApi()

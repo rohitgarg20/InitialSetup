@@ -12,7 +12,9 @@ import { discussion_data } from '../ApiRespData'
 const DEFAULT_SETTINGS = {
   isFetching: false,
   discussionRoomId: '',
-  discussionRoomData: {}
+  discussionRoomData: {},
+  isApiError: false
+
 
 }
 
@@ -21,6 +23,7 @@ export class DiscussionRoomDetailStore implements RESPONSE_CALLBACKS {
   @observable isFetching
   @observable discussionRoomId
   @observable discussionRoomData
+  @observable isApiError
 
 
   constructor() {
@@ -44,12 +47,24 @@ export class DiscussionRoomDetailStore implements RESPONSE_CALLBACKS {
     this.getDiscussionRoomsDetailData()
   }
 
+  @action
+  updateApiErrorStatus = (value) => {
+    this.isApiError = value
+  }
+
+  onRefetchData = () => {
+    this.updateFetchingStatus(true)
+    this.updateApiErrorStatus(false)
+    this.getDiscussionRoomsDetailData()
+  }
+
   getDiscussionRoomsDetailData = async () => {
 
     const loginUser = new BaseRequest(this, {
       methodType: 'POST',
       apiEndPoint: API_END_POINTS.GET_DISCUSSION_ROOM_LIST,
       apiId: API_IDS.GET_DISCUSSION_ROOM_LIST,
+      prefetch: false,
       urlParams: {
         tid: this.discussionRoomId
       }
@@ -119,6 +134,7 @@ export class DiscussionRoomDetailStore implements RESPONSE_CALLBACKS {
       case API_IDS.GET_DISCUSSION_ROOM_LIST:
         showAndroidToastMessage(get(error, 'data', strings.ERROR_MESSAGES.SOME_ERROR_OCCURED))
         this.updateFetchingStatus(false)
+        this.updateApiErrorStatus(true)
 
         break
       default:
