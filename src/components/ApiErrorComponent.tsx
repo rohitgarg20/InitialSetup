@@ -89,6 +89,19 @@ const styles = StyleSheet.create({
   iconContainer: {
     paddingTop: 10,
     paddingBottom: 20
+  },
+  backBtn: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    backgroundColor: colors.black,
+    paddingVertical: 5,
+    paddingHorizontal: 10,
+    borderTopRightRadius: 4,
+    borderBottomEndRadius: 4,
+    position: 'absolute',
+    top: 20,
+    left: 0,
+    zIndex: 9
   }
 
 })
@@ -133,7 +146,7 @@ export  const apiErrorComponent = ({ onTryAgain}) =>  {
         <CustomText textStyle={styles.heading}>{MESSAGE}</CustomText>
       <View style = {styles.iconContainer}>
         <IconButtonWrapper
-          iconImage={icons.BELL_ICON}
+          iconImage={icons.UH_OH_ICON}
           iconHeight={20}
           iconWidth={20}
         />
@@ -158,6 +171,24 @@ export  const apiErrorComponent = ({ onTryAgain}) =>  {
 
   return (
     <View style = {styles.mainContainer}>
+            <TouchableOpacity style={styles.backBtn}
+          // onPress = {() => goBack(navigation)}
+          >
+          <IconButtonWrapper
+            iconImage={icons.RIGHT_ARROW_ICON}
+            iconHeight={10}
+            iconWidth={10}
+            styling={{
+              tintColor: colors.white,
+              marginRight: 5,
+              transform: [{ rotate: '180deg' }]
+            }}
+          />
+          <CustomText textStyle={{ color: colors.white, fontSize: 12 }}>
+            back
+          </CustomText>
+        </TouchableOpacity>
+        
       {renderTopContainer()}
       {renderFunFactsContainer()}
     </View>

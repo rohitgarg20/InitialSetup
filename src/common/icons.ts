@@ -41,6 +41,7 @@ export const icons = {
   SIGN_OUT_ICON: require('../../images/sign_out.png'),
   SUPPORT_ICON: require('../../images/supportIcon.png'),
   SETTING_ICON: require('../../images/settingIcon.png'),
-  USER_ICON: require('../../images/userIcon.png')
+  USER_ICON: require('../../images/userIcon.png'),
+  UH_OH_ICON: require('../../images/uh_oh.png')
 
 }

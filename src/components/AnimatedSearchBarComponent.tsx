@@ -220,8 +220,9 @@ export class AnimatedSearchBarComponent extends Component<IProps> {
         placeholder={searchBarPlaceHolder}
         customRightSideView={this.searchBarCrossIcon}
         inputContainerStyle = {{
+          borderWidth: 0.5,
           borderColor: colors.borderColor,
-          borderRadius: 10,
+          borderRadius: 20,
           backkgroundColor: colors.white,
           overflow: 'hidden',
           height: '100%',

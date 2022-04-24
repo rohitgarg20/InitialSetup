@@ -96,7 +96,19 @@ const styles = StyleSheet.create({
     fontSize: widthToDp(fontDimensPer.medium),
     fontFamily: 'Poppins-Regular'
   },
-
+  backBtn: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    backgroundColor: colors.black,
+    paddingVertical: 5,
+    paddingHorizontal: 10,
+    borderTopRightRadius: 4,
+    borderBottomEndRadius: 4,
+    position: 'absolute',
+    top: 20,
+    left: 0,
+    zIndex: 9
+  }
 })
 
 
@@ -154,6 +166,23 @@ export  const screenLoaderComponent = () =>  {
 
   return (
     <View style = {styles.mainContainer}>
+           <TouchableOpacity style={styles.backBtn}
+          // onPress = {() => goBack(navigation)}
+          >
+          <IconButtonWrapper
+            iconImage={icons.RIGHT_ARROW_ICON}
+            iconHeight={10}
+            iconWidth={10}
+            styling={{
+              tintColor: colors.white,
+              marginRight: 5,
+              transform: [{ rotate: '180deg' }]
+            }}
+          />
+          <CustomText textStyle={{ color: colors.white, fontSize: 12 }}>
+            back
+          </CustomText>
+        </TouchableOpacity>
       {renderTopContainer()}
       {renderFunFactsContainer()}
     </View>
