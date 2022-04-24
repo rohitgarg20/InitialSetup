@@ -29,7 +29,13 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     justifyContent: 'space-between',
     height: HEADER_HEIGHT,
-    alignItems: 'center'
+    alignItems: 'center',
+    shadowColor: colors.lightestGrey,
+    shadowOffset: { width: 0, height: 1 },
+    shadowOpacity: 0.5,
+    shadowRadius: 10,
+    elevation: 3,
+    zIndex: 9
   },
   userIcon: {
     // height: 25,

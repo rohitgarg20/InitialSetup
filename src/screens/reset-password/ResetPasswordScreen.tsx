@@ -87,7 +87,7 @@ const styles = StyleSheet.create({
     padding: 15
   },
   pagerContent: {
-    fontSize: widthToDp(fontDimensPer.medium),
+    fontSize: widthToDp(fontDimensPer.small),
     color: colors.black,
     paddingBottom: 10,
     lineHeight: 16,
@@ -96,7 +96,7 @@ const styles = StyleSheet.create({
     paddingTop: 20
   },
   pagerAuthorName: {
-    fontSize: widthToDp(fontDimensPer.medium),
+    fontSize: widthToDp(fontDimensPer.small),
     color: colors.black,
     fontWeight: '600',
     fontFamily: 'Poppins-SemiBold',
