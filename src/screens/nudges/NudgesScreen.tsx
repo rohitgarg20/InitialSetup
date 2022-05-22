@@ -3,7 +3,7 @@ import React, { Component } from 'react'
 import { Button, StyleSheet, Text, View, TouchableOpacity, ScrollView, RefreshControl, ToastAndroid } from 'react-native'
 import Swiper from 'react-native-deck-swiper'
 import { colors, fontDimens, fontDimensPer } from '../../common'
-import { ACTION_TYPE, BASE_URL, FETCHING_ARR } from '../../common/constant'
+import { ACTION_TYPE, BASE_URL, FETCHING_ARR, navigateToWebView } from '../../common/constant'
 import { icons } from '../../common/icons'
 import { CustomText, FlatListWrapper, IconButtonWrapper, ImageWithLoaderComponent, LoaderWithApiErrorComponent, ShimmerComponent } from '../../components'
 import { HeaderCardComponent } from '../../components/HeaderCardComponent'
@@ -301,10 +301,15 @@ export class NudgesScreen extends Component<IProps> {
   }
 
   renderFooterComponent = () => {
+    const { navigation } = this.props
     return (
       <View style={styles.footerContainer}>
         <TouchableOpacity onPress={() => {
-
+          log('on press is called')
+          navigateToWebView({
+            navigation,
+            pageUrl: `${BASE_URL}/mobile/nudge/saved`
+          })
         }} style={styles.rowContainer}>
           <CustomText textStyle={styles.nudgesLabel}>
             My Nudges
@@ -414,7 +419,7 @@ export class NudgesScreen extends Component<IProps> {
           hitSearchApi = {resetDataAndHitApi}
         />
         {
-         this.renderContainerContent()
+          this.renderContainerContent()
         }
       </>
     )

@@ -7,6 +7,7 @@ import { goBack } from '../../service'
 import { showAndroidToastMessage } from '../../utils/app-utils'
 import { colors, strings } from '../../common'
 import { log } from '../../config'
+import { userDataStore } from '../../store'
 
 
 const styles = StyleSheet.create({
@@ -125,7 +126,13 @@ export class WebViewPage extends Component<IProps> {
       <View style={styles.container}>
         <WebView
           style={{ flex: 1 }}
-          source={{ uri: this.pageUrl }}
+          source={{
+            uri: this.pageUrl,
+            headers: {
+              'x-csrf-token': userDataStore.xsrfToken,
+              // 'withcredentials': true
+            }
+          }}
           onMessage={this.onWebViewMessage.bind(this)}
           onError={this.onError.bind(this)}
           renderLoading={this.activityIndicatorLoadingView}

@@ -282,12 +282,30 @@ export default class PostCardComponent extends Component<IProps> {
     )
   }
 
+  navigateToDetailScreen = () => {
+    const { postData } = this.props
+    const { type, tid  } = postData as IPostItem
+    log('navigateToDetailScreennavigateToDetailScreen', )
+    if (type === 'post') {
+      navigateToWebView({
+        navigation: undefined,
+        pageUrl: `${BASE_URL}/mobile/post/view?tid=${tid}`
+      })
+    } else {
+      navigateToWebView({
+        navigation: undefined,
+        pageUrl: `${BASE_URL}/mobile/article/view?tid=${tid}`
+      })
+    }
+  }
+
+
   renderPostInfoView = () => {
     return (
-      <View style={styles.postView}>
+      <TouchableOpacity style={styles.postView} onPress = {this.navigateToDetailScreen}>
         {this.renderPostContent()}
         {this.renderIconWithTimeView()}
-      </View>
+      </TouchableOpacity>
     )
   }
 

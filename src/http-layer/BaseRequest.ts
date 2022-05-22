@@ -239,4 +239,47 @@ hitPutApi = async () => {
   }
 }
 
+hitDeleteApi = async () => {
+  if (!isEmpty(this.params)) {
+    const paramKeys = JSON.parse(this.params)
+    const urlParamKeys = []
+    let match
+    let index = 0
+    const regex = /:\w*/g
+    // tslint:disable-next-line:no-conditional-assignment
+    while (match = regex.exec(this.apiEndPoint)) {
+      urlParamKeys[index++] = match[0]
+    }
+    urlParamKeys.forEach(key => {
+      log('inside foreach loop', key)
+      let keyText = key.substring(1, key.length)
+      if (paramKeys.hasOwnProperty(keyText)) {
+        this.apiEndPoint = this.apiEndPoint.replace(key, paramKeys[keyText])
+
+      } else {
+        throw new Error(keyText + ' not found')
+      }
+    })
+  }
+  if (this.prefetch) {
+    showLoader()
+  }
+
+  log('this.request headers', this.reqHeaders)
+  const formattedUrlParams = Object.keys(this.urlParams).map((key) => `${key}=${this.urlParams[key]}`).join('&')
+  try {
+    if (this.promisify) {
+      return  await this.axiosInstance.delete(`${this.apiEndPoint}?${formattedUrlParams}`, this.reqParams, { headers: this.reqHeaders })
+    } else {
+      const response = await this.axiosInstance.delete(`${this.apiEndPoint}?${formattedUrlParams}`, { headers: this.reqHeaders, data: this.reqParams })
+      this.setApiSuccessResponse(response)
+      hideLoader()
+    }
+
+  } catch (err: any) {
+    hideLoader()
+    log('error is', err.response)
+    this.context.onFailure(this.apiId, err.response)
+  }
+ }
 }

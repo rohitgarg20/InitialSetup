@@ -1,4 +1,4 @@
-import { navigateToWebView, POST_KEYS } from './../../common/constant'
+import { BASE_URL, navigateToWebView, POST_KEYS } from './../../common/constant'
 import Share  from 'react-native-share'
 import { INudgeListItem, IPostItem } from './../interfaces'
 import { action, makeObservable, observable } from 'mobx'
@@ -7,11 +7,11 @@ import { strings } from '../../common'
 import { API_END_POINTS, API_IDS } from '../../common/ApiConfiguration'
 import { log } from '../../config'
 import { BaseRequest, RESPONSE_CALLBACKS } from '../../http-layer'
-import { showAndroidToastMessage, toDateTime } from '../../utils/app-utils'
+import { capitalizeFirstLetterOnly, showAndroidToastMessage, toDateTime } from '../../utils/app-utils'
 import { POST_TYPES } from '../../common/constant'
 import { SaveDataStore } from '../save-store'
 import { preferencesDataStore, userDataStore } from '..'
-import { ToastAndroid } from 'react-native'
+import { Alert, ToastAndroid } from 'react-native'
 
 const PAGE_SIZE = 10
 
@@ -87,6 +87,21 @@ export class PostListStore implements RESPONSE_CALLBACKS {
     await loginUser.hitPostApi()
   }
 
+  deletePost = async (tid) => {
+    const loginUser = new BaseRequest(this, {
+      methodType: 'DELETE',
+      apiEndPoint: API_END_POINTS.POST_DATA_BY_TID,
+      apiId: API_IDS.DELETE_POST,
+      params: JSON.stringify({
+        tid
+      }),
+      prefetch: true
+    })
+    await loginUser.setRequestHeaders()
+    await loginUser.hitDeleteApi()
+  }
+
+
   constructPostsListScreen = (responseData) => {
     log('**************', userDataStore.getUserId())
     const tempPostsData = { ...this.postsData }
@@ -145,8 +160,35 @@ export class PostListStore implements RESPONSE_CALLBACKS {
       })
   }
 
+  deletePopupAndRefreshData = (tid) => {
+    this.deletePost(tid)
+  }
+
+  deletePostPopupAlert = (type, tid) => {
+    Alert.alert(
+      `Delete ${capitalizeFirstLetterOnly(type)} `,
+      `Are you sure you want to delete this ${capitalizeFirstLetterOnly(type)} ?`,
+      [
+        {
+          text: 'Cancel',
+          onPress: () => {}
+        },
+        {
+          text: 'Yes',
+          onPress: () => {
+            return this.deletePopupAndRefreshData(tid)
+          }
+        }
+      ],
+      {
+        cancelable: false
+      },
+    )
+  }
+
   onClickPostOption = (optionSelected, cardData) => {
-    const { SAVE, SHARE, EDIT, REPOST } = POST_KEYS
+    const { SAVE, SHARE, EDIT, REPOST , DELETE} = POST_KEYS
+    log('onClickPostOptiononClickPostOption', cardData)
     switch (optionSelected) {
       case SAVE:
         this.saveCurrentPost(cardData)
@@ -155,11 +197,26 @@ export class PostListStore implements RESPONSE_CALLBACKS {
         this.onClickShareVia()
         break
       case EDIT:
+        if (get(cardData, 'type') === 'post') {
+          navigateToWebView({
+            navigation: undefined,
+            pageUrl: `${BASE_URL}/mobile/post/create?tid=${get(cardData, 'tid')}`
+          })
+        } else {
+          navigateToWebView({
+            navigation: undefined,
+            pageUrl: `${BASE_URL}/mobile/article/create?tid=${get(cardData, 'tid')}`
+          })
+        }
+        break
       case REPOST:
         navigateToWebView({
           navigation: undefined,
           pageUrl: 'https://sdlms.deepthought.education'
         })
+        break
+      case DELETE:
+        this.deletePostPopupAlert(get(cardData, 'type'), get(cardData, 'tid'))
         break
       default:
     }
@@ -189,6 +246,10 @@ export class PostListStore implements RESPONSE_CALLBACKS {
         this.setPostsListData(nudgesData)
         this.updateFetchingStatus(false)
         break
+      case API_IDS.DELETE_POST:
+        this.resetDataAndHitApi()
+
+        break
       case API_IDS.SAVE_ITEM:
         showAndroidToastMessage('This event has been saved successfully')
         break
@@ -207,11 +268,11 @@ export class PostListStore implements RESPONSE_CALLBACKS {
         showAndroidToastMessage(displayMsg)
         this.updateFetchingStatus(false)
         this.updateApiErrorStatus(isPostAvailable ? false : true)
-
         break
-        case API_IDS.SAVE_ITEM:
-          showAndroidToastMessage(displayMsg, ToastAndroid.SHORT)
-          break
+      case API_IDS.SAVE_ITEM:
+      case API_IDS.DELETE_POST:
+        showAndroidToastMessage(displayMsg, ToastAndroid.SHORT)
+        break
       default:
         break
     }

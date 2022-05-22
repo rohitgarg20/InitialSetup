@@ -85,6 +85,7 @@ export interface IPostItem{
   isDiscussionRoomAvailable: boolean
   postDate: Date
   isPostByLoggedInUser?: boolean
+  tid?: number
 }
 
 export interface OptionsData {

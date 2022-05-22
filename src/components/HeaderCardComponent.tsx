@@ -111,13 +111,28 @@ export class HeaderCardComponent extends Component<IProps> {
 
     switch (optionKey) {
       case VIEW_PROFILE:
+        navigateToWebView({
+          navigation: undefined,
+          pageUrl: `${BASE_URL}/mobile/profile/view`
+        })
+        break
       case SETTINGS:
+        navigateToWebView({
+          navigation: undefined,
+          pageUrl: `${BASE_URL}/mobile/setting`
+        })
+        break
       case MY_EVENTS:
       case SAVED:
+        navigateToWebView({
+          navigation: undefined,
+          pageUrl: `${BASE_URL}/mobile/events/saved`
+        })
+        break
       case SUPPORT:
         navigateToWebView({
           navigation: undefined,
-          pageUrl: 'https://sdlms.deepthought.education'
+          pageUrl: `${BASE_URL}/mobile/support/tickets`
         })
         break
       case SIGN_OUT:

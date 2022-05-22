@@ -4,7 +4,8 @@ import { get } from 'lodash'
 const DEFAULT_SETTING = {
   userInfoData: {},
   userOptionsList: [],
-  searchText: ''
+  searchText: '',
+  xsrfToken: ''
 }
 
 
@@ -12,6 +13,7 @@ export class UserDataStore {
   @observable userInfoData: any
   @observable userOptionsList
   @observable searchText
+  xsrfToken
 
   constructor() {
     this.init()
@@ -26,6 +28,10 @@ export class UserDataStore {
   @action
   init() {
     Object.keys(DEFAULT_SETTING).forEach((key) => (this[key] = DEFAULT_SETTING[key]))
+  }
+
+  setXsrfToken = (token) => {
+    this.xsrfToken = token
   }
 
   @action

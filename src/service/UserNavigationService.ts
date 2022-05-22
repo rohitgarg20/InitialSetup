@@ -4,7 +4,7 @@ import { hideLoader, showLoader } from './LoaderDataService'
 import { get } from 'lodash'
 import { log } from '../config'
 import { STACK_NAMES } from '../navigator'
-import { storeUserInfoData } from '../utils/auth-utils'
+import { getAuthToken, storeUserInfoData } from '../utils/auth-utils'
 import { preferencesDataStore, userDataStore } from '../store'
 
 const getUserProfileDetails = async () => {
@@ -26,6 +26,8 @@ export const getScreenNameToNavigateToOnLogin = async () => {
       const userDataResponse = get(userInfoResponse, 'data.response', null)
       storeUserInfoData(userDataResponse)
       await preferencesDataStore.getUserPreferencesAndCategoryData()
+      const authToken = await getAuthToken()
+      userDataStore.setXsrfToken(authToken)
       resolve(STACK_NAMES.BOTTOM_TAB_BAR)
       await userDataStore.setUserInfoData(userDataResponse)
       log('after await storeUserInfoDatastoreUserInfoData')

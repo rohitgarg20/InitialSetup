@@ -5,6 +5,7 @@ import { bottomTabBarStack } from './bottom-tab/BottomTabStack'
 import { homeStack } from './home-stack/HomeStack'
 import { eventStack } from './events-stack/EventStack'
 import { discussionStack } from './discussion-stack/DiscusssionStack'
+import { nudgesStack } from './nudges-stack/NudgesStack'
 
 // tslint:disable-next-line: variable-name
 const Stack = createStackNavigator()
@@ -22,6 +23,8 @@ const mainStack = () => {
       <Stack.Screen name= {MAIN_STACK_KEYS.HOME_STACK} component={homeStack} />
 
       <Stack.Screen name= {MAIN_STACK_KEYS.EVENTS_STACK} component={eventStack} />
+      <Stack.Screen name= {MAIN_STACK_KEYS.NUDGES_STACK} component={nudgesStack} />
+
       <Stack.Screen name= {MAIN_STACK_KEYS.DISCUSSION_STACK} component={discussionStack} />
     </Stack.Navigator>
   )
