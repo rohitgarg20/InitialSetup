@@ -1,13 +1,28 @@
 import { createStackNavigator } from '@react-navigation/stack'
 import React  from 'react'
-import { MainScreen } from '../screens'
+import { WalkthroughScreen } from '../screens'
+import { EmailVerificationScreen } from '../screens/email-verification'
+import { LoginScreen } from '../screens/login'
+import { OtpVerificationScreen } from '../screens/otp-verification'
+import { RegisterUserTypeScreen } from '../screens/register-user'
+import { societyDetailStack } from './society-details'
 
 const Stack = createStackNavigator()
 
 const loginStack = () => {
   return (
-    <Stack.Navigator>
-        <Stack.Screen name = {'MainScreen'} component = {MainScreen}/>
+    <Stack.Navigator screenOptions={{
+      headerShown: false
+    }}
+    initialRouteName = {'LoginScreen'}
+    >
+      {/* <Stack.Screen name = {'MainScreen'} component = {MainScreen}/> */}
+      {/* <Stack.Screen name = {'WalkthroughScreen'} component = {WalkthroughScreen}/> */}
+      <Stack.Screen name = {'LoginScreen'} component = {LoginScreen}/>
+      <Stack.Screen name = {'RegisterUserTypeScreen'} component = {RegisterUserTypeScreen}/>
+      <Stack.Screen name = {'EmailVerificationScreen'} component = {EmailVerificationScreen}/>
+      <Stack.Screen name = {'OtpVerificationScreen'} component = {OtpVerificationScreen}/>
+      {societyDetailStack()}
     </Stack.Navigator>
   )
 }

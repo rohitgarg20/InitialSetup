@@ -1,31 +1,61 @@
-import { action, makeObservable, observable } from "mobx";
+import { observable, action, makeObservable } from 'mobx'
+import { get } from 'lodash'
+import { log } from '../config'
 
-const DEFAULT_SETTINGS = {
-  router: null,
-  currentStackName: undefined
+const DEFAULT_SETTING = {
+  currentRouteData: {},
+  router: undefined,
+  prevRouteData: {},
+  currentStackName: undefined,
+  activeBottomTabName: undefined
 }
 
 export class NavigationDataStore {
-
-  @observable router
+  @observable currentRouteData: any = {}
+  @observable router: any
+  prevRouteData: any = {}
   @observable currentStackName
+  @observable activeBottomTabName
+
   constructor() {
-    this.init()
+    Object.keys(DEFAULT_SETTING).forEach((key) => {
+      this[key] = DEFAULT_SETTING[key]
+    })
     makeObservable(this)
   }
 
-  init = () => {
-    Object.keys(DEFAULT_SETTINGS).forEach(key => this[key] = DEFAULT_SETTINGS[key]);
+  @action
+  setPreviousRouteData(prevRouteObject) {
+    this.prevRouteData = prevRouteObject
   }
 
   @action
-  updateRouter = (router) => {
+  setCurrentRouteData(currentRouteObject) {
+    this.currentRouteData = { ...currentRouteObject }
+  }
+
+  getPreviousRouteData() {
+    return this.prevRouteData
+  }
+
+  @action
+  getCurrentRouteData() {
+    return this.currentRouteData
+  }
+
+  @action
+  updateState(router) {
+    log('updateStateupdateStateupdateStateupdateState', router)
     this.router = router
   }
 
   @action
-  setCurrentStackName = (stackName) => {
-    this.currentStackName = stackName
+  setCurrentStackName = (value) => {
+    this.currentStackName = value
   }
 
+  @action
+  setActiveTabName = (tabBarName: string) => {
+    this.activeBottomTabName = tabBarName
+  }
 }
