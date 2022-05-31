@@ -131,6 +131,8 @@ module.exports = {
       'always',
       {
         markers: ['/']
+
+        
       }
     ]
   }

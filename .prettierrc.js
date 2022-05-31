@@ -10,4 +10,7 @@ module.exports = {
   arrowParens: 'always',
   requirePragma: true,
   printWidth: 120,
+
+  
 }
+
