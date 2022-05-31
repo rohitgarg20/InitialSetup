@@ -3,11 +3,13 @@ import { log } from '../config'
 
 export const AUTH_TOKEN_KEY = 'AUTH_TOKEN_KEY'
 export const PROFILE_KEY = 'PROFILE_KEY'
-
+export const REFRESH_TOKEN_KEY = 'REFRESH_TOKEN_KEY'
+export const IS_WALKTHROUGH_VISITED = 'IS_WALKTHROUGH_VISITED'
 
 const INFO_KEYS = [
   AUTH_TOKEN_KEY,
-  PROFILE_KEY
+  PROFILE_KEY,
+  REFRESH_TOKEN_KEY
 ]
 
 export const getAuthToken = async () => {
@@ -17,6 +19,15 @@ export const getAuthToken = async () => {
 
 export const setAuthToken = async (authToken) => {
   await AsyncStorage.setItem(AUTH_TOKEN_KEY, authToken)
+}
+
+export const getRefreshToken = async () => {
+  const value = await AsyncStorage.getItem(REFRESH_TOKEN_KEY)
+  return value
+}
+
+export const setRefreshToken = async (authToken) => {
+  await AsyncStorage.setItem(REFRESH_TOKEN_KEY, authToken)
 }
 
 export const handleSignOut = async () => {
@@ -32,4 +43,13 @@ export const getUserInfoData = async () => {
   const userInfo = JSON.parse(await AsyncStorage.getItem(PROFILE_KEY)) || {}
   log('getUserInfoDatagetUserInfoData', userInfo)
   return userInfo
+}
+
+export const hasCompleteWalkThroughPage = async () => {
+  const value = await AsyncStorage.getItem(IS_WALKTHROUGH_VISITED)
+  return JSON.parse(value) || false
+}
+
+export const setCompleteWalkThroughPage = () => {
+  AsyncStorage.setItem(IS_WALKTHROUGH_VISITED, 'true')
 }

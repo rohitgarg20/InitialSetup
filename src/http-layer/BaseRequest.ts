@@ -192,7 +192,7 @@ hitPostApi = async () => {
 
   } catch (err: any) {
     hideLoader()
-    log('error is', err.response)
+    log('error is', err.response, err)
     this.context.onFailure(this.apiId, err.response)
   }
 }

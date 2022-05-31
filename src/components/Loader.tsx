@@ -1,5 +1,5 @@
 import { observer } from 'mobx-react'
-import { } from 'react'
+import React from 'react'
 import { View, ActivityIndicator, StyleSheet } from 'react-native'
 import { colors } from '../common'
 import { LoaderDataStore, loaderDataStore } from '../store'
@@ -12,7 +12,9 @@ const styles = StyleSheet.create({
     right: 0,
     bottom: 0,
     justifyContent: 'center',
-    alignItems: 'center'
+    alignItems: 'center',
+    backgroundColor: colors.black,
+    opacity: 0.5
   }
 })
 
@@ -22,8 +24,8 @@ const loader = observer(() => {
     showLoader ? <View style = {styles.mainContainer}>
       <ActivityIndicator
         animating = {true}
-        size={'small'}
-        color={colors.loader}
+        size={'large'}
+        color={colors.primaryButton}
       />
     </View> : null
   )
