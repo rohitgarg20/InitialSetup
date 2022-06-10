@@ -99,5 +99,8 @@ export const strings = {
   },
   USER_PROFILE_PAGE: {
     USER_DETAILS: 'User Details'
+  },
+  COMPLAIN_DETAIL_SCREEN: {
+    HEADING: 'Complaint Detail'
   }
 }

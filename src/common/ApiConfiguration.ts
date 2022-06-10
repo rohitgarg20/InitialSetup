@@ -9,7 +9,8 @@ export const API_END_POINTS = {
   ADD_PERSONAL_DETAILS: 'auth/user/register/add-personal-details',
   VERIFY_EMAIL_OTP: 'auth/user/register/verify-mail-with-otp',
   SAVE_USER_PROPERTY_DETAILS: 'user/add-address',
-  LOGOUT_USER: 'auth/user/logout'
+  LOGOUT_USER: 'auth/user/logout',
+  GET_COMPLAIN_DETAILS: 'user/complaint-details'
 }
 
 export const API_IDS = {
@@ -23,5 +24,6 @@ export const API_IDS = {
   ADD_PERSONAL_DETAILS: 'ADD_PERSONAL_DETAILS',
   VERIFY_EMAIL_OTP: 'VERIFY_EMAIL_OTP',
   SAVE_USER_PROPERTY_DETAILS: 'SAVE_USER_PROPERTY_DETAILS',
-  LOGOUT_USER: 'LOGOUT_USER'
+  LOGOUT_USER: 'LOGOUT_USER',
+  GET_COMPLAIN_DETAILS: 'GET_COMPLAIN_DETAILS'
 }

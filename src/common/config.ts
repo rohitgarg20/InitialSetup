@@ -16,10 +16,14 @@ const colors = {
   darkGrey: '#707070',
   lightGrey: '#595959',
   drawerBackGroundGray: 'rgba(52, 52, 52, 0.6)',
+  green: '#149D52',
+  blue: '#0024FF',
+  peach: '#F2383A'
 
 }
 
 const fontDimensPer = {
+  tenFont: '2.75%',
   twelveFont: '3%',
   fourteenFont: '3.5%',
   fifteenFont: '3.75%',

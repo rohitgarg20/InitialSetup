@@ -31,6 +31,29 @@ export interface IHomeCategoryData {
   icon: string
 }
 
+export interface IComplaintLifeCycle {
+  _id: string
+  type: string
+  time: Date
+  actionTakerRole: string
+  complainer?: {
+    name: string
+    email: string
+    role: string
+  }
+  vendorId?: {
+    name: string
+    email: string
+    phone: string
+  }
+  admin?: {
+    name: string
+    email: string
+    phone: string
+  }
+  reasonDesc?: string
+}
+
 export interface IComplainData {
   complaintId: string
   complaintTitle: string
@@ -68,6 +91,7 @@ export interface IComplainData {
     displayValue: string
   }
   displayComplaintCategory: string
+  complaintLifeCycle?: IComplaintLifeCycle[]
 }
 
 export interface IDataList{

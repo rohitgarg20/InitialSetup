@@ -19,7 +19,7 @@ const styles = StyleSheet.create({
     color: colors.black,
     fontSize: widthToDp(fontDimensPer.eighteenFont),
     fontWeight: '400',
-    fontFamily: 'Segoe-UI'
+    fontFamily: 'Segoe-UI',
   },
   normalButtonContainer: {
     width: '100%',

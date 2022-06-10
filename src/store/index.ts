@@ -6,6 +6,7 @@ import { UserDataStore } from './user-store'
 import { RegisterUserDataStore } from './register-store'
 import { GenericDrawerStore } from './drawer-store'
 import { PropertDetailStore } from './property-detail'
+import { ComplainDetailStore } from './complaint-detail'
 
 const loaderDataStore = new LoaderDataStore()
 const navigationDataStore = new NavigationDataStore()
@@ -16,6 +17,7 @@ const complaintListStore = new ComplainListStore()
 const registerUserDataStore = new RegisterUserDataStore()
 const genericDrawerStore = new GenericDrawerStore()
 const propetyDetailStore = new PropertDetailStore()
+const complaintDetailStore = new ComplainDetailStore()
 
 export * from './LoaderDataStore'
 export * from './NavigationDataStore'
@@ -25,6 +27,7 @@ export * from './user-store'
 export * from './register-store'
 export * from './drawer-store'
 export * from './property-detail'
+export * from './complaint-detail'
 
 export {
   loaderDataStore,
@@ -36,6 +39,7 @@ export {
   registerUserDataStore,
   genericDrawerStore,
   propetyDetailStore,
+  complaintDetailStore,
 }
 
 export default {
@@ -47,5 +51,6 @@ export default {
   complaintListStore,
   registerUserDataStore,
   genericDrawerStore,
-  propetyDetailStore
+  propetyDetailStore,
+  complaintDetailStore,
 }

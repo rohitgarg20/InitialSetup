@@ -116,8 +116,6 @@ export class BaseRequest {
     }
   }
 
-
-
   hitGetApi = async () => {
     try {
       const formattedGetParams = Object.keys(this.urlParams).map((key) => `${key}=${this.urlParams[key]}`).join('&')

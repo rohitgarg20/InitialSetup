@@ -1,7 +1,7 @@
 import React from 'react'
-import { StyleSheet, View } from 'react-native'
+import { StyleSheet, TouchableOpacity, View } from 'react-native'
 import { isEmpty } from 'lodash'
-import { colors, fontDimensPer, icons, strings } from '../../common'
+import { colors, commonStyles, fontDimensPer, icons, strings } from '../../common'
 import { COMPLAINT_STATUS } from '../../common/constant'
 import { IComplainData } from '../../common/Interfaces'
 import { widthToDp } from '../../common/Responsive'
@@ -9,6 +9,7 @@ import { log } from '../../config'
 import { capitalizeFirstLetterOnly, formatDate } from '../../utils/app-utils'
 import { CustomText } from '../CustomText'
 import { IconButtonWrapper } from '../IconButtonWrapper'
+import { ButtonComponent } from '../ButtonComponent'
 
 const styles = StyleSheet.create({
   cardContainer: {
@@ -73,16 +74,41 @@ const styles = StyleSheet.create({
   },
   rowWithTopPadding: {
     paddingTop: 8
-  }
+  },
+  buttonCommon: {
+    width: 'auto',
+    paddingVertical: 5,
+    borderRadius: 10,
+    paddingHorizontal: 10,
+    minWidth: '40%'
+  },
+  actionsButton: {
+    backgroundColor: colors.blue,
+    borderColor: colors.blue
+  },
+  notifyButton: {
+    backgroundColor: colors.darkBlue,
+    borderColor: colors.darkBlue
+  },
+  reopenComplaintButton: {
+    backgroundColor: colors.green,
+    borderColor: colors.green
+  },
+  closeComplaintButton: {
+    backgroundColor: colors.peach,
+    borderColor: colors.peach
+  },
 //   info
 })
 
 interface IProps {
   complaintData: IComplainData
+  navigateToComplainDetailScreen?: () => void
+  showCardButtons?: boolean
 }
 
 const complainCardComponent = (props: IProps) => {
-  const { complaintData } = props
+  const { complaintData, navigateToComplainDetailScreen, showCardButtons = true } = props
   const { complaintTitle, updatedAt, priority, statusDisplayData, displayComplaintType, status, complaintId,
     category, subcomplaintCategory, complaintUserData, vendorData  } = complaintData || {}
   const {  backgroundColor, value  } = statusDisplayData || {}
@@ -214,16 +240,83 @@ const complainCardComponent = (props: IProps) => {
     return null
   }
 
+  const onPressCard = () => {
+    if (navigateToComplainDetailScreen) {
+      navigateToComplainDetailScreen()
+    }
+  }
+
+  const renderActionsButton = () => {
+    return (
+      <ButtonComponent
+        buttonLabel = {'Actions'}
+        onPressButton = {() => {}}
+        buttonContainerStyles = {{ ...styles.buttonCommon , ...styles.actionsButton }}
+        buttonLabelStyles = {{
+          color: colors.white
+        }}
+      />
+    )
+  }
+
+  const renderNotifyButton = () => {
+    return (
+      <ButtonComponent
+        buttonLabel = {'Notify Admin'}
+        onPressButton = {() => {}}
+        buttonContainerStyles = {{ ...styles.buttonCommon , ...styles.notifyButton }}
+        buttonLabelStyles = {{
+          color: colors.white
+        }}
+      />
+    )
+  }
+
+  const renderCloseComplaintButton = () => {
+    return (
+      <ButtonComponent
+        buttonLabel = {'Close Complaint'}
+        onPressButton = {() => {}}
+        buttonContainerStyles = {{ ...styles.buttonCommon, ...styles.closeComplaintButton }}
+        buttonLabelStyles = {{
+          color: colors.white
+        }}
+      />
+    )
+  }
+
+  const renderReopenComplaintButton = () => {
+    return (
+      <ButtonComponent
+        buttonLabel = {'Re-Open Complaint'}
+        onPressButton = {() => {}}
+        buttonContainerStyles = {{ ...styles.buttonCommon, ...styles.reopenComplaintButton }}
+        buttonLabelStyles = {{
+          color: colors.black
+        }}
+      />
+    )
+  }
+
+  const renderFotterButtons = () => {
+    return (
+      <View style = {[commonStyles.rowWithEqualSpaced, styles.rowWithTopPadding]}>
+        {(status === COMPLAINT_STATUS.UNASSIGNED || status === COMPLAINT_STATUS.ASSIGNED ) ? renderActionsButton() : renderNotifyButton()}
+        {(status === COMPLAINT_STATUS.CLOSED) ? renderCloseComplaintButton() : renderReopenComplaintButton()}
+      </View>
+    )
+  }
 
   return (
-    <View style = {styles.cardContainer}>
+    <TouchableOpacity style = {styles.cardContainer} onPress = {onPressCard}>
       {renderComplaintTitle()}
       {renderComplainDetail()}
       {renderComplaintId()}
       {renderComplaintCategoryWithSubCategory()}
       {renderComplaintUserData()}
       {renderVendorDetails()}
-    </View>
+      {showCardButtons && renderFotterButtons()}
+    </TouchableOpacity>
   )
 }
 

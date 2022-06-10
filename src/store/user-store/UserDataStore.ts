@@ -84,7 +84,7 @@ export class UserDataStore {
   }
 
   getFlatId = () => {
-    return get(this.userInfoData, 'flat', '')
+    return get(this.userInfoData, 'flat._id', '')
   }
 
   getUserRole = () => {
@@ -113,7 +113,6 @@ export class UserDataStore {
 
   getSocietyName = () => get(this.userInfoData, 'society.name', '')
 
-  getUserFlatId = () => get(this.userInfoData, 'flat', '')
 
   getSocietyAddress = () => {
     const societyData = this.getSocietyDetail()
@@ -122,7 +121,7 @@ export class UserDataStore {
 
   getUserFlatData = () => {
     const societyData = this.getSocietyDetail()
-    const flatId = this.getUserFlatId()
+    const flatId = this.getFlatId()
     let userFlatData
     const { properties = [] } = societyData || {}
     forEach(properties, (property) => {

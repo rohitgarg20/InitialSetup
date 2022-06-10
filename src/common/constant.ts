@@ -99,7 +99,8 @@ export const USER_ROLE = 'User'
 export const COMPLAINT_STATUS = {
   ASSIGNED: 'assigned',
   UNASSIGNED: 'unassigned',
-  CLOSED: 'closed'
+  CLOSED: 'closed',
+  RESOLVED: 'resolved'
 }
 
 export const GET_DATA_BY_COMPLAINT_STATUS: Map<string, any> = new Map([
@@ -117,6 +118,11 @@ export const GET_DATA_BY_COMPLAINT_STATUS: Map<string, any> = new Map([
     complaintLabel: 'Closed By',
     displayStatus: 'Closed',
     backgroundColor: colors.darkGrey
+  }],
+  [COMPLAINT_STATUS.RESOLVED, {
+    complaintLabel: 'Resolved By',
+    displayStatus: 'Resolved',
+    backgroundColor: colors.green
   }],
 ])
 
@@ -166,3 +172,9 @@ export const OWNERSHIP_TYPE_LIST = [{
   displayValue: 'Rent',
   isSelected: false
 }]
+
+export enum ACTION_TAKEN_ROLES {
+  SYSTEM_AUTOMATED = 'System automated',
+  ADMIN = 'admin',
+  USER = 'user'
+}

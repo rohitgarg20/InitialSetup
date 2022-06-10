@@ -55,6 +55,8 @@
 	<array>
 		<string>Segoe-UI.ttf</string>
 		<string>SegoeUI-Bold.ttf</string>
+		<string>Poppins-Regular.ttf</string>
+		<string>Poppins-SemiBold.ttf</string>
 	</array>
 </dict>
 </plist>

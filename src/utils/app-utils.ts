@@ -84,13 +84,14 @@ interface IDateAdditionalInfo {
   showTwoDigitDateAlways?: boolean
   showThreeLettersMonth?: boolean
   showDay?: boolean
+  showInDDMMYYYYFormat?: boolean
 }
 
 export const formatDate = (dateInp, additionalInfo?: IDateAdditionalInfo) => {
   const {
     MONTH_NAME = MONTH_NAMES, monthToUpperCase = false,
     showCommaAfterMonth = false, yearInYYFormat = false, showTwoDigitDateAlways = true,
-    showThreeLettersMonth = true, showDay = true
+    showThreeLettersMonth = true, showDay = true, showInDDMMYYYYFormat = false
   } = additionalInfo || {}
   try {
     const date = new Date(dateInp)
@@ -108,6 +109,8 @@ export const formatDate = (dateInp, additionalInfo?: IDateAdditionalInfo) => {
     }
     if (showDay) {
       return `${getDay(dateInp)}, ${dateM}${showCommaAfterMonth ? ',' : ''} ${dateD}, ${dateY}`
+    } else if (showInDDMMYYYYFormat) {
+      return `${dateD} ${dateM}${showCommaAfterMonth ? ',' : ''} ${dateY}`
     } else {
       return `${dateM}${showCommaAfterMonth ? ',' : ''} ${dateD}, ${dateY}`
 
@@ -154,7 +157,6 @@ export const jsonParseData = (data) => isValidJSONString(data) ? JSON.parse(data
 export const stringifyData = (data) => JSON.stringify(data)
 
 export const capitalizeFirstLetterOnly = (value) => value ? value.charAt(0).toUpperCase() + value.substr(1) : ''
-
 
 export const runAfterInteractions = (
   func1 = () => {

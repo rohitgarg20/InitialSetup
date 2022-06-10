@@ -1,3 +1,4 @@
+import { observer } from 'mobx-react-lite'
 import React, { ReactElement } from 'react'
 import { StyleSheet, View } from 'react-native'
 import { colors } from '../common'
@@ -23,7 +24,7 @@ interface IProps {
   subContainerStyle?: any
 }
 
-const containerDataComponent = (props: IProps) => {
+const containerDataComponent = observer((props: IProps) => {
   const { fixedHeaderComponent, renderContainerComponent, subContainerStyle = {} } = props
 
   const renderFixedHeaderComponent = () => {
@@ -43,7 +44,7 @@ const containerDataComponent = (props: IProps) => {
       {renderContainerComponent && renderContainerComponent()}
     </View>
   )
-}
+})
 
 export {
   containerDataComponent as ContainerDataComponent

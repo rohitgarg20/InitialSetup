@@ -59,8 +59,14 @@ const styles = StyleSheet.create({
   textLeftAlign: {
     textAlign: 'left'
   },
+  textRightAlign: {
+    textAlign: 'right'
+  },
   flexContainer: {
     flex: 1
+  },
+  rowContainer: {
+    flexDirection: 'row'
   }
 
 })
@@ -183,11 +189,33 @@ const segoeFontTextStyles = StyleSheet.create({
     fontWeight: '400',
     fontFamily: 'Segoe-UI'
   },
-  
-
 })
+
+const popinsTextStyle = StyleSheet.create({
+  sixteenSemiBoldBlack: {
+    color: colors.black,
+    fontSize: widthToDp(fontDimensPer.sixteenFont),
+    fontWeight: '700',
+    fontFamily: 'Poppins-SemiBold'
+  },
+  fourteenNormalBlack: {
+    color: colors.black,
+    fontSize: widthToDp(fontDimensPer.fourteenFont),
+    fontWeight: '500',
+    fontFamily: 'Poppins-Regular'
+  },
+  tenWithDarkGrey: {
+    color: colors.darkGrey,
+    fontSize: widthToDp(fontDimensPer.tenFont),
+    fontWeight: '400',
+    fontFamily: 'Poppins-Regular'
+  }
+})
+
+
 
 export {
   styles as commonStyles,
-  segoeFontTextStyles
+  segoeFontTextStyles,
+  popinsTextStyle
 }

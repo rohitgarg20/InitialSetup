@@ -8,6 +8,7 @@ import { COMPLAINT_STATUS, COMPLAINT_TYPE_LIST, GET_DATA_BY_COMPLAINT_STATUS } f
 import { action, makeObservable, observable } from 'mobx'
 import { showAndroidToastMessage } from '../../utils/app-utils'
 import { strings } from '../../common'
+import { getComplaintUserDisplayName } from '../../service/ComplaintService'
 
 const DEFAULT_SETTINGS = {
   complaintList: [],
@@ -48,16 +49,7 @@ export class ComplainListStore implements RESPONSE_CALLBACKS {
     await registerUserRequest.hitPostApi()
   }
 
-  getComplaintUserDisplayName = (complaintData) => {
-    const { status } = complaintData || {}
-    switch (status) {
-      case COMPLAINT_STATUS.UNASSIGNED:
-        return get(complaintData, 'complainer.name', '')
-      default:
-        return 'No name'
-    }
 
-  }
 
   @action
   resetComplaintScreenData = () => {
@@ -96,9 +88,15 @@ export class ComplainListStore implements RESPONSE_CALLBACKS {
 
   onComplaintListSuccess = (complaints) => {
     const formattedData: IComplainData[] = map(complaints, (complainItem, index) => {
-      const { status, complaintType = '' } = complainItem || {}
+      const { status, complaintType = '', complaintNumber = index } = complainItem || {}
+      log('complaintLabelcomplaintLabel' )
+
       const complainTypeData = COMPLAINT_TYPE_LIST.find((type) => type.id === complaintType)
-      const { complaintLabel, displayStatus, backgroundColor } = GET_DATA_BY_COMPLAINT_STATUS.get(status)
+      log('complaintLabelcomplaintLabel' , complainTypeData)
+
+      const { complaintLabel, displayStatus, backgroundColor } = GET_DATA_BY_COMPLAINT_STATUS.get(status) || {}
+      log('complaintLabelcomplaintLabel' , complainTypeData)
+
       return {
         ...complainItem,
         statusDisplayData: {
@@ -107,16 +105,17 @@ export class ComplainListStore implements RESPONSE_CALLBACKS {
         },
         complaintUserData: {
           displayLabel: complaintLabel,
-          displayValue: this.getComplaintUserDisplayName(complainItem)
+          displayValue: getComplaintUserDisplayName(complainItem)
         },
         vendorData: {
           displayLabel: 'Vendor',
           displayValue: 'No data'
         },
-        complaintId: `Comp ${index + 1}`,
+        complaintId: complaintNumber,
         displayComplaintType: get(complainTypeData, 'displayLabel', '')
       }
     })
+    log('formattedDataformattedDataformattedData', formattedData)
     this.setComplaintList(formattedData)
   }
 
@@ -128,10 +127,12 @@ export class ComplainListStore implements RESPONSE_CALLBACKS {
 
   async onSuccess(apiId: string, response: any) {
     const responseData = get(response, 'data', [])
+    log('onSuccessonSuccessonSuccess', apiId)
     switch (apiId) {
       case API_IDS.GET_COMPLAINTS:
-        this.onComplaintListSuccess(get(responseData, 'complaints', []))
         log('responseDataresponseData', responseData)
+        this.onComplaintListSuccess(get(responseData, 'complaints', []))
+        log('onComplaintListSuccessonComplaintListSuccess')
         this.setTotalListCount(get(responseData, 'count', 0))
         this.updateFetchingListStatus(false)
         break

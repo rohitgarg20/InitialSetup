@@ -62,10 +62,20 @@ const complainListScreen = observer(({ navigation  }) => {
     return get(item, '_id', index).toString()
   }
 
+  const navigateToComplainDetail = (item) => {
+    const { _id  } = item as IComplainData
+    navigateSimple(navigation, 'ComplainDetailScreen', {
+      complaintId: _id,
+      // complaintDetails: item
+    })
+  }
+
   const renderComplainCardComponent = ({ item }) => {
     return (
       <ComplainCardComponent
         complaintData={item}
+        navigateToComplainDetailScreen = {() => navigateToComplainDetail(item)}
+        showCardButtons = {false}
       />
     )
   }
