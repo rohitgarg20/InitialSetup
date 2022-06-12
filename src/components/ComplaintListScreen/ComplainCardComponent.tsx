@@ -1,8 +1,8 @@
 import React from 'react'
 import { StyleSheet, TouchableOpacity, View } from 'react-native'
 import { isEmpty } from 'lodash'
-import { colors, commonStyles, fontDimensPer, icons, strings } from '../../common'
-import { COMPLAINT_STATUS } from '../../common/constant'
+import { colors, commonStyles, fontDimensPer, icons, popinsTextStyle, strings } from '../../common'
+import { COMPLAINT_STATUS, USER_ACTIONS_KEYS } from '../../common/constant'
 import { IComplainData } from '../../common/Interfaces'
 import { widthToDp } from '../../common/Responsive'
 import { log } from '../../config'
@@ -10,6 +10,8 @@ import { capitalizeFirstLetterOnly, formatDate } from '../../utils/app-utils'
 import { CustomText } from '../CustomText'
 import { IconButtonWrapper } from '../IconButtonWrapper'
 import { ButtonComponent } from '../ButtonComponent'
+import { genericDrawerStore } from '../../store'
+import { CenterModalPopup } from '../CenterModalPopup'
 
 const styles = StyleSheet.create({
   cardContainer: {
@@ -30,7 +32,8 @@ const styles = StyleSheet.create({
   complainStatusContainer: {
     borderRadius: 15,
     paddingHorizontal: 5,
-    paddingVertical: 2
+    paddingVertical: 2,
+    overflow: 'hidden'
   },
   subHeading: {
     fontSize: widthToDp(fontDimensPer.fourteenFont),
@@ -77,7 +80,7 @@ const styles = StyleSheet.create({
   },
   buttonCommon: {
     width: 'auto',
-    paddingVertical: 5,
+    paddingVertical: 10,
     borderRadius: 10,
     paddingHorizontal: 10,
     minWidth: '40%'
@@ -105,10 +108,15 @@ interface IProps {
   complaintData: IComplainData
   navigateToComplainDetailScreen?: () => void
   showCardButtons?: boolean
+  actionClickEvent?: () => void
+  closeComplaintAlert?: () => void
+  onPressUserActionItem?: (key) => void
+  reopenComplaintEvent?: () => void
 }
 
 const complainCardComponent = (props: IProps) => {
-  const { complaintData, navigateToComplainDetailScreen, showCardButtons = true } = props
+  const { complaintData, navigateToComplainDetailScreen, showCardButtons = true, actionClickEvent, 
+    closeComplaintAlert, onPressUserActionItem, reopenComplaintEvent } = props
   const { complaintTitle, updatedAt, priority, statusDisplayData, displayComplaintType, status, complaintId,
     category, subcomplaintCategory, complaintUserData, vendorData  } = complaintData || {}
   const {  backgroundColor, value  } = statusDisplayData || {}
@@ -246,13 +254,17 @@ const complainCardComponent = (props: IProps) => {
     }
   }
 
+
+  
+
   const renderActionsButton = () => {
     return (
       <ButtonComponent
         buttonLabel = {'Actions'}
-        onPressButton = {() => {}}
+        onPressButton = {() => actionClickEvent()}
         buttonContainerStyles = {{ ...styles.buttonCommon , ...styles.actionsButton }}
         buttonLabelStyles = {{
+          ...popinsTextStyle.sixteenSemiBoldBlack,
           color: colors.white
         }}
       />
@@ -263,9 +275,10 @@ const complainCardComponent = (props: IProps) => {
     return (
       <ButtonComponent
         buttonLabel = {'Notify Admin'}
-        onPressButton = {() => {}}
+        onPressButton = {() => onPressUserActionItem(USER_ACTIONS_KEYS.NOTIFY_ADMIN)}
         buttonContainerStyles = {{ ...styles.buttonCommon , ...styles.notifyButton }}
         buttonLabelStyles = {{
+          ...popinsTextStyle.sixteenSemiBoldBlack,
           color: colors.white
         }}
       />
@@ -276,9 +289,10 @@ const complainCardComponent = (props: IProps) => {
     return (
       <ButtonComponent
         buttonLabel = {'Close Complaint'}
-        onPressButton = {() => {}}
+        onPressButton = {() => closeComplaintAlert()}
         buttonContainerStyles = {{ ...styles.buttonCommon, ...styles.closeComplaintButton }}
         buttonLabelStyles = {{
+          ...popinsTextStyle.sixteenSemiBoldBlack,
           color: colors.white
         }}
       />
@@ -289,20 +303,21 @@ const complainCardComponent = (props: IProps) => {
     return (
       <ButtonComponent
         buttonLabel = {'Re-Open Complaint'}
-        onPressButton = {() => {}}
+        onPressButton = {() => reopenComplaintEvent()}
         buttonContainerStyles = {{ ...styles.buttonCommon, ...styles.reopenComplaintButton }}
         buttonLabelStyles = {{
-          color: colors.black
+          ...popinsTextStyle.sixteenSemiBoldBlack
         }}
       />
     )
   }
 
   const renderFotterButtons = () => {
+    log('renderFotterButtonsrenderFotterButtons', status)
     return (
       <View style = {[commonStyles.rowWithEqualSpaced, styles.rowWithTopPadding]}>
         {(status === COMPLAINT_STATUS.UNASSIGNED || status === COMPLAINT_STATUS.ASSIGNED ) ? renderActionsButton() : renderNotifyButton()}
-        {(status === COMPLAINT_STATUS.CLOSED) ? renderCloseComplaintButton() : renderReopenComplaintButton()}
+        {(status === COMPLAINT_STATUS.CLOSED) ? renderReopenComplaintButton() : renderCloseComplaintButton()}
       </View>
     )
   }

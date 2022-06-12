@@ -102,5 +102,21 @@ export const strings = {
   },
   COMPLAIN_DETAIL_SCREEN: {
     HEADING: 'Complaint Detail'
+  },
+  NOTIFY_ADMIN_POPUP: {
+    HEADING: 'Notify Admin',
+    TEXT_INPUT: 'Enter Message To Notify Admin',
+    CANCEL: 'Cancel',
+  },
+  MARK_AS_RESOLVED_POPUP: {
+    HEADING: 'Mark As Resolved',
+    TEXT_INPUT: 'Enter Reason ',
+    CANCEL: 'Cancel',
+  },
+  CLOSE_COMPLAINT_ALERT: {
+    HEADING: 'Do you want to close this complaint ?',
+    COMPLAINT_STATUS: 'Complaint Status : ',
+    CANCEL: 'Cancel',
+    CLOSE_COMPLAINT: 'Close Complaint'
   }
 }

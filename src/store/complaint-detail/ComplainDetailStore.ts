@@ -12,13 +12,15 @@ import { getComplaintUserDisplayName } from '../../service/ComplaintService'
 
 const DEFAULT_SETTINGS = {
   isFetchingData: false,
-  complainDetailData: {}
+  complainDetailData: {},
+  userMsg: ''
 }
 
 export class ComplainDetailStore implements RESPONSE_CALLBACKS {
 
     @observable isFetchingData
     @observable complainDetailData: IComplainData
+    @observable userMsg
 
     constructor() {
       this.init()
@@ -32,6 +34,17 @@ export class ComplainDetailStore implements RESPONSE_CALLBACKS {
   @action
   updateFetchingStatus = (value) => {
     this.isFetchingData = value
+  }
+
+  @action
+  updateUserMsg = (value) => {
+    log('updateUserMsgupdateUserMsg', value, this.userMsg)
+    this.userMsg = value
+  }
+
+  @action
+  clearUserMsg = () => {
+    this.userMsg = ''
   }
 
   @action

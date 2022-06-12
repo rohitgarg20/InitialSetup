@@ -1,14 +1,18 @@
 import React, { Component } from 'react'
-import { StyleSheet, View } from 'react-native'
-import { get, isEmpty } from 'lodash'
-import { colors, commonStyles, popinsTextStyle, strings } from '../../common'
-import { ComplainCardComponent, ComplaintLifeCycleComponent, ContainerDataComponent, FlatListWrapper, HeaderComponent } from '../../components'
-import { complaintDetailStore } from '../../store'
+import { StyleSheet, TouchableOpacity, View } from 'react-native'
+import { get, isEmpty, map } from 'lodash'
+import { colors, commonStyles, fontDimensPer, popinsTextStyle, strings } from '../../common'
+import { ButtonComponent, ComplainCardComponent, ComplaintLifeCycleComponent, ContainerDataComponent, FlatListWrapper, HeaderComponent, UserActionPopup } from '../../components'
+import { complaintDetailStore, genericDrawerStore } from '../../store'
 import { observer } from 'mobx-react'
 import { log } from '../../config'
 import { CustomText } from '../../components/CustomText'
 import { capitalizeWords, formatDate, getFormattedTime } from '../../utils/app-utils'
 import { IComplaintLifeCycle } from '../../common/Interfaces'
+import { CenterModalPopup } from '../../components/CenterModalPopup'
+import { USER_ACTIONS_KEYS, USER_ACTIONS_ON_COMPLAINT } from '../../common/constant'
+import { TextInputComponent } from '../../components/TextInputWrapper'
+import { widthToDp } from '../../common/Responsive'
 
 const styles = StyleSheet.create({
   container: {
@@ -71,6 +75,73 @@ const styles = StyleSheet.create({
     borderWidth: 0,
     width: '70%',
     alignSelf: 'flex-start'
+  },
+  actionsPopupBorderContainer: {
+    borderRadius: 20,
+    borderColor: colors.white,
+    backgroundColor: colors.white,
+    paddingHorizontal: 2,
+    paddingVertical: 10,
+    zIndex: 99999
+    // width: '60%',
+
+  },
+  actionItem: {
+    justifyContent: 'center',
+    alignItems: 'center',
+    paddingHorizontal: 20
+  },
+  firstItemStyle: {
+    borderBottomWidth: 1,
+    borderColor: colors.black,
+    paddingBottom: 5,
+    marginBottom: 5
+  },
+  notifyAdminPopup: {
+    borderRadius: 20,
+    borderColor: colors.white,
+    backgroundColor: colors.white,
+    paddingHorizontal: 12,
+    paddingVertical: 10,
+    zIndex: 99999,
+    width: '80%',
+    alignItems: 'center'
+
+  },
+  roundedBorderContainer: {
+    borderRadius: 20,
+    paddingBottom: 20,
+    backgroundColor: colors.grey,
+    marginVertical: 10,
+    height: 100,
+    alignItems: 'flex-start',
+    padding: 0
+  },
+  textInput: {
+    fontSize: widthToDp(fontDimensPer.sixteenFont),
+    color: colors.black,
+    fontFamily: 'poppins',
+    height: '100%',
+    textAlignVertical: 'top'
+  },
+  cancelButton: {
+    width: 'auto',
+    backgroundColor: colors.darkGrey,
+    borderColor: colors.darkGrey
+  },
+  actionButton: {
+    width: 'auto',
+    backgroundColor: colors.darkBlue,
+    borderColor: colors.darkBlue,
+    paddingVertical: 0
+  },
+  paddingVertical: {
+    paddingVertical: 10
+  },
+  textUnderline: {
+    textDecorationLine: 'underline',
+    textDecorationColor: colors.darkBlue,
+    color: colors.darkBlue
   }
 })
 
@@ -100,6 +171,109 @@ export class ComplainDetailScreen extends Component<IProps> {
       )
     }
 
+    showMarkAsResolvedPopup = () => {
+      // genericDrawerStore.disableDrawer()
+      genericDrawerStore.enableDrawer()
+      genericDrawerStore.updateCloseDrawerOnOutsideTap(true)
+      genericDrawerStore.setRenderingComponent(() => (
+        <CenterModalPopup
+          innerContent={() => {
+            return (
+              <UserActionPopup
+                popupType= {'markAsResolved'}
+              />
+            )
+          }}
+        />
+      ))
+    }
+
+    showNotifyAdminPopup = () => {
+      // genericDrawerStore.disableDrawer()
+      genericDrawerStore.enableDrawer()
+      genericDrawerStore.updateCloseDrawerOnOutsideTap(true)
+      genericDrawerStore.setRenderingComponent(() => (
+        <CenterModalPopup
+          innerContent={() => {
+            return (
+              <UserActionPopup
+                popupType= {'notifyAdmin'}
+              />
+            )
+          }}
+        />
+      ))
+    }
+
+    onPressUserActionItem = (key) => {
+      log('onPressUserActionItemonPressUserActionItem', key)
+      complaintDetailStore.clearUserMsg()
+      switch (key) {
+        case USER_ACTIONS_KEYS.NOTIFY_ADMIN:
+          this.showNotifyAdminPopup()
+          break
+        case USER_ACTIONS_KEYS.MARKASRESOLVED:
+          this.showMarkAsResolvedPopup()
+          break
+        default:
+      }
+    }
+
+    userActionsList = () => {
+      return (
+        <View style = {styles.actionsPopupBorderContainer}>
+          {
+            map(USER_ACTIONS_ON_COMPLAINT, (userAction, index) => {
+              let firstItemStyle = {}
+              if (index === 0) {
+                firstItemStyle = styles.firstItemStyle
+              }
+              const { key, label } = userAction || {}
+              return (
+                <TouchableOpacity onPress={() => this.onPressUserActionItem(key)} style= {[styles.actionItem, firstItemStyle]}>
+                  <CustomText textStyle={popinsTextStyle.sixteenSemiBoldBlack}>{label}</CustomText>
+                </TouchableOpacity>
+              )
+            })
+          }
+        </View>
+      )
+    }
+
+    renderUserActionsPopup = () => {
+      genericDrawerStore.enableDrawer()
+      genericDrawerStore.updateCloseDrawerOnOutsideTap(true)
+      genericDrawerStore.setRenderingComponent(() => (
+        <CenterModalPopup
+          innerContent={() => {
+            return (
+              this.userActionsList()
+            )
+          }}
+        />
+      ))
+    }
+
+    renderCloseComplaintAlert = () => {
+      genericDrawerStore.enableDrawer()
+      genericDrawerStore.updateCloseDrawerOnOutsideTap(true)
+      genericDrawerStore.setRenderingComponent(() => (
+        <CenterModalPopup
+          innerContent={() => {
+            return (
+              <UserActionPopup
+                popupType= {'closeComplaint'}
+              />
+            )
+          }}
+        />
+      ))
+    }
+
+    reopenComplaint = () => {
+      //
+    }
+
     renderComplainListComponent = () => {
       const { complainDetailData } = complaintDetailStore
       log('complainDetailDatacomplainDetailData', complainDetailData)
@@ -109,6 +283,10 @@ export class ComplainDetailScreen extends Component<IProps> {
         }}>
           <ComplainCardComponent
             complaintData={complainDetailData}
+            actionClickEvent = {this.renderUserActionsPopup}
+            closeComplaintAlert = {this.renderCloseComplaintAlert}
+            onPressUserActionItem = {this.onPressUserActionItem}
+            reopenComplaintEvent = {this.reopenComplaint}
           />
           {this.renderComplaintLifeCycleComponent()}
         </View>
@@ -123,7 +301,7 @@ export class ComplainDetailScreen extends Component<IProps> {
     renderComplaintLifeCycleList = () => {
       const { complainDetailData } = complaintDetailStore
       const { complaintLifeCycle } = complainDetailData
-      log('complaintLifeCyclecomplaintLifeCycle', complaintLifeCycle)
+      log('complaint complaintLifeCycle', complaintLifeCycle)
       return (
         <FlatListWrapper
           data={complaintLifeCycle}

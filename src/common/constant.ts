@@ -1,5 +1,5 @@
-import { colors } from "./config"
-import { icons } from "./icons"
+import { colors } from './config'
+import { icons } from './icons'
 
 export const REMOVE_LOG = false
 export const BASE_URL = 'http://65.2.81.12:8000/api'
@@ -14,8 +14,8 @@ export const FORM_KEYS = {
   PASSWORD: 'password',
   CONFIRM_PASSWORD: 'confirmPassword',
   NAME: 'name',
-  JOKE: 'joke',
-  
+  JOKE: 'joke'
+
 }
 
 export const TEXT_FIELD_KEYS = {
@@ -38,12 +38,12 @@ export enum COMPLAIN_TYPE_KEYS {
 export const COMPLAINT_TYPE_LIST = [
   {
     id: COMPLAIN_TYPE_KEYS.PERSONAL_COMPLAINT,
-    displayLabel: 'Personal',
+    displayLabel: 'Personal'
   },
   {
     id: COMPLAIN_TYPE_KEYS.COMMON_AREA_COMPLAIN,
-    displayLabel: 'Common Area',
-}]
+    displayLabel: 'Common Area'
+  }]
 
 export const MAIN_STACK_KEYS = {
   HOME_STACK: 'homeStack',
@@ -123,7 +123,7 @@ export const GET_DATA_BY_COMPLAINT_STATUS: Map<string, any> = new Map([
     complaintLabel: 'Resolved By',
     displayStatus: 'Resolved',
     backgroundColor: colors.green
-  }],
+  }]
 ])
 
 export enum BACK_ICON_TYPES {
@@ -178,3 +178,19 @@ export enum ACTION_TAKEN_ROLES {
   ADMIN = 'admin',
   USER = 'user'
 }
+
+export const USER_ACTIONS_KEYS = {
+  NOTIFY_ADMIN: 'NotifyAdmin',
+  MARKASRESOLVED: 'MarkAsResolved'
+}
+
+export const USER_ACTIONS_ON_COMPLAINT = [
+  {
+    label: 'Notify Admin',
+    key: USER_ACTIONS_KEYS.NOTIFY_ADMIN
+  },
+  {
+    label: 'Mark As Resolved',
+    key: USER_ACTIONS_KEYS.MARKASRESOLVED
+  }
+]
