@@ -87,13 +87,13 @@ export class PostListStore implements RESPONSE_CALLBACKS {
     await loginUser.hitPostApi()
   }
 
-  deletePost = async (tid) => {
+  deletePost = async (pid) => {
     const loginUser = new BaseRequest(this, {
       methodType: 'DELETE',
-      apiEndPoint: API_END_POINTS.POST_DATA_BY_TID,
+      apiEndPoint: API_END_POINTS.POST_DATA_BY_PID,
       apiId: API_IDS.DELETE_POST,
       params: JSON.stringify({
-        tid
+        pid
       }),
       prefetch: true
     })
@@ -135,7 +135,7 @@ export class PostListStore implements RESPONSE_CALLBACKS {
   }
 
   onClickShareVia = () => {
-    // const _id = this.getContentId()
+    // const _id = this.getContenpid()
     // const proContent = this.getProContent()
     // const tags = this.getTags()
     // const questionContentSubstring = proContent
@@ -160,11 +160,11 @@ export class PostListStore implements RESPONSE_CALLBACKS {
       })
   }
 
-  deletePopupAndRefreshData = (tid) => {
-    this.deletePost(tid)
+  deletePopupAndRefreshData = (pid) => {
+    this.deletePost(pid)
   }
 
-  deletePostPopupAlert = (type, tid) => {
+  deletePostPopupAlert = (type, pid) => {
     Alert.alert(
       `Delete ${capitalizeFirstLetterOnly(type)} `,
       `Are you sure you want to delete this ${capitalizeFirstLetterOnly(type)} ?`,
@@ -176,7 +176,7 @@ export class PostListStore implements RESPONSE_CALLBACKS {
         {
           text: 'Yes',
           onPress: () => {
-            return this.deletePopupAndRefreshData(tid)
+            return this.deletePopupAndRefreshData(pid)
           }
         }
       ],
@@ -200,12 +200,12 @@ export class PostListStore implements RESPONSE_CALLBACKS {
         if (get(cardData, 'type') === 'post') {
           navigateToWebView({
             navigation: undefined,
-            pageUrl: `${BASE_URL}/mobile/post/create?tid=${get(cardData, 'tid')}`
+            pageUrl: `${BASE_URL}/mobile/post/create?pid=${get(cardData, 'pid')}`
           })
         } else {
           navigateToWebView({
             navigation: undefined,
-            pageUrl: `${BASE_URL}/mobile/article/create?tid=${get(cardData, 'tid')}`
+            pageUrl: `${BASE_URL}/mobile/article/create?pid=${get(cardData, 'pid')}`
           })
         }
         break
@@ -216,7 +216,7 @@ export class PostListStore implements RESPONSE_CALLBACKS {
         })
         break
       case DELETE:
-        this.deletePostPopupAlert(get(cardData, 'type'), get(cardData, 'tid'))
+        this.deletePostPopupAlert(get(cardData, 'type'), get(cardData, 'pid'))
         break
       default:
     }

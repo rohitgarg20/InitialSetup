@@ -17,7 +17,7 @@ export const API_END_POINTS = {
   SAVE_ITEM: '/api/v3/app/save/:item_name',
   SAVE_USER_PREFERENCES: '/api/v3/app/preferences',
   ADD_JOKE: '/api/v3/app/joke',
-  POST_DATA_BY_TID: '/api/v3/app/posts/:tid'
+  POST_DATA_BY_PID: '/api/v3/app/posts/:pid'
 }
 
 export const API_IDS = {
