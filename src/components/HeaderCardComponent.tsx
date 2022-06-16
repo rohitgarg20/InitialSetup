@@ -43,7 +43,7 @@ const styles = StyleSheet.create({
     alignContent: 'center',
     justifyContent: 'center',
     // borderRadius: 100,
-    marginLeft: 15,
+    marginLeft: 15
 
   },
   serachField: {
@@ -92,7 +92,7 @@ const styles = StyleSheet.create({
   },
   withoutImageColor: {
     backgroundColor: '#cccccc'
-  },
+  }
 })
 
 interface IProps {
@@ -107,7 +107,7 @@ export class HeaderCardComponent extends Component<IProps> {
   }
 
   onClickPostOption = (optionKey) => {
-    const { VIEW_PROFILE, SETTINGS, MY_EVENTS, SAVED, SUPPORT, SIGN_OUT } = USER_KEYS
+    const { VIEW_PROFILE, SETTINGS, MY_EVENTS, SAVED, SUPPORT, SIGN_OUT, MESSAGES } = USER_KEYS
 
     switch (optionKey) {
       case VIEW_PROFILE:
@@ -140,6 +140,12 @@ export class HeaderCardComponent extends Component<IProps> {
         navigationDataStore.setActiveTabName(undefined)
         setInititalStackName(STACK_NAMES.LOGIN_STACK)
         break
+      case MESSAGES:
+        navigateToWebView({
+          navigation: undefined,
+          pageUrl: `${BASE_URL}/mobile/message/list`
+        })
+        break
       default:
     }
     if (this.toolTipRef) {
@@ -166,7 +172,7 @@ export class HeaderCardComponent extends Component<IProps> {
     const { username = '', picture = '' } = userInfoData || {}
     return (
       <View style={styles.userIcon}>
-      {username?.length > 0 && <UserAvatar
+        {username?.length > 0 && <UserAvatar
           size={'20'}
           imageStyle={[styles.withoutImageColor, { width: '80%', height: '80%' }]}
           showBorderRadius={true}
@@ -263,7 +269,12 @@ export class HeaderCardComponent extends Component<IProps> {
             isSearchBarExpanded = {searchText.length > 0}
             searchText = {searchText}
           />
-          <TouchableOpacity style={styles.topIconStyle}>
+          <TouchableOpacity style={styles.topIconStyle} onPress = {() => {
+            navigateToWebView({
+              navigation: undefined,
+              pageUrl: `${BASE_URL}/mobile/message/list`
+            })
+          }}>
             <IconButtonWrapper
               iconImage={icons.MESSAGE_ICON}
               iconHeight={15}
