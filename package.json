@@ -33,6 +33,7 @@
     "react-native-screens": "^3.10.2",
     "react-native-share": "^7.3.7",
     "react-native-shimmer-placeholder-1": "^1.0.2",
+    "react-native-snackbar": "^2.4.0",
     "react-native-webview": "^11.18.1",
     "reactotron-react-native": "^5.0.1",
     "rn-tooltip-advance": "^1.0.1"

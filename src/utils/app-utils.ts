@@ -1,5 +1,6 @@
 import { get, isEmpty, isNumber } from 'lodash'
 import { Image, InteractionManager, Platform, ToastAndroid } from 'react-native'
+import Snackbar from 'react-native-snackbar'
 import { colors } from '../common'
 import { DAYS_NAME, MONTH_NAMES } from '../common/constant'
 import { log } from '../config'
@@ -61,7 +62,12 @@ export const showAndroidToastMessage = (msg, duration = ToastAndroid.SHORT) => {
   if (Platform.OS === 'android') {
     ToastAndroid.show(msg, duration)
   } else {
-    // showSnackbar(msg)
+    Snackbar.show({
+      text: msg,
+      duration: Snackbar.LENGTH_SHORT,
+      textColor: 'white',
+      backgroundColor: 'black',
+    })
   }
 }
 
