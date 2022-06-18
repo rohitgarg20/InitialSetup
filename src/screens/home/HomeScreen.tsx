@@ -8,6 +8,7 @@ import { ContainerDataComponent, HeaderComponent, IconButtonWrapper, RoundedBord
 import { CustomText } from '../../components/CustomText'
 import { navigateSimple } from '../../service'
 import { logoutHandler, logoutTransitionPopup } from '../../service/LogoutService'
+import { showAndroidToastMessage } from '../../utils/app-utils'
 
 const styles = StyleSheet.create({
   container: {
@@ -106,6 +107,7 @@ const homeScreen = ({ navigation }) => {
         navigateSimple(navigation, 'ComplainListScreen')
         break
       default:
+        showAndroidToastMessage('Coming Soon...')
     }
   }
 

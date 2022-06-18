@@ -3,14 +3,16 @@ export const API_END_POINTS = {
   GET_CATEGORY_LIST: 'auth/user/login',
   GET_USER_INFO: 'user/get-user',
   SUBMIT_COMPLAINT: 'user/add-complaint',
-  GET_COMPLAINTS: 'management/get-complaints',
+  GET_COMPLAINTS: 'user/user-get-complaints',
   REGISTER_USER_BY_MAIL: 'auth/user/register',
   SEARCH_SOCIET_BY_ID: 'management/search-society',
   ADD_PERSONAL_DETAILS: 'auth/user/register/add-personal-details',
   VERIFY_EMAIL_OTP: 'auth/user/register/verify-mail-with-otp',
   SAVE_USER_PROPERTY_DETAILS: 'user/add-address',
   LOGOUT_USER: 'auth/user/logout',
-  GET_COMPLAIN_DETAILS: 'user/complaint-details'
+  GET_COMPLAIN_DETAILS: 'user/complaint-details',
+  CLOSE_REOPEN_COMPLAINT: 'management/resolve-or-close-complaint',
+  UPDATE_COMPLAINT_LIFECYCLE: 'management/complaint-life-cycle'
 }
 
 export const API_IDS = {
@@ -25,5 +27,7 @@ export const API_IDS = {
   VERIFY_EMAIL_OTP: 'VERIFY_EMAIL_OTP',
   SAVE_USER_PROPERTY_DETAILS: 'SAVE_USER_PROPERTY_DETAILS',
   LOGOUT_USER: 'LOGOUT_USER',
-  GET_COMPLAIN_DETAILS: 'GET_COMPLAIN_DETAILS'
+  GET_COMPLAIN_DETAILS: 'GET_COMPLAIN_DETAILS',
+  CLOSE_REOPEN_COMPLAINT: 'CLOSE_REOPEN_COMPLAINT',
+  UPDATE_COMPLAINT_LIFECYCLE: 'UPDATE_COMPLAINT_LIFECYCLE'
 }

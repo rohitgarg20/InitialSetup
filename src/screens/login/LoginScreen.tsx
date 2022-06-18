@@ -9,6 +9,7 @@ import { ButtonComponent, KeyboardAwareScrollViewComponent, LogoComponent } from
 import { colors, commonStyles, segoeFontTextStyles, strings } from '../../common'
 import { CustomText } from '../../components/CustomText'
 import { navigateSimple } from '../../service'
+import { navigateToWebView } from '../../utils/app-utils'
 
 
 const styles = StyleSheet.create({
@@ -42,7 +43,10 @@ const styles = StyleSheet.create({
     paddingTop: '25%'
   },
   formContainer: {
-      width: '100%'
+    width: '100%'
+  },
+  termsOfUseContainer: {
+    paddingTop: 10
   }
 
 })
@@ -53,6 +57,10 @@ interface IProps {
 
 @observer
 export class LoginScreen extends Component<IProps> {
+
+  componentWillUnmount() {
+    loginDataStore.init()
+  }
 
   renderHeaderComponent = () => {
     const { RESIDENT_LOGIN } = strings.LOGIN_SCREEN
@@ -139,18 +147,39 @@ export class LoginScreen extends Component<IProps> {
     )
   }
 
+  navigateToTermsOfUse = () => {
+    navigateToWebView({
+      navigation: this.props.navigation,
+      pageUrl: 'https://sites.google.com/view/sociohood-technologies-tnc/home'
+    })
+  }
+
+  renderTermsOfUseView = () => {
+    const { TERMS_OF_USE } = strings.LOGIN_SCREEN
+    return (
+      <TouchableOpacity onPress={this.navigateToTermsOfUse} style = {styles.termsOfUseContainer}>
+        <CustomText textStyle={{ ...segoeFontTextStyles.eighteenNormalGreyish,
+        textDecorationLine: 'underline',
+        textDecorationColor: colors.lightBlue,
+        color: colors.lightBlue
+    }}>{TERMS_OF_USE}</CustomText>
+      </TouchableOpacity>
+    )
+  }
+
 
   render() {
     return (
-      <View style = {styles.mainContainer}>
+      <ScrollView style = {styles.mainContainer} keyboardShouldPersistTaps ={'handled'}>
         {this.renderHeaderComponent()}
         <KeyboardAwareScrollViewComponent contentContainerStyle = {styles.innerContainer}>
           {this.renderSignInForm()}
           {this.renderSignInButton()}
           {this.renderForgetPasswordView()}
           {this.renderCreateAccountView()}
+          {this.renderTermsOfUseView()}
         </KeyboardAwareScrollViewComponent>
-      </View>
+      </ScrollView>
     )
   }
 }

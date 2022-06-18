@@ -27,7 +27,8 @@ export const strings = {
     SIGN_IN_BUTTON: 'Login',
     FORGET_PASSWORD: 'Reset Password',
     CREATE_ACCOUNT: 'Don\'t have an account ?',
-    SIGNUP_BUTTON: 'SIGN UP'
+    SIGNUP_BUTTON: 'SIGN UP',
+    TERMS_OF_USE: 'Terms Of Use'
   },
   CATEGORY_LIST_SCREEN: {
     HEADING: 'Select Category'
@@ -43,11 +44,13 @@ export const strings = {
     SUBMIT_COMPLAINT: 'Submit Complaint',
     COMPLAINT_DESCRIPTION: 'Enter Complaint Description',
     COMPLAINT_ADDRESS: 'Enter Complaint Address',
-    RAISE_COMPLAINT: 'Raise New Complaint'
+    RAISE_COMPLAINT: 'Raise New Complaint',
+    COMPLAINT_DETAILS: 'Complaint Detail'
   },
   COMPLAINT_LIST_SCREEN: {
     HEADING: 'Help Desk',
-    COMPLAINT_ID: 'Complaint ID'
+    COMPLAINT_ID: 'Complaint ID',
+    VIEW_COMP_DETAIL: 'View Complaint Detail'
   },
   HOME_SCREEN: {
     HEADING: 'Covid-19 rules and regulations to bestrictly followed ?',
@@ -115,8 +118,12 @@ export const strings = {
   },
   CLOSE_COMPLAINT_ALERT: {
     HEADING: 'Do you want to close this complaint ?',
-    COMPLAINT_STATUS: 'Complaint Status : ',
+    COMPLAINT_STATUS_LABEL: 'Complaint Status : ',
     CANCEL: 'Cancel',
     CLOSE_COMPLAINT: 'Close Complaint'
+  },
+  WEB_VIEW_PAGE: {
+    NO_BROWSER_AVAILABLE: 'No Browser Available',
+    NO_DETAILS: 'No Details Available',
   }
 }

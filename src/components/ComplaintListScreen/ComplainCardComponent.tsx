@@ -10,8 +10,6 @@ import { capitalizeFirstLetterOnly, formatDate } from '../../utils/app-utils'
 import { CustomText } from '../CustomText'
 import { IconButtonWrapper } from '../IconButtonWrapper'
 import { ButtonComponent } from '../ButtonComponent'
-import { genericDrawerStore } from '../../store'
-import { CenterModalPopup } from '../CenterModalPopup'
 
 const styles = StyleSheet.create({
   cardContainer: {
@@ -101,7 +99,12 @@ const styles = StyleSheet.create({
     backgroundColor: colors.peach,
     borderColor: colors.peach
   },
-//   info
+  complaintDetail: {
+    color: colors.darkBlue,
+    textDecorationLine: 'underline',
+    textDecorationColor: colors.darkBlue,
+    fontSize: widthToDp(fontDimensPer.sixteenFont)
+  }
 })
 
 interface IProps {
@@ -112,15 +115,15 @@ interface IProps {
   closeComplaintAlert?: () => void
   onPressUserActionItem?: (key) => void
   reopenComplaintEvent?: () => void
+  navigateToViewComplaintScreen?: (complaintDetail) => void
 }
 
 const complainCardComponent = (props: IProps) => {
-  const { complaintData, navigateToComplainDetailScreen, showCardButtons = true, actionClickEvent, 
-    closeComplaintAlert, onPressUserActionItem, reopenComplaintEvent } = props
+  const { complaintData, navigateToComplainDetailScreen, showCardButtons = true, actionClickEvent,
+    closeComplaintAlert, onPressUserActionItem, reopenComplaintEvent, navigateToViewComplaintScreen } = props
   const { complaintTitle, updatedAt, priority, statusDisplayData, displayComplaintType, status, complaintId,
-    category, subcomplaintCategory, complaintUserData, vendorData  } = complaintData || {}
+    category, subcomplaintCategory, complaintUserData, vendorData, complaintNumber  } = complaintData || {}
   const {  backgroundColor, value  } = statusDisplayData || {}
-
 
   const renderComplaintTitle = () => {
     return (
@@ -129,7 +132,6 @@ const complainCardComponent = (props: IProps) => {
       </CustomText>
     )
   }
-
 
   const renderDotContainer = () => {
     return (
@@ -202,7 +204,7 @@ const complainCardComponent = (props: IProps) => {
   }
 
   const renderComplaintId = () => {
-    const complainDisplayId = `${strings.COMPLAINT_LIST_SCREEN.COMPLAINT_ID} ${complaintId}`
+    const complainDisplayId = `${strings.COMPLAINT_LIST_SCREEN.COMPLAINT_ID} ${complaintNumber}`
     return (
       <View style = {[styles.rowContainer, styles.rowWithTopPadding]}>
         {renderIconComponent(icons.INFO_SYMBOL)}
@@ -220,7 +222,6 @@ const complainCardComponent = (props: IProps) => {
       </View>
     )
   }
-
 
   const renderComplaintUserData = () => {
     if (isEmpty(complaintUserData)) {
@@ -253,9 +254,6 @@ const complainCardComponent = (props: IProps) => {
       navigateToComplainDetailScreen()
     }
   }
-
-
-  
 
   const renderActionsButton = () => {
     return (
@@ -322,9 +320,27 @@ const complainCardComponent = (props: IProps) => {
     )
   }
 
+  const renderViewComplaintDetailButton = () => {
+    const { VIEW_COMP_DETAIL } = strings.COMPLAINT_LIST_SCREEN
+    return (
+      <TouchableOpacity onPress={() => {
+        if(navigateToViewComplaintScreen) {
+          navigateToViewComplaintScreen(complaintData)
+        }
+      }}
+      style = {{
+        paddingBottom: 10
+      }}
+      >
+        <CustomText textStyle={styles.complaintDetail}>{VIEW_COMP_DETAIL}</CustomText>
+      </TouchableOpacity>
+    )
+  }
+
   return (
     <TouchableOpacity style = {styles.cardContainer} onPress = {onPressCard}>
       {renderComplaintTitle()}
+      {renderViewComplaintDetailButton()}
       {renderComplainDetail()}
       {renderComplaintId()}
       {renderComplaintCategoryWithSubCategory()}
@@ -334,7 +350,6 @@ const complainCardComponent = (props: IProps) => {
     </TouchableOpacity>
   )
 }
-
 
 export {
   complainCardComponent as ComplainCardComponent

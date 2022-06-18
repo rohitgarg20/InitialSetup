@@ -179,7 +179,9 @@ export class PropertDetailStore implements RESPONSE_CALLBACKS {
         'userId': userDataStore.getUserId(),
         'flatId': get(this.selectedFlatData, 'key'),
         'oldOrPermanentAddress' : this.address.trim(),
-        'ownershipOrRentAgreement': get(this.selectedOwnershipData, 'key')
+        'ownershipOrRentAgreement': get(this.selectedOwnershipData, 'key'),
+        'propertyId': get(this.selectedPropertyData, 'key'),
+        'floorId': get(this.selectedFloorData, 'key')
       }
       const registerUserRequest = new BaseRequest(this, {
         methodType: 'POST',

@@ -1,5 +1,5 @@
 {
-  "name": "socialwood",
+  "name": "sociohood",
   "version": "0.0.1",
   "private": true,
   "scripts": {
@@ -30,6 +30,7 @@
     "react-native-safe-area-context": "^3.3.2",
     "react-native-screens": "^3.10.2",
     "react-native-shimmer-placeholder-1": "^1.0.2",
+    "react-native-webview": "^11.22.2",
     "reactotron-react-native": "^5.0.1"
   },
   "devDependencies": {

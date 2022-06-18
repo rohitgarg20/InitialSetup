@@ -72,7 +72,8 @@ export interface IComplainData {
   updatedAt: Date
   createdAt: Date
   complainer: {
-    name: string
+    name: string,
+    _id: string
   }
   category: {
     _id: string
@@ -92,6 +93,8 @@ export interface IComplainData {
   }
   displayComplaintCategory: string
   complaintLifeCycle?: IComplaintLifeCycle[]
+  complaintNumber: string
+  description?: string
 }
 
 export interface IDataList{

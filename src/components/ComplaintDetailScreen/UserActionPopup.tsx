@@ -2,6 +2,7 @@ import { observer } from 'mobx-react'
 import React from 'react'
 import { StyleSheet, View } from 'react-native'
 import { colors, commonStyles, fontDimensPer, popinsTextStyle, strings } from '../../common'
+import { COMPLAINT_STATUS } from '../../common/constant'
 import { widthToDp } from '../../common/Responsive'
 import { complaintDetailStore, genericDrawerStore } from '../../store'
 import { ButtonComponent } from '../ButtonComponent'
@@ -63,11 +64,12 @@ const styles = StyleSheet.create({
 
 interface IProps {
   popupType: 'notifyAdmin' | 'markAsResolved' | 'closeComplaint'
+  onClickButton: (statusToUpdateKey) => void
 }
 
 const userActionPopup = observer((props: IProps) => {
 
-  const {popupType  } = props
+  const { popupType, onClickButton  } = props
 
   const renderFooterButtons = ({ secondButtonLabel, buttonAction }) => {
     const { HEADING, CANCEL, TEXT_INPUT } = strings.NOTIFY_ADMIN_POPUP
@@ -100,7 +102,7 @@ const userActionPopup = observer((props: IProps) => {
     )
   }
   const renderCloseComplaint = () => {
-    const { HEADING, COMPLAINT_STATUS, CLOSE_COMPLAINT } = strings.CLOSE_COMPLAINT_ALERT
+    const { HEADING, COMPLAINT_STATUS_LABEL, CLOSE_COMPLAINT } = strings.CLOSE_COMPLAINT_ALERT
     const { complainDetailData } = complaintDetailStore
     const { statusDisplayData } = complainDetailData
     const {  backgroundColor, value  } = statusDisplayData || {}
@@ -109,12 +111,12 @@ const userActionPopup = observer((props: IProps) => {
       <View style = {styles.notifyAdminPopup}>
         <CustomText textStyle={popinsTextStyle.sixteenSemiBoldBlack}>{HEADING}</CustomText>
         <View style = {[commonStyles.rowContainer, styles.paddingVertical]}>
-          <CustomText textStyle={popinsTextStyle.sixteenSemiBoldBlack}>{COMPLAINT_STATUS}</CustomText>
+          <CustomText textStyle={popinsTextStyle.sixteenSemiBoldBlack}>{COMPLAINT_STATUS_LABEL}</CustomText>
           <CustomText textStyle={{ ...popinsTextStyle.sixteenSemiBoldBlack, ...styles.textUnderline}}>{value}</CustomText>
         </View>
         {renderFooterButtons({
           secondButtonLabel: CLOSE_COMPLAINT,
-          buttonAction: () => {}
+          buttonAction: () => onClickButton(COMPLAINT_STATUS.CLOSED)
         })}
       </View>
     )
@@ -138,7 +140,7 @@ const userActionPopup = observer((props: IProps) => {
         />
         {renderFooterButtons({
           secondButtonLabel: HEADING,
-          buttonAction: () => {}
+          buttonAction: () => onClickButton(COMPLAINT_STATUS.RESOLVED)
         })}
       </View>
     )

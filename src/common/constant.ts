@@ -100,7 +100,8 @@ export const COMPLAINT_STATUS = {
   ASSIGNED: 'assigned',
   UNASSIGNED: 'unassigned',
   CLOSED: 'closed',
-  RESOLVED: 'resolved'
+  RESOLVED: 'resolved',
+  REOPENED: 'reopen'
 }
 
 export const GET_DATA_BY_COMPLAINT_STATUS: Map<string, any> = new Map([
@@ -122,6 +123,11 @@ export const GET_DATA_BY_COMPLAINT_STATUS: Map<string, any> = new Map([
   [COMPLAINT_STATUS.RESOLVED, {
     complaintLabel: 'Resolved By',
     displayStatus: 'Resolved',
+    backgroundColor: colors.green
+  }],
+  [COMPLAINT_STATUS.REOPENED, {
+    complaintLabel: 'Reopened By',
+    displayStatus: 'Reopen',
     backgroundColor: colors.green
   }]
 ])
@@ -175,8 +181,8 @@ export const OWNERSHIP_TYPE_LIST = [{
 
 export enum ACTION_TAKEN_ROLES {
   SYSTEM_AUTOMATED = 'System automated',
-  ADMIN = 'admin',
-  USER = 'user'
+  ADMIN = 'Admin',
+  USER = 'User'
 }
 
 export const USER_ACTIONS_KEYS = {
@@ -194,3 +200,9 @@ export const USER_ACTIONS_ON_COMPLAINT = [
     key: USER_ACTIONS_KEYS.MARKASRESOLVED
   }
 ]
+
+export const COMPLAINT_LIFE_CYCLE: Map<string, string> = new Map([
+  [COMPLAINT_STATUS.REOPENED, 'Reopen Complaint'],
+  [COMPLAINT_STATUS.RESOLVED, 'Mark as resolved'],
+  [COMPLAINT_STATUS.CLOSED,  'Close Complaint']
+])

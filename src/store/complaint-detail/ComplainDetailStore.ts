@@ -1,17 +1,17 @@
 import { API_END_POINTS, API_IDS } from '../../common/ApiConfiguration'
-import { showAndroidToastMessage } from '../../utils/app-utils'
+import { callPromisesParallel, showAndroidToastMessage } from '../../utils/app-utils'
 import { get } from 'lodash'
 import { strings } from '../../common'
 import { log } from '../../config'
 import { BaseRequest, RESPONSE_CALLBACKS } from '../../http-layer'
 import { action, makeObservable, observable } from 'mobx'
-import { userDataStore } from '..'
+import { complaintListStore, genericDrawerStore, userDataStore } from '..'
 import { IComplainData } from '../../common/Interfaces'
-import { COMPLAINT_TYPE_LIST, GET_DATA_BY_COMPLAINT_STATUS } from '../../common/constant'
-import { getComplaintUserDisplayName } from '../../service/ComplaintService'
+import { COMPLAINT_LIFE_CYCLE, COMPLAINT_TYPE_LIST, GET_DATA_BY_COMPLAINT_STATUS } from '../../common/constant'
+import { getComplaintFormattedData, getComplaintUserDisplayName } from '../../service/ComplaintService'
 
 const DEFAULT_SETTINGS = {
-  isFetchingData: false,
+  isFetchingData: true,
   complainDetailData: {},
   userMsg: ''
 }
@@ -57,7 +57,7 @@ export class ComplainDetailStore implements RESPONSE_CALLBACKS {
       methodType: 'POST',
       apiEndPoint: API_END_POINTS.GET_COMPLAIN_DETAILS,
       apiId: API_IDS.GET_COMPLAIN_DETAILS,
-      prefetch: true,
+      prefetch: false,
       reqParams: {
         societyId: userDataStore.getSocietyId(),
         userId: userDataStore.getUserId(),
@@ -68,42 +68,117 @@ export class ComplainDetailStore implements RESPONSE_CALLBACKS {
     await registerUserRequest.hitPostApi()
   }
 
-  onComplaintDetailApiResp = (complaintDetail) => {
-    const { status, complaintType = '', complaintNumber = 1 } = complaintDetail || {}
-    log('complaintLabelcomplaintLabel', complaintDetail)
+  actionOnComplaintStatusUpdate = async (status) => {
+    this.updateFetchingStatus(true)
+    genericDrawerStore.disableDrawer()
+    const promisesArr = [
+      this.closeReopenComplaint(status),
+      this.updateComplaintLifeCycle(status)
+    ]
+    callPromisesParallel(promisesArr).then((respArr) => {
+      log('respArrrespArrrespArr', respArr)
+      let isAnyApiSuccess = false
+      respArr.forEach((resp) => {
+        if (resp.status === 200) {
+          isAnyApiSuccess = true
+        }
+      })
+      this.clearUserMsg()
+      if (isAnyApiSuccess) {
+        this.getComplaintDetails(this.getComplaintId())
+      }
+    }).catch(err => {
+      showAndroidToastMessage(err.message)
+      this.updateFetchingStatus(false)
+      this.clearUserMsg()
+    })
+  }
 
-    const complainTypeData = COMPLAINT_TYPE_LIST.find((type) => type.id === complaintType)
-    log('complaintLabelcomplaintLabel' , complainTypeData)
+  closeReopenComplaint = async (status) => {
+    const registerUserRequest = new BaseRequest(this, {
+      methodType: 'POST',
+      apiEndPoint: API_END_POINTS.CLOSE_REOPEN_COMPLAINT,
+      apiId: API_IDS.CLOSE_REOPEN_COMPLAINT,
+      prefetch: false,
+      promisify: true,
+      reqParams: {
+        complaintId: this.getComplaintId(),
+        status
+      }
+    })
+    await registerUserRequest.setRequestHeaders()
+    return await registerUserRequest.hitPostApi()
+  }
 
-    const { complaintLabel, displayStatus, backgroundColor } = GET_DATA_BY_COMPLAINT_STATUS.get(status) || {}
-    log('complaintLabelcomplaintLabel' , complainTypeData)
-
-    const formattedData: IComplainData =  {
-      ...complaintDetail,
-      statusDisplayData: {
-        value: displayStatus,
-        backgroundColor
-      },
-      complaintUserData: {
-        displayLabel: complaintLabel,
-        displayValue: getComplaintUserDisplayName(complaintDetail)
-      },
-      vendorData: {
-        displayLabel: 'Vendor',
-        displayValue: 'No data'
-      },
-      complaintId: complaintNumber,
-      displayComplaintType: get(complainTypeData, 'displayLabel', '')
+  updateComplaintLifeCycle = async (status) => {
+    let reqParams = {}
+    if (this.userMsg.length > 0) {
+      reqParams = {
+        reasonDesc: this.userMsg,
+      }
     }
+    const registerUserRequest = new BaseRequest(this, {
+      methodType: 'POST',
+      apiEndPoint: API_END_POINTS.UPDATE_COMPLAINT_LIFECYCLE,
+      apiId: API_IDS.UPDATE_COMPLAINT_LIFECYCLE,
+      prefetch: false,
+      promisify: true,
+      reqParams: {
+        complaintId: this.getComplaintId(),
+        complaintLifeCycle: COMPLAINT_LIFE_CYCLE.get(status),
+        complainerId: this.getComplainerId(),
+        adminId: this.getComplainerId(),
+        ...reqParams
+      }
+    })
+    await registerUserRequest.setRequestHeaders()
+    return await registerUserRequest.hitPostApi()
+  }
+
+  onComplaintDetailApiResp = (complaintDetail) => {
+    // const { status, complaintType = '', complaintNumber = 1, _id, complaintLifeCycle = [] } = complaintDetail || {}
+    // log('complaintLabelcomplaintLabel', complaintDetail)
+
+    // const complainTypeData = COMPLAINT_TYPE_LIST.find((type) => type.id === complaintType)
+    // log('complaintLabelcomplaintLabel' , complainTypeData)
+
+    // const { complaintLabel, displayStatus, backgroundColor } = GET_DATA_BY_COMPLAINT_STATUS.get(status) || {}
+    // log('complaintLabelcomplaintLabel' , complainTypeData)
+
+    // const formattedData: IComplainData =  {
+    //   ...complaintDetail,
+    //   statusDisplayData: {
+    //     value: displayStatus,
+    //     backgroundColor
+    //   },
+    //   complaintUserData: {
+    //     displayLabel: complaintLabel,
+    //     displayValue: getComplaintUserDisplayName(complaintLifeCycle, status)
+    //   },
+    //   vendorData: {
+    //     displayLabel: 'Vendor',
+    //     displayValue: getComplaintUserDisplayName(complaintLifeCycle)
+    //   },
+    //   complaintId: _id,
+    //   displayComplaintType: get(complainTypeData, 'displayLabel', ''),
+    //   complaintNumber
+    // }
+    const formattedData = getComplaintFormattedData(complaintDetail)
     log('formattedDataformattedData', formattedData)
     this.setComplaintDetailData(formattedData)
   }
+
+  getComplaintId = () => get(this.complainDetailData, 'complaintId', '')
+
+  getComplainerId = () => get(this.complainDetailData, 'complainer._id')
 
   async onSuccess(apiId: string, response: any) {
     const responseData = get(response, 'data', [])
     switch (apiId) {
       case API_IDS.GET_COMPLAIN_DETAILS:
         this.onComplaintDetailApiResp(get(response, 'complaint', {}))
+        complaintListStore.updateComplaintDataById(this.complainDetailData)
+        this.updateFetchingStatus(false)
         break
       default:
         break

@@ -18,8 +18,8 @@ const colors = {
   drawerBackGroundGray: 'rgba(52, 52, 52, 0.6)',
   green: '#149D52',
   blue: '#0024FF',
-  peach: '#F2383A'
-
+  peach: '#F2383A',
+  lightBlue: '#0029FF',
 }
 
 const fontDimensPer = {

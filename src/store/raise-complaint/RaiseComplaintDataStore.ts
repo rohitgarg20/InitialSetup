@@ -5,7 +5,7 @@ import { API_END_POINTS, API_IDS } from '../../common/ApiConfiguration'
 import { BaseRequest, RESPONSE_CALLBACKS } from '../../http-layer'
 import { strings } from '../../common'
 import { action, computed, makeObservable, observable } from 'mobx'
-import { ICategoryList, ISelectedCategoryData } from '../../common/Interfaces'
+import { ICategoryList, IComplainData, ISelectedCategoryData } from '../../common/Interfaces'
 import { COMPLAINT_TYPE_LIST, COMPLAIN_FORM_KEYS, COMPLAIN_TYPE_KEYS, USER_ROLE } from '../../common/constant'
 import { complaintListStore, userDataStore } from '..'
 import { navigateSimple } from '../../service'
@@ -25,7 +25,8 @@ const DEFAULT_SETTINGS = {
   selectedCategoryData: {},
   selectedCategoryId: '',
   complaintTypeData: [ ...COMPLAINT_TYPE_LIST],
-  complainFormData: { ...COMPLAIN_FORM_DATA}
+  complainFormData: { ...COMPLAIN_FORM_DATA},
+  onlyViewComplaintDescription: false
 
 }
 
@@ -35,6 +36,7 @@ export class RaiseComplaintDataStore implements RESPONSE_CALLBACKS {
     @observable selectedCategoryData: ISelectedCategoryData
     @observable selectedCategoryId
     @observable complainFormData
+    onlyViewComplaintDescription
 
     constructor() {
       this.init()
@@ -46,6 +48,7 @@ export class RaiseComplaintDataStore implements RESPONSE_CALLBACKS {
 
     resetComplaintFormData = () => {
       this.complainFormData = { ...COMPLAIN_FORM_DATA}
+      this.onlyViewComplaintDescription = DEFAULT_SETTINGS.onlyViewComplaintDescription
     }
 
     @action
@@ -140,6 +143,28 @@ export class RaiseComplaintDataStore implements RESPONSE_CALLBACKS {
     @computed
     get complainAddress() {
       return this.complainFormData[COMPLAIN_FORM_KEYS.COMPLAINT_ADDRESS]
+    }
+
+    @action
+    setInitialComplaintData = (complaintData) => {
+      const { complaintType, complaintTitle, description, complaintAddress, category, subcomplaintCategory  } = complaintData as IComplainData || {}
+      const { categoryName = '', _id: categoryId = '' } = category || {}
+      const { subcategoryName = '', _id: subCategoryId  = '' } = subcomplaintCategory || {}
+      this.onlyViewComplaintDescription = true
+      const complaintFormData = {
+        [COMPLAIN_FORM_KEYS.SELECTED_COMPLAIN_TYPE]: complaintType,
+        [COMPLAIN_FORM_KEYS.COMPLAINT_TITLE]: complaintTitle,
+        [COMPLAIN_FORM_KEYS.COMPLAIN_DESCRIPTION]: description,
+        [COMPLAIN_FORM_KEYS.COMPLAINT_ADDRESS]: complaintAddress,
+      }
+      this.complainFormData = { ...complaintFormData }
+      this.setSelectedCategoryData({
+        categoryName: categoryName,
+        categoryId,
+        subCategoryName: subcategoryName,
+        subCategoryId
+      })
+      navigateSimple(undefined, 'RaiseComplaintScreen')
     }
 
     submitComplaint = async () => {

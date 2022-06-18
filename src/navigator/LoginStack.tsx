@@ -1,6 +1,6 @@
 import { createStackNavigator } from '@react-navigation/stack'
 import React  from 'react'
-import { WalkthroughScreen } from '../screens'
+import { WalkthroughScreen, WebViewPage } from '../screens'
 import { EmailVerificationScreen } from '../screens/email-verification'
 import { LoginScreen } from '../screens/login'
 import { OtpVerificationScreen } from '../screens/otp-verification'
@@ -22,6 +22,7 @@ const loginStack = () => {
       <Stack.Screen name = {'RegisterUserTypeScreen'} component = {RegisterUserTypeScreen}/>
       <Stack.Screen name = {'EmailVerificationScreen'} component = {EmailVerificationScreen}/>
       <Stack.Screen name = {'OtpVerificationScreen'} component = {OtpVerificationScreen}/>
+      <Stack.Screen name = {'WebViewPage'} component = {WebViewPage}/>
       {societyDetailStack()}
     </Stack.Navigator>
   )

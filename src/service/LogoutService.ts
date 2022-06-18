@@ -5,6 +5,7 @@ import { API_END_POINTS, API_IDS } from '../common/ApiConfiguration'
 import { BASE_URL } from '../common/constant'
 import { log } from '../config'
 import { STACK_NAMES } from '../navigator'
+import { navigationDataStore } from '../store'
 import { showAndroidToastMessage } from '../utils/app-utils'
 import { getRefreshToken, handleSignOut } from '../utils/auth-utils'
 import { navigateSimple, setInititalStackName } from './NavigationService'
@@ -18,6 +19,7 @@ export const hitLogoutUserApi = async (refreshToken) => {
 
 export const logoutHandler = async () => {
   setInititalStackName(STACK_NAMES.LOGIN_STACK)
+  navigationDataStore.setActiveTabName(undefined)
   // navigateSimple(undefined, 'LoginScreen', {}, STACK_NAMES.LOGIN_STACK)
   const refreshToken = await getRefreshToken()
   showAndroidToastMessage(LOGOUT_SUCCESS)

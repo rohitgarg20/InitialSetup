@@ -28,7 +28,9 @@ const styles = StyleSheet.create({
     alignSelf: 'flex-end'
   },
   lifeCycleContainer: {
-    paddingTop: 25
+    paddingTop: 25,
+    // flexGrow: 1
+    // flex: 1
   },
   msgSeperator: {
     paddingBottom: 25
@@ -166,16 +168,23 @@ export const complaintLifeCycleComponent = (props: IProps) => {
     log('complaintLifeCyclecomplaintLifeCycle', complaintLifeCycle)
     return (
       <FlatListWrapper
+        style = {{
+          // flex: 1,
+          // backgroundColor: 'red'
+        }}
         data={complaintLifeCycle}
         renderItem = {renderMsgByActionType}
         contentContainerStyle = {styles.lifeCycleContainer}
         ItemSeparatorComponent = {renderMsgSeperator}
+        keyExtractor = {(item, index) => get(item, '_id', index).toString()}
       />
     )
 
   }
   return (
-    <View>
+    <View style = {{
+      // flex: 1
+    }}>
       {renderComplaintLifeCycleList()}
     </View>
   )

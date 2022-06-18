@@ -5,7 +5,7 @@ import { get } from 'lodash'
 import { colors, fontDimensPer, strings } from '../../common'
 import { IComplainData } from '../../common/Interfaces'
 import { ButtonComponent, ComplainCardComponent, ContainerDataComponent, FlatListWrapper, HeaderComponent, SingleLineSlimShimmerComponent } from '../../components'
-import { complaintListStore } from '../../store'
+import { complaintListStore, raiseComplaintDataStore } from '../../store'
 import { log } from '../../config'
 import { widthToDp } from '../../common/Responsive'
 import { navigateSimple } from '../../service'
@@ -70,12 +70,18 @@ const complainListScreen = observer(({ navigation  }) => {
     })
   }
 
+  const navigateToViewComplaintFullDetailScreen = (complaintData) => {
+    log('navigateToViewComplaintFullDetailScreen', complaintData)
+    raiseComplaintDataStore.setInitialComplaintData(complaintData)
+  }
+
   const renderComplainCardComponent = ({ item }) => {
     return (
       <ComplainCardComponent
         complaintData={item}
         navigateToComplainDetailScreen = {() => navigateToComplainDetail(item)}
         showCardButtons = {false}
+        navigateToViewComplaintScreen = {navigateToViewComplaintFullDetailScreen}
       />
     )
   }

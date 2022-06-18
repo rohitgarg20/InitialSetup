@@ -2,6 +2,7 @@ import { get, isEmpty, isNumber } from 'lodash'
 import { Image, InteractionManager, Platform, ToastAndroid } from 'react-native'
 import { DAYS_NAME, MONTH_NAMES } from '../common/constant'
 import { log } from '../config'
+import { navigateSimple } from '../service'
 
 export const computeFontStyle = (textStyle) => {
   const fontSizeFromProps = get(textStyle, 'fontSize', 14)
@@ -189,4 +190,24 @@ export const getKeyByValue = (map, searchValue) => {
     if (value === searchValue)
       return key
   }
+}
+
+export const navigateToWebView = ({ navigation = undefined, pageUrl }) => {
+  navigateSimple(navigation, 'WebViewPage', {
+    pageUrl
+  })
+}
+
+export const callPromisesParallel = async (promisesArray) => {
+  const rejectionHandler = (promiseRes) => {
+    return promiseRes
+      .then((res) => {
+        return res
+      })
+      .catch((err) => {
+        return { error: err }
+      })
+  }
+
+  return await Promise.all(promisesArray.map(rejectionHandler))
 }

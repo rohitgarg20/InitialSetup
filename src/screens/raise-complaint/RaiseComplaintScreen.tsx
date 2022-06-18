@@ -161,7 +161,7 @@ interface IProps {
 const raiseComplaintScreen = observer((props: IProps) => {
   const { navigation } = props
   const { selectedCategoryData, complainTitle, updateSelectedComplaintType, complainDescription, updateComplaintAddress,
-    updateComplaintTitle, updateComplainDescription, selectedComplainType, complainAddress, submitComplaint } = raiseComplaintDataStore
+    updateComplaintTitle, updateComplainDescription, selectedComplainType, complainAddress, submitComplaint, onlyViewComplaintDescription = false } = raiseComplaintDataStore
   const { categoryName, subCategoryName, categoryId } = selectedCategoryData as ISelectedCategoryData
 
   const bottomValue = useRef(new Animated.Value(0)).current
@@ -180,15 +180,20 @@ const raiseComplaintScreen = observer((props: IProps) => {
       showSubscription.remove()
       hideSubscription.remove()
       raiseComplaintDataStore.resetComplaintFormData()
+      if (onlyViewComplaintDescription) {
+        raiseComplaintDataStore.init()
+      } else {
+        raiseComplaintDataStore.resetComplaintFormData()
+      }
     }
-  }, [bottomValue])
+  }, [bottomValue, onlyViewComplaintDescription])
 
 
   const renderHeader = () => {
-    const { HEADING } = strings.RAISE_COMPLAINT
+    const { HEADING, COMPLAINT_DETAILS } = strings.RAISE_COMPLAINT
     return (
       <HeaderComponent
-        headerLabel={HEADING}
+        headerLabel={ onlyViewComplaintDescription ? COMPLAINT_DETAILS :  HEADING}
       />
     )
   }
@@ -214,6 +219,7 @@ const raiseComplaintScreen = observer((props: IProps) => {
       <TouchableOpacity style = {styles.categoryItemContainer}
         onPress = {
           () => navigateToCategoryScreen()}
+        disabled = {onlyViewComplaintDescription}
       >
         <CustomText textStyle={styles.categoryName}>{categoryName}</CustomText>
         <IconButtonWrapper
@@ -228,7 +234,11 @@ const raiseComplaintScreen = observer((props: IProps) => {
   const renderSelectedSubCategory = () => {
 
     return (
-      <TouchableOpacity style = {styles.subCategoryItemContainer} onPress = {() => navigateToSubCategoryScreen()}>
+      <TouchableOpacity
+        style = {styles.subCategoryItemContainer}
+        onPress = {() => navigateToSubCategoryScreen()}
+        disabled = {onlyViewComplaintDescription}
+      >
         <CustomText textStyle={styles.subCategoryName}>{subCategoryName}</CustomText>
         <IconButtonWrapper
           iconImage={icons.FORWARD_ARROW}
@@ -264,7 +274,11 @@ const raiseComplaintScreen = observer((props: IProps) => {
               const { id, displayLabel } = complaintItem || {}
               const isSelected = id === selectedComplainType
               return (
-                <TouchableOpacity style = {styles.rowItem} onPress = {() => updateSelectedComplaintType(id)}>
+                <TouchableOpacity
+                  style = {styles.rowItem}
+                  onPress = {() => updateSelectedComplaintType(id)}
+                  disabled = {onlyViewComplaintDescription}
+                >
                   <View style = {{ ...styles.radioButton, backgroundColor: isSelected ? colors.black : colors.white }}/>
                   <CustomText textStyle={styles.complaintTypeLabel}>{displayLabel}</CustomText>
                 </TouchableOpacity>
@@ -290,6 +304,7 @@ const raiseComplaintScreen = observer((props: IProps) => {
         textInputStyle = {styles.textInput}
         onChangeText = {updateComplaintAddress}
         inputValue = {complainAddress}
+        editable = {!onlyViewComplaintDescription}
       />
     )
   }
@@ -307,6 +322,7 @@ const raiseComplaintScreen = observer((props: IProps) => {
         textInputStyle = {styles.textInput}
         onChangeText = {updateComplaintTitle}
         inputValue = {complainTitle}
+        editable = {!onlyViewComplaintDescription}
       />
     )
   }
@@ -325,12 +341,14 @@ const raiseComplaintScreen = observer((props: IProps) => {
         textInputStyle = {styles.textInput}
         onChangeText = {updateComplainDescription}
         inputValue = {complainDescription}
+        editable = {!onlyViewComplaintDescription}
       />
     )
   }
 
   const renderComplainButton = () => {
     const { SUBMIT_COMPLAINT } = strings.RAISE_COMPLAINT
+
 
     return (
       <ButtonComponent
@@ -340,6 +358,7 @@ const raiseComplaintScreen = observer((props: IProps) => {
           borderRadius: 10
         }}
         buttonLabelStyles = {[styles.complaintTypeLabel, { paddingLeft: 0, fontWeight: '700' }]}
+        disabled = {onlyViewComplaintDescription}
       />
     )
   }
@@ -361,6 +380,9 @@ const raiseComplaintScreen = observer((props: IProps) => {
 
   const renderSubmitComplainButton = () => {
     const { SUBMIT_COMPLAINT } = strings.RAISE_COMPLAINT
+    if (onlyViewComplaintDescription) {
+      return null
+    }
     return (
       <Animated.View style = {[styles.buttonContainer, {
         // bottom: bottomValue
@@ -381,7 +403,7 @@ const raiseComplaintScreen = observer((props: IProps) => {
             marginTop: HEADER_TOP
           }}
           contentContainerStyle = {{
-            flexGrow: 1,
+            flexGrow: 1
           }}
         >
           <View style = {{

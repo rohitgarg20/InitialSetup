@@ -1,11 +1,24 @@
 import React from 'react'
-import { View } from 'react-native'
+import { StyleSheet, View } from 'react-native'
+import { colors, segoeFontTextStyles } from '../../common'
 import { CustomText } from '../../components/CustomText'
+
+
+const style = StyleSheet.create({
+  mainContainer: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
+    backgroundColor: colors.dardBlack
+  }
+})
 
 const addMoreScreen = () => {
   return (
-    <View>
-      <CustomText>addMoreScreen</CustomText>
+    <View style = {style.mainContainer}>
+      <CustomText textStyle={{
+        ...segoeFontTextStyles.extraLargeHeadingWithBoldWeight
+      }}>Coming Soon...</CustomText>
     </View>
   )
 }

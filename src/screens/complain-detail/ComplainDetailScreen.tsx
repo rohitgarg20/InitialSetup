@@ -1,18 +1,19 @@
 import React, { Component } from 'react'
-import { StyleSheet, TouchableOpacity, View } from 'react-native'
+import { ActivityIndicator, BackHandler, StyleSheet, TouchableOpacity, View } from 'react-native'
 import { get, isEmpty, map } from 'lodash'
 import { colors, commonStyles, fontDimensPer, popinsTextStyle, strings } from '../../common'
 import { ButtonComponent, ComplainCardComponent, ComplaintLifeCycleComponent, ContainerDataComponent, FlatListWrapper, HeaderComponent, UserActionPopup } from '../../components'
-import { complaintDetailStore, genericDrawerStore } from '../../store'
+import { complaintDetailStore, genericDrawerStore, raiseComplaintDataStore } from '../../store'
 import { observer } from 'mobx-react'
 import { log } from '../../config'
 import { CustomText } from '../../components/CustomText'
-import { capitalizeWords, formatDate, getFormattedTime } from '../../utils/app-utils'
+import { capitalizeWords, formatDate, getFormattedTime, showAndroidToastMessage } from '../../utils/app-utils'
 import { IComplaintLifeCycle } from '../../common/Interfaces'
 import { CenterModalPopup } from '../../components/CenterModalPopup'
-import { USER_ACTIONS_KEYS, USER_ACTIONS_ON_COMPLAINT } from '../../common/constant'
+import { COMPLAINT_STATUS, USER_ACTIONS_KEYS, USER_ACTIONS_ON_COMPLAINT } from '../../common/constant'
 import { TextInputComponent } from '../../components/TextInputWrapper'
 import { widthToDp } from '../../common/Responsive'
+import { goBack } from '../../service'
 
 const styles = StyleSheet.create({
   container: {
@@ -142,24 +143,67 @@ const styles = StyleSheet.create({
     textDecorationLine: 'underline',
     textDecorationColor: colors.darkBlue,
     color: colors.darkBlue
+  },
+  loaderContainer: {
+    position: 'absolute',
+    height: '100%',
+    width: '100%',
+    left: 0,
+    bottom: 0,
+    top: 0,
+    right: 0,
+    justifyContent: 'center',
+    alignItems: 'center',
+    zIndex: 1000
   }
 })
 
 interface IProps {
   route?: any
+  navigation?: any
 }
 
 @observer
 export class ComplainDetailScreen extends Component<IProps> {
+  didFocusListener
+  willBlurListener
+  constructor(props, state) {
+    super(props, state)
+    complaintDetailStore.updateFetchingStatus(true)
+  }
 
   componentDidMount() {
-    const { route } = this.props
+    const { route, navigation } = this.props
     const complaintId = get(route, 'params.complaintId', '')
     complaintDetailStore.getComplaintDetails(complaintId)
+    this.didFocusListener = navigation.addListener('focus', this.addBackHandlerListener)
+    this.willBlurListener = navigation.addListener('blur', this.removeBackHandlerListener)
+  }
+
+  addBackHandlerListener = () => {
+    BackHandler.addEventListener('hardwareBackPress', this.onBackPressed)
+  }
+
+  removeBackHandlerListener = () => {
+    BackHandler.removeEventListener('hardwareBackPress', this.onBackPressed)
+  }
+
+  onBackPressed = () => {
+    const { isDrawerEnabled } = genericDrawerStore
+    const { navigation } = this.props
+    if (isDrawerEnabled) {
+      genericDrawerStore.disableDrawer()
+    } else {
+      goBack(navigation)
+    }
+    return true
   }
 
   componentWillUnmount() {
     complaintDetailStore.init()
+    this.didFocusListener()
+    // tslint:disable-next-line:no-unused-expression
+    this.willBlurListener()
   }
 
     renderHeaderSection = () => {
@@ -169,6 +213,14 @@ export class ComplainDetailScreen extends Component<IProps> {
           headerLabel={HEADING}
         />
       )
+    }
+
+    onClickMarkAsResolved = (statusToUpdate) => {
+      const {  userMsg } = complaintDetailStore
+      if (userMsg.length < 10) {
+        return showAndroidToastMessage('Please enter minimum 10 characters of description')
+      }
+      return complaintDetailStore.actionOnComplaintStatusUpdate(statusToUpdate)
     }
 
     showMarkAsResolvedPopup = () => {
@@ -181,6 +233,7 @@ export class ComplainDetailScreen extends Component<IProps> {
             return (
               <UserActionPopup
                 popupType= {'markAsResolved'}
+                onClickButton = {this.onClickMarkAsResolved}
               />
             )
           }}
@@ -198,6 +251,7 @@ export class ComplainDetailScreen extends Component<IProps> {
             return (
               <UserActionPopup
                 popupType= {'notifyAdmin'}
+                onClickButton = {complaintDetailStore.actionOnComplaintStatusUpdate}
               />
             )
           }}
@@ -210,7 +264,8 @@ export class ComplainDetailScreen extends Component<IProps> {
       complaintDetailStore.clearUserMsg()
       switch (key) {
         case USER_ACTIONS_KEYS.NOTIFY_ADMIN:
-          this.showNotifyAdminPopup()
+          // this.showNotifyAdminPopup()
+          showAndroidToastMessage('This section is under development')
           break
         case USER_ACTIONS_KEYS.MARKASRESOLVED:
           this.showMarkAsResolvedPopup()
@@ -263,6 +318,7 @@ export class ComplainDetailScreen extends Component<IProps> {
             return (
               <UserActionPopup
                 popupType= {'closeComplaint'}
+                onClickButton = {complaintDetailStore.actionOnComplaintStatusUpdate}
               />
             )
           }}
@@ -271,7 +327,12 @@ export class ComplainDetailScreen extends Component<IProps> {
     }
 
     reopenComplaint = () => {
-      //
+      complaintDetailStore.actionOnComplaintStatusUpdate(COMPLAINT_STATUS.REOPENED)
+    }
+
+     navigateToViewComplaintFullDetailScreen = (complaintData) => {
+      log('navigateToViewComplaintFullDetailScreen', complaintData)
+      raiseComplaintDataStore.setInitialComplaintData(complaintData)
     }
 
     renderComplainListComponent = () => {
@@ -279,7 +340,8 @@ export class ComplainDetailScreen extends Component<IProps> {
       log('complainDetailDatacomplainDetailData', complainDetailData)
       return (
         <View style = {{
-          marginTop: -60
+          marginTop: -60,
+          flex: 1
         }}>
           <ComplainCardComponent
             complaintData={complainDetailData}
@@ -287,112 +349,9 @@ export class ComplainDetailScreen extends Component<IProps> {
             closeComplaintAlert = {this.renderCloseComplaintAlert}
             onPressUserActionItem = {this.onPressUserActionItem}
             reopenComplaintEvent = {this.reopenComplaint}
+            navigateToViewComplaintScreen = {this.navigateToViewComplaintFullDetailScreen}
           />
           {this.renderComplaintLifeCycleComponent()}
-        </View>
-      )
-    }
-
-    renderMsgSeperator = () => {
-      return (<View style = {styles.msgSeperator}/> )
-    }
-
-
-    renderComplaintLifeCycleList = () => {
-      const { complainDetailData } = complaintDetailStore
-      const { complaintLifeCycle } = complainDetailData
-      log('complaint complaintLifeCycle', complaintLifeCycle)
-      return (
-        <FlatListWrapper
-          data={complaintLifeCycle}
-          renderItem = {this.renderSystemAutomatedMsg}
-          contentContainerStyle = {styles.lifeCycleContainer}
-          ItemSeparatorComponent = {this.renderMsgSeperator}
-        />
-      )
-
-    }
-
-    renderUserActionByRole = (actionBy) => {
-      return (
-        <CustomText textStyle={popinsTextStyle.sixteenSemiBoldBlack}>{capitalizeWords(actionBy)}</CustomText>
-      )
-    }
-
-    renderMsgTypeView = (msgType) => {
-      return (
-        <CustomText textStyle={{ ...popinsTextStyle.fourteenNormalBlack }}>{msgType}</CustomText>
-      )
-    }
-
-    renderMsgDateView = (date) => {
-      const displayDate = `${formatDate(date, {
-        showDay: false,
-        showInDDMMYYYYFormat: true,
-        showCommaAfterMonth: false,
-        showTwoDigitDateAlways: false
-      })}, ${getFormattedTime(date)}`
-      return <CustomText textStyle={{ ...commonStyles.textRightAlign, ...popinsTextStyle.tenWithDarkGrey, ...styles.topFourPadding }}>{displayDate}</CustomText>
-    }
-
-
-    renderUserLifeCycleEvent = ( { item: lifeCycleEvent }) => {
-      const { type, time, reasonDesc = '' } = lifeCycleEvent as IComplaintLifeCycle
-      log('renderUserLifeCycleEventrenderUserLifeCycleEvent', new Date(time))
-      return (
-        <View style = {[styles.msgUserContainer]}>
-          <CustomText textStyle={{ ...popinsTextStyle.sixteenSemiBoldBlack  }}>You</CustomText>
-          {this.renderMsgTypeView(type)}
-          {this.renderMsgDescription(reasonDesc)}
-          {this.renderMsgDateView(time)}
-        </View>
-      )
-    }
-
-    renderVendorData = (vendorData) => {
-      const { name = '', phone = '' } = vendorData || {}
-      if (isEmpty(vendorData)) {
-        return null
-      }
-      return (
-        <View style = {commonStyles.rowContainer}>
-          <CustomText textStyle={{ ...popinsTextStyle.fourteenNormalBlack }}>{capitalizeWords(name)}</CustomText>
-          {phone.length > 0 && <CustomText textStyle={{ ...popinsTextStyle.fourteenNormalBlack }} > - {phone}</CustomText>}
-        </View>
-      )
-    }
-
-    renderMsgDescription = (msgDesc) => {
-      return (
-        msgDesc.length > 0 && <CustomText textStyle={{ ...popinsTextStyle.fourteenNormalBlack }}>{msgDesc}</CustomText>
-      )
-    }
-
-    renderSystemAutomatedMsg = ({ item: lifeCycleEvent }) => {
-      const { type, time, vendorId = {}, reasonDesc = '' } = lifeCycleEvent as IComplaintLifeCycle
-      log('renderUserLifeCycleEventrenderUserLifeCycleEvent', new Date(time))
-      return (
-        <View style = {[styles.msgReceivedContainer]}>
-          <CustomText textStyle={{ ...popinsTextStyle.sixteenSemiBoldBlack, ...styles.bottomFourPadding  }}>System Automated</CustomText>
-          {this.renderMsgTypeView(type)}
-          {this.renderVendorData(vendorId)}
-          {this.renderMsgDescription(reasonDesc)}
-          {this.renderMsgDateView(time)}
-        </View>
-      )
-    }
-
-    renderAdminMsgView = ({ item: lifeCycleEvent }) => {
-      const { type, time, vendorId = {}, reasonDesc = '', admin = {} } = lifeCycleEvent as IComplaintLifeCycle
-      const adminName = get(admin, 'name', '')
-      log('renderUserLifeCycleEventrenderUserLifeCycleEvent', new Date(time))
-      return (
-        <View style = {[styles.msgReceivedContainer]}>
-          <CustomText textStyle={{ ...popinsTextStyle.sixteenSemiBoldBlack, ...styles.bottomFourPadding  }}>{capitalizeWords(adminName)} - Admin</CustomText>
-          {this.renderMsgTypeView(type)}
-          {this.renderVendorData(vendorId)}
-          {this.renderMsgDescription(reasonDesc)}
-          {this.renderMsgDateView(time)}
         </View>
       )
     }
@@ -402,16 +361,32 @@ export class ComplainDetailScreen extends Component<IProps> {
       const { complainDetailData } = complaintDetailStore
       const { complaintLifeCycle } = complainDetailData
       return (
-        <ComplaintLifeCycleComponent
-          complaintLifeCycle = {complaintLifeCycle}
-        />
+        <View style = {{
+          flex: 1
+        }}>
+          <ComplaintLifeCycleComponent
+            complaintLifeCycle = {complaintLifeCycle}
+          />
+        </View>
       )
+    }
+
+    renderLoaderView = () => {
+      const { isFetchingData } = complaintDetailStore
+      if (isFetchingData) {
+        return(
+          <View style = {styles.loaderContainer}>
+            <ActivityIndicator size={'large'} color = {colors.darkBlue}/>
+          </View>
+        )
+      }
     }
 
     render() {
       return (
         <View style = {styles.container}>
           {this.renderHeaderSection()}
+          {this.renderLoaderView()}
           <ContainerDataComponent
             renderContainerComponent = {this.renderComplainListComponent}
           />

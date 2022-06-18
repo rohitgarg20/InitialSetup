@@ -2,6 +2,7 @@ import React, { Component } from 'react'
 import { View, TouchableOpacity, Animated } from 'react-native'
 import { get, isNumber } from 'lodash'
 import { getImageSource, isImageCached } from '../utils/app-utils'
+import { log } from '../config'
 
 
 const getIconImageStyle = (iconHeight: number | string, iconWidth: number | string, backgroundColor?: string) => ({
@@ -123,7 +124,7 @@ export class IconButtonWrapper extends Component<Props, State> {
 
 
     const wrapperStyleProps = get(this.wrapperContainerProps, 'style', {})
-
+    log('submitFunctionsubmitFunctionsubmitFunction', submitFunction)
     return (
       <View {...this.wrapperContainerProps}>
         <TouchableOpacity

@@ -11,7 +11,8 @@ const styles = StyleSheet.create({
   backButtonContainer: {
     borderWidth: 1,
     backgroundColor: colors.black,
-    padding: 5
+    padding: 5,
+    zIndex: 9999
   }
 })
 
@@ -23,6 +24,8 @@ interface IProps {
 
 const backButton = (props: IProps) => {
   const { backButtonStyle = {}, backIconType = BACK_ICON_TYPES.DEFAULT } = props
+
+
   const onBackButtonPressed = () => {
     const { onPressBack } = props
     log('onBackButtonPressed')
