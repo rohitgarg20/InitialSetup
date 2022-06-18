@@ -429,7 +429,7 @@ export default class PostCardComponent extends Component<IProps> {
         {this.renderUserInfoView()}
         {this.renderPostInfoView()}
         {this.renderDiscussionCommentView()}
-        {this.renderFooterListView()}
+        {/* {this.renderFooterListView()} */}
       </View>
     )
   }

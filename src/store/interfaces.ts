@@ -86,6 +86,7 @@ export interface IPostItem{
   postDate: Date
   isPostByLoggedInUser?: boolean
   tid?: number
+  pid?: number
 }
 
 export interface OptionsData {

@@ -117,7 +117,7 @@ export class GenericDrawerComponent extends React.Component<Props, State> {
     this.state = {
       modalTransitionXY: new Animated.Value(this.getInitAnimatedValue())
     }
-
+    genericDrawerStore.setDrawerCloseEvent(this.onCloseDrawer)
     const isDrawerEnabled = genericDrawerStore.isDrawerEnabled()
     if (isDrawerEnabled) {
       this.onOpenDrawer()
@@ -203,7 +203,13 @@ export class GenericDrawerComponent extends React.Component<Props, State> {
       duration: modalTransitionDuration,
       toValue: this.getInitAnimatedValue(),
       useNativeDriver: true
-    }).start()
+    }).start(() => {
+      const { genericDrawerStore } = this.props
+      const { showDrawer } = genericDrawerStore
+      if (showDrawer) {
+        genericDrawerStore.disableDrawer()
+      }
+    })
   }
 
   render() {
@@ -237,6 +243,8 @@ export class GenericDrawer extends React.Component<MainDrawerProps> {
   render() {
     const { genericDrawerStore } = this.props
     log('genericDrawerStoregenericDrawerStoregenericDrawerStore', genericDrawerStore.isDrawerEnabled())
+    log('genericDrawerStoregenericDrawerStoregenericDrawerStore after if', genericDrawerStore.isDrawerEnabled())
+
     return genericDrawerStore.isDrawerEnabled() ? (
       <GenericDrawerComponent
         showDrawer={genericDrawerStore.isDrawerEnabled()}

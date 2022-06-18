@@ -198,7 +198,9 @@ export class EventRoomDetailStore implements RESPONSE_CALLBACKS {
       case API_IDS.UNREGISTER_EVENT:
         showAndroidToastMessage(get(error, 'data', strings.ERROR_MESSAGES.SOME_ERROR_OCCURED))
         this.updateFetchingStatus(false)
-
+        break
+      case API_IDS.SAVE_ITEM:
+        showAndroidToastMessage(get(error, 'data.status.message', strings.ERROR_MESSAGES.SOME_ERROR_OCCURED))
         break
       default:
         break

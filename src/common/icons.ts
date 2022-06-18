@@ -42,6 +42,11 @@ export const icons = {
   SUPPORT_ICON: require('../../images/supportIcon.png'),
   SETTING_ICON: require('../../images/settingIcon.png'),
   USER_ICON: require('../../images/userIcon.png'),
-  UH_OH_ICON: require('../../images/uh_oh.png')
+  UH_OH_ICON: require('../../images/uh_oh.png'),
+  ADD_BUTTON: require('../../images/addButton.png'),
+  POST: require('../../images/Post.png'),
+  ARTICLE: require('../../images/article.png'),
+  REFLECTION_MIRROR: require('../../images/reflectionMirror.png'),
+  CROSS_ICON: require('../../images/crossIcon.png')
 
 }

@@ -130,6 +130,10 @@ interface IProps {
 @observer
 export class LoginScreen extends Component<IProps> {
 
+  componentWillUnmount() {
+    loginDataStore.init()
+  }
+
   renderHeaderComponent = () => {
     const { HEADING, SUB_HEADING } = strings.LOGIN_SCREEN
     return (

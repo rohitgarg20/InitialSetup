@@ -25,16 +25,19 @@ const bottomTabBarStack = () => {
       <Tab.Screen name={TAB_KEYS.HOME_TAB} component = {HomeScreen} options = {{
         unmountOnBlur: true
       }} />
+      <Tab.Screen name={TAB_KEYS.DISCUSSION_TAB} component = {DiscussionRoomListScreen} options = {{
+        unmountOnBlur: true
+      }}  />
+      <Tab.Screen name={TAB_KEYS.ADD_ITEM} component = {PreferencesScreen} />
+
+
       <Tab.Screen name={TAB_KEYS.EVENTS_TAB} component = {EventsListScreen} options = {{
         unmountOnBlur: true
       }} />
       <Tab.Screen name={TAB_KEYS.NUDGES_TAB} component = {NudgesScreen} options = {{
         unmountOnBlur: true
       }}  />
-      <Tab.Screen name={TAB_KEYS.DISCUSSION_TAB} component = {DiscussionRoomListScreen} options = {{
-        unmountOnBlur: true
-      }}  />
-      <Tab.Screen name={TAB_KEYS.PREFERENCES_TAB} component = {PreferencesScreen} />
+
 
     </Tab.Navigator>
   )

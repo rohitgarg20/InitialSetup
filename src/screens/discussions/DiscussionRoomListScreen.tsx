@@ -55,11 +55,11 @@ export class DiscussionRoomListScreen extends Component<IProps> {
 
   componentDidMount() {
     discussionRoomListStore.getDiscussionRoomsListData()
-    genericDrawerStore.setRenderingComponent(<PreferencesScreen navigation={this.props.navigation} onPressApplyFilter = {this.onPressApplyFilter}/>)
+    // genericDrawerStore.setRenderingComponent(<PreferencesScreen navigation={this.props.navigation} onPressApplyFilter = {this.onPressApplyFilter}/>)
   }
 
   componentWillUnmount() {
-    genericDrawerStore.clearData()
+    // genericDrawerStore.clearData()
     discussionRoomListStore.init()
   }
 

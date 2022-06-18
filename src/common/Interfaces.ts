@@ -15,3 +15,10 @@ export interface I_REVIEWS_ITEM{
   userType: string
   grade: string
 }
+
+export interface IDataList{
+  key: string
+  displayValue: string
+  isSelected: boolean
+  srcIcon?: string
+}

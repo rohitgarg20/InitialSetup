@@ -1,11 +1,13 @@
 import { get, isEmpty, isNumber } from 'lodash'
 import { Image, InteractionManager, Platform, ToastAndroid } from 'react-native'
+import { colors } from '../common'
 import { DAYS_NAME, MONTH_NAMES } from '../common/constant'
 import { log } from '../config'
 
 export const computeFontStyle = (textStyle) => {
   const fontSizeFromProps = get(textStyle, 'fontSize', 14)
   textStyle = {
+    color: colors.black,
     ...textStyle,
     lineHeight: 1.4 * fontSizeFromProps,
     minHeight:  1.4 * fontSizeFromProps

@@ -61,13 +61,12 @@ export class EventsListScreen extends Component<IProps> {
   componentDidMount() {
     const { navigation } = this.props
     eventsListStore.getEventsListData()
-    genericDrawerStore.setRenderingComponent(<PreferencesScreen navigation={navigation} onPressApplyFilter = {this.onPressApplyFilter}/>)
+    // genericDrawerStore.setRenderingComponent(<PreferencesScreen navigation={navigation} onPressApplyFilter = {this.onPressApplyFilter}/>)
 
   }
 
   componentWillUnmount() {
-    genericDrawerStore.clearData()
-
+    // genericDrawerStore.clearData()
     eventsListStore.init()
   }
 

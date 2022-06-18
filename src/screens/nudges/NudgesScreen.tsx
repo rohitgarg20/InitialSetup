@@ -112,12 +112,12 @@ export class NudgesScreen extends Component<IProps> {
   componentDidMount() {
     const { navigation } = this.props
     nudgesListDataStore.getNudgesListData()
-    genericDrawerStore.setRenderingComponent(<PreferencesScreen navigation={navigation} onPressApplyFilter = {this.onPressApplyFilter}/>)
+    // genericDrawerStore.setRenderingComponent(<PreferencesScreen navigation={navigation} onPressApplyFilter = {this.onPressApplyFilter}/>)
 
   }
 
   componentWillUnmount() {
-    genericDrawerStore.clearData()
+    // genericDrawerStore.clearData()
     nudgesListDataStore.init()
   }
 

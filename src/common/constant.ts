@@ -259,3 +259,53 @@ export const navigateToWebView = ({ navigation = undefined, pageUrl }) => {
 
 export const WAITING_TIME = 1000
 export const MINIMUM_TEXT_TO_SEARCH = 3
+
+
+export const LIST_ITEM_KEYS = {
+  ADD_NEW_POST: 'ADD_NEW_POST',
+  ADD_ARTICLE: 'ADD_ARTICLE',
+  CREATE_DISCUSSION_ROOM: 'CREATE_DISCUSSION_ROOM',
+  ADD_NEW_EVENT: 'ADD_NEW_EVENT',
+  ADD_NEW_NUDGE: 'ADD_NEW_NUDGE',
+  ADD_REFLECTION_TEMPLATE: 'ADD_REFLECTION_TEMPLATE'
+}
+
+export const LIST_ITEMS = [
+  {
+    key: LIST_ITEM_KEYS.ADD_NEW_POST,
+    displayValue: 'Post',
+    srcIcon: icons.POST,
+    isSelected: false
+  },
+  {
+    key: LIST_ITEM_KEYS.ADD_ARTICLE,
+    displayValue: 'Article',
+    srcIcon: icons.ARTICLE,
+    isSelected: false
+  },
+  {
+    key: LIST_ITEM_KEYS.CREATE_DISCUSSION_ROOM,
+    displayValue: 'Discussion Room',
+    srcIcon: icons.DISCUSSION,
+    isSelected: false
+  },
+  {
+    key: LIST_ITEM_KEYS.ADD_NEW_EVENT,
+    displayValue: 'Event',
+    srcIcon: icons.EVENTS,
+    isSelected: false
+  },
+  {
+    key: LIST_ITEM_KEYS.ADD_NEW_NUDGE,
+    displayValue: 'Nudge',
+    srcIcon: icons.NUDGES,
+    isSelected: false
+  },
+  {
+    key: LIST_ITEM_KEYS.ADD_REFLECTION_TEMPLATE,
+    displayValue: 'Reflection template',
+    srcIcon: icons.REFLECTION_MIRROR,
+    isSelected: false
+  }
+
+]

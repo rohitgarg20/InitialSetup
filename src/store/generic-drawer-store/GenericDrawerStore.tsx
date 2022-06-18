@@ -1,5 +1,6 @@
 import { StyleSheet } from 'react-native'
 import { observable, action, makeObservable } from 'mobx'
+import { log } from '../../config'
 
 type modalTypes = 'left-right'| 'right-left'| 'top-bottom' | 'bottom-top'
 
@@ -9,7 +10,8 @@ const DEFAULT_SETTING = {
   modalType: 'left-right',
   modalTransitionValue: 300,
   isFetching: false,
-  closeOnOutsideClick: false
+  closeOnOutsideClick: false,
+  drawerCloseEvent: undefined
 }
 
 export class GenericDrawerStore {
@@ -19,6 +21,7 @@ export class GenericDrawerStore {
   modalType: modalTypes
   @observable renderingComponent
   @observable closeOnOutsideClick
+  drawerCloseEvent
 
   constructor() {
     this.init()
@@ -90,4 +93,18 @@ export class GenericDrawerStore {
   }
 
   getCloseDrawerOnOutsideClick = () => this.closeOnOutsideClick
+
+  closeDrawerWithAnimation = () => {
+    log('closeDrawerWithAnimationcloseDrawerWithAnimation', this.drawerCloseEvent)
+
+    if (this.drawerCloseEvent) {
+      log('closeDrawerWithAnimationcloseDrawerWithAnimation')
+      this.drawerCloseEvent()
+    }
+  }
+
+  setDrawerCloseEvent = (event) => {
+    log('setDrawerCloseEventsetDrawerCloseEvent', event)
+    this.drawerCloseEvent = event
+  }
 }

@@ -60,11 +60,11 @@ export class HomeScreen extends Component<IProps> {
   componentDidMount() {
     const { navigation } = this.props
     postListStore.getPostsListData()
-    genericDrawerStore.setRenderingComponent(<PreferencesScreen navigation={navigation} onPressApplyFilter = {this.onPressApplyFilter}/>)
+    // genericDrawerStore.setRenderingComponent(<PreferencesScreen navigation={navigation} onPressApplyFilter = {this.onPressApplyFilter}/>)
   }
 
   componentWillUnmount() {
-    genericDrawerStore.clearData()
+    // genericDrawerStore.clearData()
     postListStore.init()
   }
 
@@ -127,13 +127,13 @@ export class HomeScreen extends Component<IProps> {
     const { postList } = postsData
     return (
       <View style={styles.mainContainer}>
-        <View style={styles.filterBtn}>
+        {/* <View style={styles.filterBtn}>
           <IconButtonWrapper
             iconImage={icons.FILTER_ICON}
             iconHeight={18}
             iconWidth={18}
           />
-        </View>
+        </View> */}
         <FlatListWrapper
           refreshControl={
             <RefreshControl
