@@ -123,6 +123,11 @@ export class HeaderCardComponent extends Component<IProps> {
         })
         break
       case MY_EVENTS:
+        navigateToWebView({
+          navigation: undefined,
+          pageUrl: `${BASE_URL}/mobile/events/saved`
+        })
+        break
       case SAVED:
         navigateToWebView({
           navigation: undefined,

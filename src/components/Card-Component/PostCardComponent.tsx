@@ -140,7 +140,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     paddingBottom: 10,
     flex: 10,
-    paddingLeft: 15
+    paddingLeft: 10
   }
 
 })
