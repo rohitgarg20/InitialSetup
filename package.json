@@ -11,6 +11,7 @@
   },
   "dependencies": {
     "@babel/plugin-proposal-decorators": "^7.17.0",
+    "@gorhom/bottom-sheet": "^4.3.2",
     "@react-native-community/async-storage": "^1.12.1",
     "@react-navigation/bottom-tabs": "^6.3.1",
     "@react-navigation/drawer": "^6.4.1",

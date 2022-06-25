@@ -1,7 +1,7 @@
 import { observable } from 'mobx'
 import React, { Component } from 'react'
 import { StyleSheet, TouchableOpacity, View, ScrollView, ActivityIndicator } from 'react-native'
-import { colors, fontDimens, strings } from '../../common'
+import { colors, fontDimens, fontDimensPer, strings } from '../../common'
 import { get } from 'lodash'
 import { BASE_URL } from '../../common/constant'
 import { icons } from '../../common/icons'
@@ -10,6 +10,10 @@ import { discussionRoomDetailStore } from '../../store'
 import { observer } from 'mobx-react'
 import { IEventListItem } from '../../store/interfaces'
 import { goBack } from '../../service'
+import { capitalizeFirstLetterOnly } from '../../utils/app-utils'
+import { widthToDp } from '../../utils/Responsive'
+import { getHeight } from '../../common/scaling'
+import { log } from '../../config'
 
 const PADDING_HORIZONTAL = 20
 
@@ -44,19 +48,22 @@ const styles = StyleSheet.create({
     fontWeight: '600'
   },
   button: {
-    paddingHorizontal: 10,
-    paddingVertical: 5,
+    paddingHorizontal: 20,
+    paddingVertical: 10,
     justifyContent: 'center',
     alignItems: 'center',
     borderRadius: 5,
     backgroundColor: colors.lightBlue,
-    minWidth: 60
+    minWidth: 60,
+    position: 'absolute',
+    right: PADDING_HORIZONTAL,
+    bottom: 20
   },
   joinButtonLabel: {
-    fontSize: fontDimens.small,
-    lineHeight: 15,
+    fontSize: widthToDp(fontDimensPer.medium),
     color: colors.white,
-    fontWeight: '500'
+    fontWeight: '500',
+    fontFamily: 'Poppins-Medium'
   },
   knowPhysiographics: {
     fontSize: fontDimens.extraSmall,
@@ -64,10 +71,11 @@ const styles = StyleSheet.create({
     fontWeight: '400'
   },
   aboutLabel: {
-    fontSize: fontDimens.medium,
+    fontSize: widthToDp(fontDimensPer.large),
     color: colors.black,
     fontWeight: '600',
-    paddingBottom: 8
+    fontFamily: 'Poppins-SemiBold',
+    paddingBottom: 10
   },
   content: {
     fontSize: fontDimens.extraSmall,
@@ -138,6 +146,12 @@ const styles = StyleSheet.create({
   onlineTextStyle: {
     fontSize: fontDimens.small,
     color: colors.white
+  },
+  eventDetailsDes: {
+    fontSize: widthToDp(fontDimensPer.medium),
+    fontWeight: '400',
+    fontFamily: 'OpenSans-VariableFont_wdth,wght',
+    color: colors.black
   }
 })
 
@@ -145,8 +159,24 @@ interface IProps {
   navigation?: any
   route?: any
 }
+
+interface IState {
+  showViewMoreText?: boolean
+  containerOnLayoutHeight?: number
+  isTextMore?: boolean
+}
+
 @observer
-export class DiscussionRoomDetailScreen extends Component<IProps> {
+export class DiscussionRoomDetailScreen extends Component<IProps, IState> {
+  constructor(props: IProps) {
+    super(props)
+    this.state = {
+      showViewMoreText: false,
+      containerOnLayoutHeight: 0,
+      isTextMore: false
+    }
+    discussionRoomDetailStore.updateFetchingStatus(true)
+  }
 
   componentDidMount() {
     const { route } = this.props
@@ -227,18 +257,55 @@ export class DiscussionRoomDetailScreen extends Component<IProps> {
     )
   }
 
+
+  updateMoreTextPresent = (event, maxLinesCanCome) => {
+    const numberOfLines = event.nativeEvent.lines.length
+    const { isTextMore } = this.state
+    if (numberOfLines > maxLinesCanCome && !isTextMore) {
+      this.setState({
+        isTextMore: true
+      })
+    }
+  }
+
+  toggleNumberOfLines = () => {
+    const { showViewMoreText } = this.state
+    this.setState({
+      showViewMoreText: !showViewMoreText
+    })
+  }
+
   renderAboutContainer = () => {
     const { ABOUT } = strings.DISCUSSION_ROOM_DETAIL_SCREEN
     const { discussionRoomData } = discussionRoomDetailStore
+    const { containerOnLayoutHeight, isTextMore, showViewMoreText  } = this.state
+
     const { description } = discussionRoomData as IEventListItem
+    const spaceLeft = (getHeight() * 0.8) - containerOnLayoutHeight
+    const numberOfLines = spaceLeft / (widthToDp(fontDimensPer.medium) * 1.45) - 3
+    log('renderAboutContainerrenderAboutContainer', numberOfLines)
     return (
-      <View>
+      <View style = {{
+        paddingHorizontal: PADDING_HORIZONTAL,
+        paddingVertical: 15
+      }}>
         <CustomText textStyle={styles.aboutLabel}>
           {ABOUT}
         </CustomText>
-        <CustomText textStyle={styles.content}>
-          {description}
-        </CustomText>
+        <View style = {{ }}>
+          <CustomText textStyle={styles.eventDetailsDes} onTextLayout = {(event) => {
+            this.updateMoreTextPresent(event, numberOfLines)
+            log('eventeventeventeventeventeventevent', event )
+          }} numberOfLines = {showViewMoreText ? undefined : numberOfLines} ellipsizeMode = {'clip'}>{description}
+          </CustomText>
+          {
+            isTextMore ? <CustomText
+              onPress={this.toggleNumberOfLines}
+              textStyle={{ lineHeight: 21, color: colors.lightBlue}}>{showViewMoreText ? 'read less...' : 'read more...'}</CustomText>
+              : null
+          }
+
+        </View>
       </View>
     )
   }
@@ -246,16 +313,16 @@ export class DiscussionRoomDetailScreen extends Component<IProps> {
   renderRoundedAvtar = () => {
     const { discussionRoomData } = discussionRoomDetailStore
     const { author } = discussionRoomData as IEventListItem
-    const { userName = '', picture } = author || {}
-    return userName ? (
+    const { userName = '', picture, fullName } = author || {}
+    return fullName || userName ? (
       <View style={styles.avtarContainer}>
         <UserAvatar
           size={'20'}
           imageStyle={[styles.withoutImageColor, { width: '100%', height: '100%' }]}
           showBorderRadius={true}
-          name={userName.toUpperCase()}
+          name={fullName.toUpperCase() || userName.toUpperCase()}
           src={`${BASE_URL}${picture}`}
-        />
+        /> 
       </View>
     ) : null
   }
@@ -263,10 +330,10 @@ export class DiscussionRoomDetailScreen extends Component<IProps> {
   renderLabel = () => {
     const { discussionRoomData } = discussionRoomDetailStore
     const { tagline, author } = discussionRoomData as IEventListItem
-    const { userName } = author || {}
+    const { userName, fullName } = author || {}
     return (
       <View style={styles.spaceBetween}>
-        <View style={styles.rowContainer}>
+        {/* <View style={styles.rowContainer}>
           <IconButtonWrapper
             iconImage={icons.HUMAN_HEAD_ICON}
             iconHeight={16}
@@ -276,11 +343,11 @@ export class DiscussionRoomDetailScreen extends Component<IProps> {
           <CustomText textStyle={styles.subheadingTitle}>
             {tagline}
           </CustomText>
-        </View>
+        </View> */}
         <View style={styles.rowContainer}>
           {this.renderRoundedAvtar()}
           <CustomText textStyle={styles.subheadingTitle}>
-            by {userName}
+            by {capitalizeFirstLetterOnly(fullName)}
           </CustomText>
         </View>
       </View>
@@ -331,7 +398,7 @@ export class DiscussionRoomDetailScreen extends Component<IProps> {
         <ImageWithLoaderComponent
           // iconImage={icons.NETWORK_ICON}
           containerStyle={{
-            height: 320,
+            height: 300,
             width: '100%'
           }}
           srcImage={`${BASE_URL}${image}`}
@@ -355,8 +422,8 @@ export class DiscussionRoomDetailScreen extends Component<IProps> {
     return (
       <View style={{ marginVertical: 20 }}>
         <View style={styles.memberContainer}>
-          {this.renderDiscussionRoomCount()}
-          {this.renderJoinButton()}
+          {/* {this.renderDiscussionRoomCount()} */}
+          {/* {this.renderJoinButton()} */}
         </View>
         <View style={styles.flexEnd}>
           {this.renderKnowPhysiographicsButton()}
@@ -377,18 +444,34 @@ export class DiscussionRoomDetailScreen extends Component<IProps> {
     )
   }
 
+
   renderDetailContentView = () => {
+    const { containerOnLayoutHeight } = this.state
+
     return (
-      <View>
-        {this.renderDiscussionRoomImage()}
-        {this.renderDiscussionLabel()}
-        {this.renderLabel()}
-        <ScrollView contentContainerStyle={{
-          paddingHorizontal: PADDING_HORIZONTAL
-        }}>
-          {this.renderRoomStats()}
+      <View style = {{
+        height: '80%',
+        backgroundColor: colors.white
+      }}>
+        <ScrollView >
+          <View onLayout = {(event) => {
+            log('renderEventDetailViewrenderEventDetailView', event.nativeEvent.layout.height)
+            const containerHeight = event.nativeEvent.layout.height
+            if (containerOnLayoutHeight !== containerHeight) {
+              this.setState({
+                containerOnLayoutHeight: containerHeight
+              })
+            }
+          }}>
+            {this.renderDiscussionRoomImage()}
+            {this.renderDiscussionLabel()}
+            {this.renderLabel()}
+            {/* {this.renderRoomStats()} */}            
+          </View>
           {this.renderAboutContainer()}
+
         </ScrollView>
+        
       </View>
     )
   }
@@ -409,7 +492,16 @@ export class DiscussionRoomDetailScreen extends Component<IProps> {
       )
     }
 
-    return this.renderDetailContentView()
+    return (
+      <View style = {{
+        height: '100%'
+      }}>
+        {this.renderDetailContentView()}
+        {/* {this.renderBottomSheet()} */}
+        {this.renderJoinButton()}
+      </View>
+    )
+
   }
 
   render() {

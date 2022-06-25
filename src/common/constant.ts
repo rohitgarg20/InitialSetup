@@ -34,7 +34,7 @@ export const DAYS_NAME = ['Sun', 'Mon', 'Tue', 'Wed', 'Thur', 'Fri', 'Sat']
 export const MONTH_NAMES = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'June', 'July', 'Aug', 'Sept', 'Oct', 'Nov', 'Dec']
 
 export const CARD_HEIGHT = 180
-export const EVENT_CARD_HEIGHT = 160
+export const EVENT_CARD_HEIGHT = 140
 export const FETCHING_ARR = ['', '', '', '', '', '', '', '', '', '']
 
 export const FOOTER_KEYS = {

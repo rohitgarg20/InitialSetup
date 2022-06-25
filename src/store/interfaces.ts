@@ -17,6 +17,7 @@ export interface IEventListItem{
     picture?: string
     signature?: string
     aboutme?: string
+    fullName?: string
   }
   tid?: string
   description_1?: string

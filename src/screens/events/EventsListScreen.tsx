@@ -83,7 +83,7 @@ export class EventsListScreen extends Component<IProps> {
     return (
       <EventCardComponent
         name={name}
-        tagline={tagline}
+        tagline={''}
         description={description}
         startDate={startDate}
         imageUrl={image}
@@ -146,13 +146,13 @@ export class EventsListScreen extends Component<IProps> {
       }}>
         <View style={styles.subHeaderContainer}>
           <CustomText textStyle={styles.subheadingStyle}>Explore Events</CustomText>
-          <TouchableOpacity>
+          {/* <TouchableOpacity>
             <IconButtonWrapper
               iconImage={icons.FILTER_ICON}
               iconHeight={18}
               iconWidth={18}
             />
-          </TouchableOpacity>
+          </TouchableOpacity> */}
         </View>
         <FlatListWrapper
           refreshControl={

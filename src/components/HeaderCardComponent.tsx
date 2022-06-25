@@ -272,6 +272,18 @@ export class HeaderCardComponent extends Component<IProps> {
           <TouchableOpacity style={styles.topIconStyle} onPress = {() => {
             navigateToWebView({
               navigation: undefined,
+              pageUrl: `${BASE_URL}/mobile/preferences/getView`
+            })
+          }}>
+            <IconButtonWrapper
+              iconImage={icons.FILTER_ICON}
+              iconHeight={15}
+              iconWidth={15}
+            />
+          </TouchableOpacity>
+          <TouchableOpacity style={styles.topIconStyle} onPress = {() => {
+            navigateToWebView({
+              navigation: undefined,
               pageUrl: `${BASE_URL}/mobile/message/list`
             })
           }}>

@@ -146,14 +146,14 @@ export class DiscussionRoomListScreen extends Component<IProps> {
         flex: 1
       }}>
         <View style={styles.subHeaderContainer}>
-          <CustomText textStyle={styles.subheadingStyle}>My Discussion Room</CustomText>
-          <TouchableOpacity>
+          <CustomText textStyle={styles.subheadingStyle}>Explore Discussion rooms</CustomText>
+          {/* <TouchableOpacity>
             <IconButtonWrapper
               iconImage={icons.FILTER_ICON}
               iconHeight={18}
               iconWidth={18}
             />
-          </TouchableOpacity>
+          </TouchableOpacity> */}
         </View>
         <FlatListWrapper
           refreshControl={

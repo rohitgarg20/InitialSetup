@@ -1,10 +1,10 @@
 import { observer } from 'mobx-react'
 import React, { Component } from 'react'
-import { ActivityIndicator, StyleSheet, View, TouchableOpacity, ScrollView } from 'react-native'
+import { ActivityIndicator, StyleSheet, View, TouchableOpacity, ScrollView, Text } from 'react-native'
 import { colors, fontDimensPer } from '../../common'
 import { get } from 'lodash'
 import { icons } from '../../common/icons'
-import { BackButtonComponent, CustomText, IconButtonWrapper, ImageWithLoaderComponent, Loader, LoaderWithApiErrorComponent, UserAvatar } from '../../components'
+import { BackButtonComponent, CustomText, IconButtonWrapper, ImageWithLoaderComponent, Loader, LoaderWithApiErrorComponent, UserAvatar, ViewPager } from '../../components'
 import { HeaderCardComponent } from '../../components/HeaderCardComponent'
 import { eventDetailStore } from '../../store'
 import { IEventListItem } from '../../store/interfaces'
@@ -12,6 +12,9 @@ import { capitalizeFirstLetterOnly, formatDate, getFormattedTime } from '../../u
 import { BASE_URL } from '../../common/constant'
 import { goBack } from '../../service'
 import { widthToDp } from '../../utils/Responsive'
+import BottomSheet from '@gorhom/bottom-sheet'
+import { log } from '../../config'
+import { getHeight } from '../../common/scaling'
 
 
 const styles = StyleSheet.create({
@@ -36,11 +39,11 @@ const styles = StyleSheet.create({
     borderTopRightRadius: 10,
     flexDirection: 'row',
     justifyContent: 'space-between',
-    alignItems: 'center',
-    position: 'absolute',
-    bottom: 0,
-    right: 0,
-    left: 0
+    alignItems: 'center'
+    // position: 'absolute',
+    // bottom: 0,
+    // right: 0,
+    // left: 0
   },
   networkTitle: {
     color: colors.white,
@@ -79,9 +82,9 @@ const styles = StyleSheet.create({
     paddingVertical: 5
   },
   eventDetailsContainer: {
-    backgroundColor: colors.grey,
+    // backgroundColor: colors.grey,
     paddingVertical: 10,
-    paddingHorizontal: 15,
+    paddingHorizontal: 20,
     borderTopLeftRadius: 10,
     borderTopRightRadius: 10,
     marginTop: 10
@@ -122,9 +125,9 @@ const styles = StyleSheet.create({
   },
   userNameStyle: {
     fontSize: widthToDp(fontDimensPer.small),
-    fontFamily: 'Poppins-SemiBold',
-    fontWeight: '600',
-    color: colors.lightBlue,
+    fontFamily: 'Poppins-Regular',
+    fontWeight: '400',
+    color: colors.black,
     flexWrap: 'wrap'
   },
   userDescription: {
@@ -138,7 +141,10 @@ const styles = StyleSheet.create({
   registerBtnContainer: {
     flexDirection: 'row',
     justifyContent: 'center',
-    paddingTop: 15
+    paddingTop: 15,
+    position: 'absolute',
+    right: 20,
+    bottom: 20
   },
   eventDetailsSubHeading: {
     fontSize: widthToDp(fontDimensPer.large),
@@ -151,7 +157,7 @@ const styles = StyleSheet.create({
     fontSize: widthToDp(fontDimensPer.medium),
     fontWeight: '400',
     fontFamily: 'OpenSans-VariableFont_wdth,wght',
-    color: colors.black
+    color: colors.black,
   },
   loaderContainer: {
     flex: 1,
@@ -160,8 +166,8 @@ const styles = StyleSheet.create({
     alignItems: 'center'
   },
   avtarContainer: {
-    height: 50,
-    width: 50,
+    height: 20,
+    width: 20,
     justifyContent: 'center',
     marginRight: 5
   },
@@ -173,6 +179,13 @@ const styles = StyleSheet.create({
     color: colors.white,
     fontWeight: '500',
     fontFamily: 'Poppins-Medium'
+  },
+  flexRow: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+    paddingVertical: 10,
+    paddingHorizontal: 20
   }
 })
 
@@ -180,11 +193,22 @@ interface IProps {
   route?: any
   navigation?: any
 }
+
+interface IState {
+  showViewMoreText?: boolean
+  containerOnLayoutHeight?: number
+  isTextMore?: boolean
+}
 @observer
-export class EventDetailScreen extends Component<IProps> {
+export class EventDetailScreen extends Component<IProps, IState> {
 
   constructor(props: IProps) {
     super(props)
+    this.state = {
+      showViewMoreText: false,
+      containerOnLayoutHeight: 0,
+      isTextMore: false
+    }
     eventDetailStore.updateFetchingStatus(true)
   }
 
@@ -213,147 +237,302 @@ export class EventDetailScreen extends Component<IProps> {
   renderRoundedAvtar = () => {
     const { eventData } = eventDetailStore
     const { author } = eventData as IEventListItem
-    const { picture = '', userName } = author || {}
+    const { picture = '', fullName = '', userName = '' } = author || {}
 
-    return userName ? (
+    return fullName || userName ? (
       <View style={[styles.avtarContainer]}>
         <UserAvatar
-          size={'45'}
+          size={'25'}
           imageStyle={[styles.withoutImageColor, { width: '100%', height: '100%' }]}
           showBorderRadius={true}
-          name={userName.toUpperCase()}
+          name={fullName.toUpperCase() || userName.toUpperCase()}
           src={`${BASE_URL}${picture}`}
         />
       </View>
     ) : null
   }
 
-  renderEventDetailView = () => {
-    const { navigation } = this.props
-    const { eventData, isFetching, registerEvent, saveCurrentEvent } = eventDetailStore
-    const { name = '', field_1 = '', description_1 = '', field_2 = '', description_2 = '', description = '', author, startDate, image } = eventData as IEventListItem
-    const { picture = '', signature, aboutme, userName } = author || {}
+  renderEventScheduleTime = () => {
+    const { eventData } = eventDetailStore
+    const { startDate } = eventData as IEventListItem
     return (
-      <ScrollView>
-        <View style={{ marginTop: -5, position: 'relative' }}>
-          <TouchableOpacity style={styles.backBtn} onPress={() => goBack(navigation)}>
-            <IconButtonWrapper
-              iconImage={icons.RIGHT_ARROW_ICON}
-              iconHeight={10}
-              iconWidth={10}
-              styling={{
-                tintColor: colors.white,
-                marginRight: 5,
-                transform: [{ rotate: '180deg' }]
-              }}
-            />
-            <CustomText textStyle={{ color: colors.white,   fontSize: widthToDp(fontDimensPer.small),
-              fontWeight: '400',
-              fontFamily: 'Poppins-Regular' }}>
-            back
-            </CustomText>
-          </TouchableOpacity>
-          <ImageWithLoaderComponent
-          // iconImage={icons.NETWORK_ICON}
-            containerStyle={{
-              height: 320,
-              width: '100%'
-            }}
-            srcImage={`${BASE_URL}${image}`}
-            // iconHeight={320}
-            // iconWidth={'100%'}
-          />
-          <View style={styles.sliderHeadingBg}>
-            <View style={{ flex: 1 }}>
-              <CustomText numberOfLines={1} ellipsizeMode='tail' textStyle={styles.networkTitle}>{name}</CustomText>
-            </View>
-            <View style={{ flexDirection: 'row', marginLeft: 20 }}>
-              <IconButtonWrapper
-                iconImage={icons.FILTER_ICON}
-                iconHeight={20}
-                iconWidth={20}
-                styling={{ tintColor: colors.white }}
-              />
-              <IconButtonWrapper
-                iconImage={icons.SAVE_ICON}
-                iconHeight={18}
-                iconWidth={18}
-                styling={{ tintColor: colors.white, marginLeft: 20 }}
-                submitFunction = {saveCurrentEvent}
-              />
-            </View>
-          </View>
+      <View style={styles.eventDateRow}>
+        <IconButtonWrapper
+          iconImage={icons.SCHEDULE_ICON}
+          iconHeight={18}
+          iconWidth={18}
+          styling={{ marginRight: 5 }}
+        />
+        <CustomText textStyle={styles.eventDateTimeTextStyle}>{getFormattedTime(startDate)} Onwards</CustomText>
+      </View>
+    )
+  }
+
+  renderEventStartDate = () => {
+    const { eventData } = eventDetailStore
+    const { startDate } = eventData as IEventListItem
+    return (
+      <View style={styles.eventDateRow}>
+        <IconButtonWrapper
+          iconImage={icons.CALENDAR_ICON}
+          iconHeight={18}
+          iconWidth={18}
+          styling={{ marginRight: 5 }}
+        />
+        <CustomText textStyle={styles.eventDateTimeTextStyle}>{formatDate(startDate)}</CustomText>
+      </View>
+    )
+  }
+
+  renderEventImage = () => {
+    const { eventData } = eventDetailStore
+    const { image } = eventData as IEventListItem
+    return (
+      <ImageWithLoaderComponent
+      // iconImage={icons.NETWORK_ICON}
+        containerStyle={{
+          height: 300,
+          width: '100%'
+        }}
+        srcImage={`${BASE_URL}${image}`}
+        // iconHeight={320}
+        // iconWidth={'100%'}
+      />
+    )
+  }
+
+  renderEventName = () => {
+    const { eventData } = eventDetailStore
+    const { name } = eventData as IEventListItem
+    return (
+      <View style={{ flex: 1 }}>
+        <CustomText numberOfLines={1} ellipsizeMode='tail' textStyle={styles.networkTitle}>{name}</CustomText>
+      </View>
+    )
+  }
+
+  renderBackButton = () => {
+    const { navigation } = this.props
+
+    return (
+      <TouchableOpacity style={styles.backBtn} onPress={() => goBack(navigation)}>
+        <IconButtonWrapper
+          iconImage={icons.RIGHT_ARROW_ICON}
+          iconHeight={10}
+          iconWidth={10}
+          styling={{
+            tintColor: colors.white,
+            marginRight: 5,
+            transform: [{ rotate: '180deg' }]
+          }}
+        />
+        <CustomText textStyle={{ color: colors.white,   fontSize: widthToDp(fontDimensPer.small),
+          fontWeight: '400',
+          fontFamily: 'Poppins-Regular' }}>
+      back
+        </CustomText>
+      </TouchableOpacity>
+    )
+  }
+
+  renderSaveEventImage = () => {
+    const { eventData, isFetching, registerEvent, saveCurrentEvent } = eventDetailStore
+
+    return (
+      <IconButtonWrapper
+        iconImage={icons.SAVE_ICON}
+        iconHeight={18}
+        iconWidth={18}
+        styling={{ tintColor: colors.white, marginLeft: 20 }}
+        submitFunction = {saveCurrentEvent}
+      />
+    )
+  }
+
+  updateMoreTextPresent = (event, maxLinesCanCome) => {
+    const numberOfLines = event.nativeEvent.lines.length
+    const { isTextMore } = this.state
+    if (numberOfLines > maxLinesCanCome && !isTextMore) {
+      this.setState({
+        isTextMore: true
+      })
+    }
+  }
+
+  toggleNumberOfLines = () => {
+    const { showViewMoreText } = this.state
+    this.setState({
+      showViewMoreText: !showViewMoreText
+    })
+  }
+
+  renderEventDetailComponent = () => {
+    const { eventData, isFetching, registerEvent, saveCurrentEvent } = eventDetailStore
+    const { containerOnLayoutHeight, isTextMore, showViewMoreText  } = this.state
+    const { description } = eventData || {}
+    const spaceLeft = (getHeight() * 0.8) - containerOnLayoutHeight
+    const numberOfLines = spaceLeft / (widthToDp(fontDimensPer.medium) * 1.45) - 3
+
+    log('spaceLeftspaceLeftspaceLeft', numberOfLines)
+    return (
+      <View style={styles.eventDetailsContainer}>
+        <CustomText textStyle={styles.eventDetailsSubHeading}>About</CustomText>
+        <View style = {{ }}>
+          <CustomText textStyle={styles.eventDetailsDes} onTextLayout = {(event) => {
+            this.updateMoreTextPresent(event, numberOfLines)
+            log('eventeventeventeventeventeventevent', event )
+          }} numberOfLines = {showViewMoreText ? undefined : numberOfLines} ellipsizeMode = {'clip'}>{description}
+          </CustomText>
+          {
+            isTextMore ? <CustomText
+              onPress={this.toggleNumberOfLines}
+              textStyle={{ lineHeight: 21, color: colors.lightBlue}}>{showViewMoreText ? 'read less...' : 'read more...'}</CustomText>
+              : null
+          }
+
         </View>
-        <View style={styles.eventDateTimeContainer}>
-          <View style={styles.eventDateRow}>
-            <IconButtonWrapper
-              iconImage={icons.CALENDAR_ICON}
-              iconHeight={18}
-              iconWidth={18}
-              styling={{ marginRight: 5 }}
-            />
-            <CustomText textStyle={styles.eventDateTimeTextStyle}>{formatDate(startDate)}</CustomText>
-          </View>
-          <View style={styles.eventDateRow}>
-            <IconButtonWrapper
-              iconImage={icons.SCHEDULE_ICON}
-              iconHeight={18}
-              iconWidth={18}
-              styling={{ marginRight: 5 }}
-            />
-            <CustomText textStyle={styles.eventDateTimeTextStyle}>{getFormattedTime(startDate)} Onwards</CustomText>
-          </View>
-          <View style={styles.eventDateRow}>
-            <IconButtonWrapper
-              iconImage={icons.DAFAULT_ICON}
-              iconHeight={20}
-              iconWidth={20}
-              styling={{ marginRight: 5 }}
-            />
-            <CustomText textStyle={styles.eventDateTimeTextStyle}>+10 signups</CustomText>
-          </View>
-        </View>
-        <View style={styles.eventDetailsView}>
-          <View style={styles.eventDetailsInnerView}>
-            <View style={{ paddingBottom: 15 }}>
-              <CustomText textStyle={styles.eventDetailsHeading}>{field_1}</CustomText>
-              <CustomText textStyle={styles.eventDescription}>{description_1}</CustomText>
+      </View>
+    )
+  }
+
+  renderPagerView = () => {
+    return (
+      <View style={{
+        height: '100%',
+        width: '100%',
+        paddingVertical: 10,
+        borderRadius: 10,
+        backgroundColor: colors.grey,
+        padding: 20,
+      }}>
+        <ViewPager
+          pages={[this.renderLearningValue(), this.renderGrowthValue()]}
+          dotContainer = {{
+            maxWidth: 40,
+            alignSelf: 'center',
+            borderRadius: 50,
+            backgroundColor: '#C4C4C4',
+            paddingHorizontal: 5,
+            paddingRight: 0,
+            paddingVertical: 5
+          }}
+          selectedBgColor = {'rgba(255, 255, 255, 0.6)'}
+          unSelectedBgColor = {colors.white}
+          // onPageChange={this.setSelectedPageIndex}
+        />
+      </View>
+    )
+  }
+
+  renderBottomSheet = () => {
+    return (
+      <BottomSheet
+      // ref={bottomSheetRef}
+        index={0}
+        snapPoints={['20%', getHeight() - 310]}
+        enableHandlePanningGesture = {true}
+        enableContentPanningGesture = {false}
+        enableOverDrag = {true}
+        // handleComponent = {({ animatedIndex, animatedPosition }) => {
+        //   log('handleComponenthandleComponent', props)
+        //   return (
+        //     <Text>124</Text>
+        //   )
+        // }}
+      // onChange={handleSheetChanges}
+      >
+        {this.renderPagerView()}
+      </BottomSheet>
+    )
+  }
+
+  renderLearningValue = () => {
+    const { eventData } = eventDetailStore
+    const { field_1, description_1  } = eventData as IEventListItem
+    const fieldDisplayValue = field_1 || 'Learning Values'
+    return (
+      <View style={{ paddingBottom: 15 }}>
+        <CustomText textStyle={styles.eventDetailsHeading}>{fieldDisplayValue}</CustomText>
+        <CustomText textStyle={styles.eventDescription}>{description_1}</CustomText>
+      </View>
+    )
+  }
+
+  renderGrowthValue = () => {
+    const { eventData } = eventDetailStore
+    const { field_2, description_2  } = eventData as IEventListItem
+    const fieldDisplayValue = field_2 || 'Growth Values'
+    return (
+      <View style={{ paddingBottom: 15 }}>
+        <CustomText textStyle={styles.eventDetailsHeading}>{fieldDisplayValue}</CustomText>
+        <CustomText textStyle={styles.eventDescription}>{description_2}</CustomText>
+      </View>
+    )
+  }
+
+  renderRegisterButton = () => {
+    const { registerEvent } = eventDetailStore
+
+    return (
+      <View style={styles.registerBtnContainer}>
+        <TouchableOpacity style={styles.registerBtn} onPress = {registerEvent}>
+          <CustomText textStyle={styles.registerButtonLabel}>
+         Register
+          </CustomText>
+        </TouchableOpacity>
+      </View>
+    )
+  }
+
+  renderEventDetailView = () => {
+    const { eventData } = eventDetailStore
+    const { author, startDate } = eventData as IEventListItem
+    const { fullName = '' } = author || {}
+    const { containerOnLayoutHeight } = this.state
+    return (
+      <View style = {{
+        height: '80%'
+      }}>
+        <ScrollView contentContainerStyle = {{}}>
+          <View style={{ }} onLayout = {(event) => {
+            log('renderEventDetailViewrenderEventDetailView', event.nativeEvent.layout.height)
+            const containerHeight = event.nativeEvent.layout.height
+            if (containerOnLayoutHeight !== containerHeight) {
+              this.setState({
+                containerOnLayoutHeight: containerHeight
+              })
+            }
+          }}>
+            {this.renderBackButton()}
+            {this.renderEventImage()}
+            <View style={styles.sliderHeadingBg}>
+              {this.renderEventName()}
+              {this.renderSaveEventImage()}
             </View>
-            <View>
-              <CustomText textStyle={styles.eventDetailsHeading}>{field_2}</CustomText>
-              <CustomText textStyle={styles.eventDescription}>{description_2}</CustomText>
-            </View>
-          </View>
-          <View style={{ flex: 1 }}>
-            <View style={styles.usrProfileWrap}>
-              <View style={{ flexDirection: 'row', alignItems: 'center', flex: 1 }}>
+            <View style={styles.eventDateTimeContainer}>
+              <View style={styles.eventDateRow}>
                 {this.renderRoundedAvtar()}
-                <View style={{ flex: 1 }}>
-                  <CustomText textStyle={styles.userNameStyle}>{capitalizeFirstLetterOnly(userName)}</CustomText>
-                  <CustomText textStyle={styles.userGrad} numberOfLines = {2}>{signature}</CustomText>
-                </View>
-
+                <CustomText textStyle={styles.userNameStyle}> by {capitalizeFirstLetterOnly(fullName)}</CustomText>
               </View>
-              <CustomText textStyle={styles.userDescription} numberOfLines = {3}>
-                {aboutme}
-              </CustomText>
-
-
+              <View style={styles.eventDateRow}>
+                <IconButtonWrapper
+                  iconImage={icons.SCHEDULE_ICON}
+                  iconHeight={18}
+                  iconWidth={18}
+                  styling={{ marginRight: 5 }}
+                />
+                <CustomText textStyle={styles.eventDateTimeTextStyle}>{getFormattedTime(startDate)} Onwards</CustomText>
+              </View>
             </View>
-            <View style={styles.registerBtnContainer}>
-              <TouchableOpacity style={styles.registerBtn} onPress = {registerEvent}>
-                <CustomText textStyle={styles.registerButtonLabel}>
-                Register
-                </CustomText>
-              </TouchableOpacity>
+            <View style = {styles.flexRow}>
+              {this.renderEventStartDate()}
+              {this.renderEventScheduleTime()}
             </View>
           </View>
-        </View>
-        <View style={styles.eventDetailsContainer}>
-          <CustomText textStyle={styles.eventDetailsSubHeading}>Event Details</CustomText>
-          <CustomText textStyle={styles.eventDetailsDes}>{description}</CustomText>
-        </View>
-      </ScrollView>
+
+          {this.renderEventDetailComponent()}
+        </ScrollView>
+      </View>
     )
   }
 
@@ -373,7 +552,15 @@ export class EventDetailScreen extends Component<IProps> {
       )
     }
 
-    return this.renderEventDetailView()
+    return (
+      <View style = {{
+        height: '100%'
+      }}>
+        {this.renderEventDetailView()}
+        {this.renderBottomSheet()}
+        {this.renderRegisterButton()}
+      </View>
+    )
   }
 
   render() {

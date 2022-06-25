@@ -82,7 +82,7 @@ export class DiscussionRoomDetailStore implements RESPONSE_CALLBACKS {
   constructDiscussionRoomData = (responseData) => {
     const { _id,  _key, description, name, tagline, picture, user = {}, tid = 0, viewcount = 0, timestamp, type,
       onlineCount = 0, membersCount = 0, mascotsCount = 0   } = responseData.data || {}
-    const { username = '', status = '', lastonline = 0 } = user || {}
+    const { username = '', status = '', lastonline = 0, fullname = '' } = user || {}
 
     const formattedData: IEventListItem = {
       _id,
@@ -97,7 +97,8 @@ export class DiscussionRoomDetailStore implements RESPONSE_CALLBACKS {
       author: {
         userName: username,
         status,
-        lastActiveTime: timeFromNow(lastonline)
+        lastActiveTime: timeFromNow(lastonline),
+        fullName: fullname
       },
       tid,
       mascotsCount,

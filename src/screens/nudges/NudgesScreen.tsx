@@ -326,13 +326,13 @@ export class NudgesScreen extends Component<IProps> {
           />
         </TouchableOpacity>
 
-        <TouchableOpacity>
+        {/* <TouchableOpacity>
           <IconButtonWrapper
             iconImage={icons.FILTER_ICON}
             iconHeight={18}
             iconWidth={18}
           />
-        </TouchableOpacity>
+        </TouchableOpacity> */}
       </View>
     )
   }

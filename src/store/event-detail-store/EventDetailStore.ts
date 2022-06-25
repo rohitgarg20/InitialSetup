@@ -145,7 +145,8 @@ export class EventRoomDetailStore implements RESPONSE_CALLBACKS {
         userName: get(moderator_data, 'username', ''),
         picture: get(moderator_data, 'picture', ''),
         signature: get(moderator_data, 'signature', ''),
-        aboutme:get(moderator_data, 'aboutme', '')
+        aboutme: get(moderator_data, 'aboutme', ''),
+        fullName: get(moderator_data, 'fullname', ''),
       },
       tid,
       description_1,

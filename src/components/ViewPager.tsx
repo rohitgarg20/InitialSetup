@@ -35,6 +35,9 @@ interface Props {
   onPageChange?: (selectedPageIndex) => void
   scrollViewTestId?: string
   showDotsOnTop?: boolean
+  dotContainer?: any
+  unSelectedBgColor?: string
+  selectedBgColor?: string
 }
 
 interface State {
@@ -100,18 +103,18 @@ export class ViewPager extends Component<Props, State> {
     renderDotIndicator = () => {
       const dotViewArray = []
       const { selectedPageIndex } = this.state
-      const { pages } = this.props
+      const { pages, dotContainer = {}, selectedBgColor = colors.lightBlue, unSelectedBgColor = colors.black } = this.props
       log('renderDotIndicatorrenderDotIndicator', pages.length)
       for ( let i = 0 ; i < pages.length ; i++) {
         dotViewArray.push(
           <View
-            style = {i === selectedPageIndex ? styles.selectedDotStyle : styles.dotStyle}
+            style = {i === selectedPageIndex ? { ...styles.selectedDotStyle, backgroundColor: selectedBgColor} : { ...styles.dotStyle, backgroundColor: unSelectedBgColor, borderColor: unSelectedBgColor}}
             key={i}
           />
         )
       }
       return (
-        <View style = {[styles.dotViewContainer, { }]}>
+        <View style = {[styles.dotViewContainer, dotContainer]}>
           {dotViewArray}
         </View>
       )
