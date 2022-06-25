@@ -284,17 +284,17 @@ export default class PostCardComponent extends Component<IProps> {
 
   navigateToDetailScreen = () => {
     const { postData } = this.props
-    const { type, tid  } = postData as IPostItem
+    const { type, pid  } = postData as IPostItem
     log('navigateToDetailScreennavigateToDetailScreen', )
     if (type === 'post') {
       navigateToWebView({
         navigation: undefined,
-        pageUrl: `${BASE_URL}/mobile/post/view?tid=${tid}`
+        pageUrl: `${BASE_URL}/mobile/post/view?pid=${pid}`
       })
     } else {
       navigateToWebView({
         navigation: undefined,
-        pageUrl: `${BASE_URL}/mobile/article/view?tid=${tid}`
+        pageUrl: `${BASE_URL}/mobile/article/view?pid=${pid}`
       })
     }
   }
