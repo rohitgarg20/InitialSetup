@@ -1,11 +1,12 @@
 import { observable, makeObservable,action } from 'mobx'
 import { strings } from '../../common'
 import { API_END_POINTS, API_IDS } from '../../common/ApiConfiguration'
+import { map, filter } from 'lodash'
 import { log } from '../../config'
 import { BaseRequest, RESPONSE_CALLBACKS } from '../../http-layer'
-import { showAndroidToastMessage, toDateTime } from '../../utils/app-utils'
+import { isValidURL, showAndroidToastMessage, toDateTime } from '../../utils/app-utils'
 import { get } from 'lodash'
-import { IEventListItem } from '../interfaces'
+import { IEventListItem, IHighlightedChatItem, IUserObj } from '../interfaces'
 import { timeFromNow } from '../../utils/DateHelper'
 import { discussion_data } from '../ApiRespData'
 
@@ -13,9 +14,8 @@ const DEFAULT_SETTINGS = {
   isFetching: false,
   discussionRoomId: '',
   discussionRoomData: {},
-  isApiError: false
-
-
+  isApiError: false,
+  highlightedChatList: []
 }
 
 export class DiscussionRoomDetailStore implements RESPONSE_CALLBACKS {
@@ -24,6 +24,7 @@ export class DiscussionRoomDetailStore implements RESPONSE_CALLBACKS {
   @observable discussionRoomId
   @observable discussionRoomData
   @observable isApiError
+  @observable highlightedChatList: IHighlightedChatItem[]
 
 
   constructor() {
@@ -45,6 +46,7 @@ export class DiscussionRoomDetailStore implements RESPONSE_CALLBACKS {
     this.updateFetchingStatus(true)
     this.setDiscussionRoomId(id)
     this.getDiscussionRoomsDetailData()
+    this.getHighlightedChatData()
   }
 
   @action
@@ -56,6 +58,7 @@ export class DiscussionRoomDetailStore implements RESPONSE_CALLBACKS {
     this.updateFetchingStatus(true)
     this.updateApiErrorStatus(false)
     this.getDiscussionRoomsDetailData()
+    this.getHighlightedChatData()
   }
 
   getDiscussionRoomsDetailData = async () => {
@@ -71,6 +74,21 @@ export class DiscussionRoomDetailStore implements RESPONSE_CALLBACKS {
     })
     await loginUser.setRequestHeaders()
     await loginUser.hitPostApi()
+  }
+
+  getHighlightedChatData = async () => {
+
+    const loginUser = new BaseRequest(this, {
+      methodType: 'GET',
+      apiEndPoint: API_END_POINTS.GET_HIGHLIGHTED_CHAT,
+      apiId: API_IDS.GET_HIGHLIGHTED_CHAT,
+      prefetch: false,
+      params: JSON.stringify({
+        roomId: this.discussionRoomId
+      }),
+    })
+    await loginUser.setRequestHeaders()
+    await loginUser.hitGetApi()
   }
 
 
@@ -116,6 +134,39 @@ export class DiscussionRoomDetailStore implements RESPONSE_CALLBACKS {
     log('setDiscussionRoomDatasetDiscussionRoomData', discussionRoomData)
   }
 
+  setHighlightedChatList = (chatList) => {
+    log('chatListchatListchatList', chatList)
+    this.highlightedChatList = [ ...chatList]
+  }
+
+  constructHighlightedChatList = (chatList) => {
+    log('constructHighlightedChatListconstructHighlightedChatList', chatList)
+    const filteredList = filter(chatList, (chatItem) => {
+      const { content = '' } = chatItem || {}
+      if (isValidURL(content)) {
+        return false
+      }
+      return true
+    })
+    const formattedList = map(filteredList, (chatItem) => {
+      const { content = '', _id = '', author = {}  } = chatItem || {}
+      const { } = author
+      return {
+        content,
+        _id,
+        author: {
+          userName: get(author, 'username', ''),
+          picture: get(author, 'picture', ''),
+          signature: get(author, 'signature', ''),
+          aboutme: get(author, 'aboutme', ''),
+          fullName: get(author, 'fullname', ''),
+          displayName: get(author, 'displayname', ''),
+        }
+      }
+    })
+    return formattedList
+  }
+
 
   onSuccess(apiId: string, response: any) {
     log('onSuccessonSuccess', response)
@@ -124,6 +175,11 @@ export class DiscussionRoomDetailStore implements RESPONSE_CALLBACKS {
         const discussionRoomData = this.constructDiscussionRoomData(get(response, 'response', {}))
         this.setDiscussionRoomData(discussionRoomData)
         this.updateFetchingStatus(false)
+        break
+      case API_IDS.GET_HIGHLIGHTED_CHAT:
+        const highlightedChatList = this.constructHighlightedChatList(get(response, 'response.data', []))
+        log('highlightedChatListhighlightedChatList', highlightedChatList)
+        this.setHighlightedChatList(highlightedChatList)
         break
       default:
         break

@@ -8,8 +8,8 @@ import { icons } from '../common/icons'
 import { getWidth } from '../common/scaling'
 import { log } from '../config'
 import { STACK_NAMES } from '../navigator'
-import { setInititalStackName } from '../service'
-import { navigationDataStore, userDataStore } from '../store'
+import { goBack, setInititalStackName } from '../service'
+import { navigationDataStore, preferencesDataStore, userDataStore } from '../store'
 import { handleSignOut } from '../utils/auth-utils'
 import { AnimatedSearchBarComponent } from './AnimatedSearchBarComponent'
 import { CustomText } from './CustomText'
@@ -102,6 +102,18 @@ interface IProps {
 @observer
 export class HeaderCardComponent extends Component<IProps> {
   toolTipRef
+
+  preferencesScript = `
+  (function() {
+		document.getElementById('confirm-btn').onclick = function(e) {
+		  e.preventDefault();
+		  window.ReactNativeWebView.postMessage(JSON.stringify({"action": "updatePreferences"}));
+		  e.stopPropagation()
+		}
+	  }())
+    ;
+  `
+
   setToolTipRef = (ref) => {
     this.toolTipRef = ref
   }
@@ -240,8 +252,23 @@ export class HeaderCardComponent extends Component<IProps> {
     hitSearchApi()
   }, WAITING_TIME)
 
+  messageHandler = (data) => {
+    log('messageHandlermessageHandlermessageHandlermessageHandler', data)
+    const { action = '' } = data || {}
+    const { hitSearchApi, updateFetchingStatus } = this.props
+    if (action === 'updatePreferences' && hitSearchApi) {
+      goBack(undefined)
+      updateFetchingStatus(true)
+      setTimeout(async () => {
+        await preferencesDataStore.getUserPreferencesAndCategoryData()
+        hitSearchApi()
+      }, 3000)
+    }
+  }
+
   render() {
     const { searchText } = userDataStore
+    log('this.preferencesScriptthis.preferencesScript', this.preferencesScript)
     return (
       <View style={styles.headerContainer}>
         <View>
@@ -272,7 +299,9 @@ export class HeaderCardComponent extends Component<IProps> {
           <TouchableOpacity style={styles.topIconStyle} onPress = {() => {
             navigateToWebView({
               navigation: undefined,
-              pageUrl: `${BASE_URL}/mobile/preferences/getView`
+              pageUrl: `${BASE_URL}/mobile/preferences/view`,
+              injectedJavaScript: this.preferencesScript,
+              messageHandler:  this.messageHandler
             })
           }}>
             <IconButtonWrapper

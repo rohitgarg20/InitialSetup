@@ -1,3 +1,4 @@
+import { log } from '../config'
 import { navigateSimple } from '../service'
 import { icons } from './icons'
 export const REMOVE_LOG = false
@@ -251,9 +252,12 @@ export const TERMS_OF_USE_KEY = 'TERMS_OF_USE'
 export const PRIVACY_POLICY_KEY = 'PRIVACY_POLICY'
 
 
-export const navigateToWebView = ({ navigation = undefined, pageUrl }) => {
+export const navigateToWebView = ({ navigation = undefined, pageUrl, injectedJavaScript = '', messageHandler = undefined }) => {
+  // log('navigateToWebViewnavigateToWebView', injectedJavaScript)
   navigateSimple(navigation, 'WebViewPage', {
-    pageUrl
+    pageUrl,
+    injectedJavaScript,
+    messageHandler
   })
 }
 

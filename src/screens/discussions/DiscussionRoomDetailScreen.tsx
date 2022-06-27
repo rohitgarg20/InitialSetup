@@ -8,12 +8,14 @@ import { icons } from '../../common/icons'
 import { CustomText, IconButtonWrapper, ImageWithLoaderComponent, LoaderWithApiErrorComponent, UserAvatar } from '../../components'
 import { discussionRoomDetailStore } from '../../store'
 import { observer } from 'mobx-react'
-import { IEventListItem } from '../../store/interfaces'
+import { IEventListItem, IHighlightedChatItem } from '../../store/interfaces'
 import { goBack } from '../../service'
 import { capitalizeFirstLetterOnly } from '../../utils/app-utils'
 import { widthToDp } from '../../utils/Responsive'
 import { getHeight } from '../../common/scaling'
 import { log } from '../../config'
+import BottomSheet, { BottomSheetFlatList } from '@gorhom/bottom-sheet'
+import { HighlightedChatCardComponent } from '../../components/discussion-detail'
 
 const PADDING_HORIZONTAL = 20
 
@@ -152,6 +154,14 @@ const styles = StyleSheet.create({
     fontWeight: '400',
     fontFamily: 'OpenSans-VariableFont_wdth,wght',
     color: colors.black
+  },
+  heading: {
+    fontSize: widthToDp(fontDimensPer.medium),
+    color: colors.black,
+    fontWeight: '700',
+    fontFamily: 'Poppins-SemiBold',
+    paddingBottom: 20,
+    paddingTop: 10
   }
 })
 
@@ -322,7 +332,7 @@ export class DiscussionRoomDetailScreen extends Component<IProps, IState> {
           showBorderRadius={true}
           name={fullName.toUpperCase() || userName.toUpperCase()}
           src={`${BASE_URL}${picture}`}
-        /> 
+        />
       </View>
     ) : null
   }
@@ -447,10 +457,10 @@ export class DiscussionRoomDetailScreen extends Component<IProps, IState> {
 
   renderDetailContentView = () => {
     const { containerOnLayoutHeight } = this.state
-
+    const { highlightedChatList } = discussionRoomDetailStore
     return (
       <View style = {{
-        height: '80%',
+        height:  highlightedChatList.length > 0 ? '80%' : '100%',
         backgroundColor: colors.white
       }}>
         <ScrollView >
@@ -466,13 +476,72 @@ export class DiscussionRoomDetailScreen extends Component<IProps, IState> {
             {this.renderDiscussionRoomImage()}
             {this.renderDiscussionLabel()}
             {this.renderLabel()}
-            {/* {this.renderRoomStats()} */}            
+            {/* {this.renderRoomStats()} */}
           </View>
           {this.renderAboutContainer()}
 
         </ScrollView>
-        
+
       </View>
+    )
+  }
+
+  renderHighlightedChatComponent = ({ item }) => {
+    return  (
+      <HighlightedChatCardComponent
+        chatData={item}/>
+    )
+  }
+
+  renderItemSeperator = () => {
+    return (
+      <View style = {{
+        paddingBottom: 10
+      }}/>
+    )
+  }
+
+  renderBottomSheetFlatListComponent = () => {
+    const { highlightedChatList }  = discussionRoomDetailStore
+    log('highlightedChatListhighlightedChatList', highlightedChatList)
+    return (
+      <BottomSheetFlatList
+        data={highlightedChatList as IHighlightedChatItem[]}
+        keyExtractor={(item, index) => get(item, '_id', index)}
+        renderItem={this.renderHighlightedChatComponent}
+        contentContainerStyle = {{
+          paddingBottom: 20
+        }}
+        ItemSeparatorComponent = {this.renderItemSeperator}
+        // contentContainerStyle={styles.contentContainer}
+      />
+    )
+  }
+
+  renderBottomSheet = () => {
+    return (
+      <BottomSheet
+        index={0}
+        snapPoints={['20%', getHeight() - 310]}
+        enableHandlePanningGesture = {true}
+        enableContentPanningGesture = {false}
+        enableOverDrag = {true}
+        style = {{
+          backgroundColor: colors.white
+        }}
+      >
+        <View style = {{
+          backgroundColor: colors.grey,
+          height: '100%',
+          paddingLeft: 20,
+          paddingRight: 30,
+          overflow: 'hidden',
+          borderRadius: 10,
+        }}>
+          <CustomText textStyle={styles.heading}>Chat Preview</CustomText>
+        {this.renderBottomSheetFlatListComponent()}
+        </View>
+      </BottomSheet>
     )
   }
 
@@ -492,12 +561,13 @@ export class DiscussionRoomDetailScreen extends Component<IProps, IState> {
       )
     }
 
+
     return (
       <View style = {{
         height: '100%'
       }}>
         {this.renderDetailContentView()}
-        {/* {this.renderBottomSheet()} */}
+        {this.renderBottomSheet()}
         {this.renderJoinButton()}
       </View>
     )

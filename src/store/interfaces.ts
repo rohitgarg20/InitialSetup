@@ -105,3 +105,18 @@ export interface IJokeItem {
   jokeId: string
   id: string
 }
+
+export interface IHighlightedChatItem {
+  _id: string
+  content: string
+  author?: {
+    userName: string
+    status?: string
+    lastActiveTime?: string
+    picture?: string
+    signature?: string
+    aboutme?: string
+    fullName?: string
+    displayName?: string
+  }
+}

@@ -4,7 +4,7 @@ import { WebView } from 'react-native-webview'
 import { observer } from 'mobx-react'
 import { get } from 'lodash'
 import { goBack } from '../../service'
-import { showAndroidToastMessage } from '../../utils/app-utils'
+import { jsonParseData, showAndroidToastMessage } from '../../utils/app-utils'
 import { colors, strings } from '../../common'
 import { log } from '../../config'
 import { userDataStore } from '../../store'
@@ -37,11 +37,23 @@ export class WebViewPage extends Component<IProps> {
   screenFocusListener
   screenBlurListener
   connectionChangeListener: any
+  webViewScript =  `
+  (function() {
+		document.getElementById('confirm-btn').onclick = function(e) {
+		  e.preventDefault();
+		  window.ReactNativeWebView.postMessage(JSON.stringify({"action": "updatePreferences"}));
+		  e.stopPropagation()
+		}
+	  }())
+    ;
+  `
 
   constructor(props: IProps) {
     super(props)
     const { route } = props
     this.pageUrl = get(route, 'params.pageUrl', '')
+    this.webViewScript = get(route, 'params.injectedJavaScript', '')
+    log('webViewScriptwebViewScript', this.webViewScript)
     this.backButtonPressedCallBack = get(route, 'params.backButtonPressedCallBack', null)
   }
 
@@ -101,14 +113,21 @@ export class WebViewPage extends Component<IProps> {
   }
 
   onWebViewMessage = (event) => {
-    let msgData
-    try {
-      msgData = JSON.parse(event.nativeEvent.data)
-    } catch (err) {
-      return
-    }
-    if (msgData.targetFunc === this[msgData.targetFunc].apply(this, [msgData])) {
-      this[msgData.targetFunc].apply(this, [msgData])
+    const { route } = this.props
+    log('onWebViewMessageonWebViewMessage')
+    let msgData = jsonParseData(event.nativeEvent.data) || {}
+    log('onWebViewMessageonWebViewMessage', msgData)
+    // try {
+    //   msgData = JSON.parse(event.nativeEvent.data)
+    // } catch (err) {
+    //   return
+    // }
+    // if (msgData.targetFunc === this[msgData.targetFunc].apply(this, [msgData])) {
+    //   this[msgData.targetFunc].apply(this, [msgData])
+    // }
+    const messageHandler = get(route, 'params.messageHandler', undefined)
+    if (messageHandler) {
+      messageHandler(msgData)
     }
   }
 
@@ -120,6 +139,7 @@ export class WebViewPage extends Component<IProps> {
   activityIndicatorLoadingView = () => {
     return <ActivityIndicator color={colors.darkBlue} size='large' style={styles.activityIndicatorStyle} />
   }
+
 
   render() {
     return (
@@ -133,6 +153,7 @@ export class WebViewPage extends Component<IProps> {
               // 'withcredentials': true
             }
           }}
+          injectedJavaScript = {this.webViewScript}
           onMessage={this.onWebViewMessage.bind(this)}
           onError={this.onError.bind(this)}
           renderLoading={this.activityIndicatorLoadingView}

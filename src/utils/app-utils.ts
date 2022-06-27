@@ -180,3 +180,8 @@ export const runAfterInteractions = (
     fucn2()
   })
 }
+
+export const isValidURL = (str) => {
+  const res = str.match(/(http(s)?:\/\/.)?(www\.)?[-a-zA-Z0-9@:%.\+~#=]{2,256}\.[a-z0-9]{2,6}\b([-a-zA-Z0-9@:%\+.~#?&//=]*)/g);
+  return (res !== null)
+}

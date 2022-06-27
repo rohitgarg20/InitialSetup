@@ -120,6 +120,28 @@ export class BaseRequest {
 
   hitGetApi = async () => {
     try {
+      if (!isEmpty(this.params)) {
+        const paramKeys = JSON.parse(this.params)
+        log('reqParamsreqParamsreqParamsreqParams', paramKeys)
+        const urlParamKeys = []
+        let match
+        let index = 0
+        const regex = /:\w*/g
+        // tslint:disable-next-line:no-conditional-assignment
+        while (match = regex.exec(this.apiEndPoint)) {
+          urlParamKeys[index++] = match[0]
+        }
+        urlParamKeys.forEach(key => {
+          log('inside foreach loop', key)
+          let keyText = key.substring(1, key.length)
+          if (paramKeys.hasOwnProperty(keyText)) {
+            this.apiEndPoint = this.apiEndPoint.replace(key, paramKeys[keyText])
+    
+          } else {
+            throw new Error(keyText + ' not found')
+          }
+        })
+      }
       const formattedGetParams = Object.keys(this.urlParams).map((key) => `${key}=${this.urlParams[key]}`).join('&')
       if (this.promisify) {
         return  await this.axiosInstance.get(`${this.apiEndPoint}?${formattedGetParams}`, { headers: this.reqHeaders })

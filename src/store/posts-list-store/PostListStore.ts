@@ -12,6 +12,7 @@ import { POST_TYPES } from '../../common/constant'
 import { SaveDataStore } from '../save-store'
 import { preferencesDataStore, userDataStore } from '..'
 import { Alert, ToastAndroid } from 'react-native'
+import { hideLoader } from '../../service/LoaderDataService'
 
 const PAGE_SIZE = 10
 
@@ -101,6 +102,21 @@ export class PostListStore implements RESPONSE_CALLBACKS {
     await loginUser.hitDeleteApi()
   }
 
+  getPostShareUrl = async (pid) => {
+    const loginUser = new BaseRequest(this, {
+      methodType: 'POST',
+      apiEndPoint: API_END_POINTS.GET_POST_URL,
+      apiId: API_IDS.GET_POST_URL,
+      reqParams: {
+        pid,
+        type: 'post'
+      },
+      prefetch: true,
+      promisify: true
+    })
+    await loginUser.setRequestHeaders()
+    return await loginUser.hitPostApi()
+  }
 
   constructPostsListScreen = (responseData) => {
     log('**************', userDataStore.getUserId())
@@ -134,22 +150,16 @@ export class PostListStore implements RESPONSE_CALLBACKS {
     log('this.eventDatathis.eventData', this.postsData)
   }
 
-  onClickShareVia = () => {
-    // const _id = this.getContenpid()
-    // const proContent = this.getProContent()
-    // const tags = this.getTags()
-    // const questionContentSubstring = proContent
-    //   .replace(/[^a-zA-Z0-9 ]/g, '')
-    //   .replace(/ /g, '-')
-    //   .substr(0, 100)
-    // const shareUrl = `${QUESTION_SHARE_URL}/${questionContentSubstring}?qid=${_id}?tag=${get(tags, '[0].tag', '')}`
-    const shareUrl = 'queestion share url'
+  onClickShareVia = async (pid) => {
+    const shareApiResponse = await this.getPostShareUrl(pid)
+    hideLoader()
+    const shareUrl = get(shareApiResponse, 'data.response.link', '')
 
     let shareOptions = {
-      url: shareUrl,
-      title: '',
+      url: `${BASE_URL}${shareUrl}`,
+      title: 'Share Post',
       message: '',
-      subject: shareUrl // subject of the message needs when sending mail
+      subject: `${BASE_URL}${shareUrl}`
     }
     Share.open(shareOptions)
       .then((res) => {
@@ -194,7 +204,7 @@ export class PostListStore implements RESPONSE_CALLBACKS {
         this.saveCurrentPost(cardData)
         break
       case SHARE:
-        this.onClickShareVia()
+        this.onClickShareVia(get(cardData, 'pid'))
         break
       case EDIT:
         if (get(cardData, 'type') === 'post') {
