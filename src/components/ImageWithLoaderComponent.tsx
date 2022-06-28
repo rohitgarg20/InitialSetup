@@ -27,6 +27,7 @@ const imageWithLoaderComponent = ({ srcImage, containerStyle = {} }) => {
   const [errorFetchingImage, setErrorFetchingImage] = useState(false)
 
   const getSourceImage = (image) => {
+    log('getSourceImagegetSourceImage', image)
     return isNumber(image) ? image : { uri: image, cache: 'only-if-cached' }
   }
 

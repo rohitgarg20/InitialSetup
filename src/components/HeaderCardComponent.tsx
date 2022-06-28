@@ -135,10 +135,15 @@ export class HeaderCardComponent extends Component<IProps> {
         })
         break
       case MY_EVENTS:
-      case SAVED:
         navigateToWebView({
           navigation: undefined,
           pageUrl: `${BASE_URL}/mobile/events/saved`
+        })
+        break
+      case SAVED:
+        navigateToWebView({
+          navigation: undefined,
+          pageUrl: `${BASE_URL}/mobile/post/saved`
         })
         break
       case SUPPORT:
@@ -182,6 +187,7 @@ export class HeaderCardComponent extends Component<IProps> {
   renderCustomView = () => {
     const {  userInfoData } = userDataStore
     const { username = '', picture = '' } = userInfoData || {}
+    log('renderCustomViewrenderCustomView', userInfoData)
     return (
       <View style={styles.userIcon}>
         {username?.length > 0 && <UserAvatar
@@ -189,7 +195,7 @@ export class HeaderCardComponent extends Component<IProps> {
           imageStyle={[styles.withoutImageColor, { width: '80%', height: '80%' }]}
           showBorderRadius={true}
           name={username.toUpperCase()}
-          src={`${BASE_URL}${picture}`}
+          src={`${picture}`}
         />}
       </View>
     )
@@ -290,7 +296,7 @@ export class HeaderCardComponent extends Component<IProps> {
             />
           </TouchableOpacity> */}
           <AnimatedSearchBarComponent
-            rightDistance = {180}
+            rightDistance = {200}
             onChangeSearchText = {this.onChangeSearchText}
             onCrossButtonClicked = {this.resetSearchData}
             isSearchBarExpanded = {searchText.length > 0}

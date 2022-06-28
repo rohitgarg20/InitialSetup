@@ -34,8 +34,9 @@ const styles = StyleSheet.create({
     flex: 5
   },
   arrowContainer: {
-    justifyContent: 'flex-end',
-    alignItems: 'flex-end'
+    justifyContent: 'center',
+    alignItems: 'flex-end',
+    paddingRight: 5
   },
   arrowBorder: {
     height: 50,
@@ -49,11 +50,11 @@ const styles = StyleSheet.create({
   nameText: {
     // fontSize: fontDimens.medium,
     // lineHeight: 20,
-      fontWeight: '600',
+    fontWeight: '600',
     color: colors.black,
     fontSize: widthToDp(fontDimensPer.large),
     fontFamily: 'Poppins-SemiBold',
-    fontStyle: 'normal',
+    fontStyle: 'normal'
     // paddingBottom: 1
 
     // backgroundColor: 'red',
@@ -68,7 +69,7 @@ const styles = StyleSheet.create({
     // paddingVertical: 2,
     fontSize: widthToDp(fontDimensPer.medium),
     // lineHeight: 16,
-    fontFamily: 'Poppins-Regular',
+    fontFamily: 'Poppins-Regular'
     // flexShrink: 1
   },
   date: {
@@ -170,14 +171,11 @@ export class EventCardComponent extends PureComponent<IProps> {
   renderArrowContainer = () => {
     return (
       <TouchableOpacity style={styles.arrowContainer} onPress = {this.onPressCard}>
-        <View style={styles.arrowBorder}>
-          <IconButtonWrapper
-            iconImage={icons.RIGHT_ARROW_ICON}
-            iconHeight={16}
-            iconWidth={16}
-          />
-        </View>
-
+        <IconButtonWrapper
+          iconImage={icons.RIGHT_ARROW_ICON}
+          iconHeight={16}
+          iconWidth={16}
+        />
       </TouchableOpacity>
     )
   }
@@ -205,20 +203,19 @@ export class EventCardComponent extends PureComponent<IProps> {
 
   renderEventCard = () => {
     return (
-      <View style={styles.cardContainer} >
+      <TouchableOpacity style={styles.cardContainer} onPress = {this.onPressCard}>
         {this.renderIconContainer()}
         {this.renderContentContainer()}
         {this.renderArrowContainer()}
-      </View>
+      </TouchableOpacity>
     )
   }
-
 
 
   render() {
     return (
       <>
-       {this.renderEventCard()}
+        {this.renderEventCard()}
       </>
     )
   }

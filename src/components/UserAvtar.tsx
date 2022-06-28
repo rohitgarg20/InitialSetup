@@ -1,5 +1,6 @@
 import React from 'react'
 import { View, Image, Text } from 'react-native'
+import { log } from '../config'
 
 // from https://flatuicolors.com/
 const defaultColors = [
@@ -101,10 +102,14 @@ export class UserAvatar extends React.PureComponent<Props, State> {
       const props = {
         style: [imageLocalStyle, imageStyle],
         source: {uri: src},
-        onError: () => {
+        onError: (error) => {
+          log('onErroronErroronErroronError', src, error)
           this.setState({
             errorFetchingImage: true
           })
+        },
+        onLoad: () => {
+          log('onLoadonLoadonLoadonLoadonLoadonLoad')
         }
       }
 

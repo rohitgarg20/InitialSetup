@@ -165,7 +165,7 @@ export default class PostCardComponent extends Component<IProps> {
   renderRoundedAvtar = () => {
     const userObj: IUserObj = this.getUserData()
     const { displayname = '', picture = '' } = userObj || {}
-
+    log('picturepicture',)
     return displayname ? (
       <View style={[styles.avtarContainer]}>
         <UserAvatar
@@ -173,7 +173,7 @@ export default class PostCardComponent extends Component<IProps> {
           imageStyle={[styles.withoutImageColor, { width: '100%', height: '100%' }]}
           showBorderRadius={true}
           name={displayname.toUpperCase()}
-          src={`${BASE_URL}${picture}`}
+          src={`${picture}`}
         />
       </View>
     ) : null
@@ -492,7 +492,7 @@ export default class PostCardComponent extends Component<IProps> {
         customToolTipView={this.renderOptionsListComponent}
         customView={this.renderCustomView}
         customWidth={120}
-        customHeight={isPostByLoggedInUser ? 200 : 122 }
+        customHeight={isPostByLoggedInUser ? 162 : 122 }
         mainViewStyle={{ ...styles.mainViewStyle }}
         useAsDropDownView={true}
         withPointer={false}

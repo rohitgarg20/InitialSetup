@@ -98,7 +98,7 @@ export class DiscussionRoomDetailStore implements RESPONSE_CALLBACKS {
 
 
   constructDiscussionRoomData = (responseData) => {
-    const { _id,  _key, description, name, tagline, picture, user = {}, tid = 0, viewcount = 0, timestamp, type,
+    const { _id,  _key, description, name, tagline, image, user = {}, tid = 0, viewcount = 0, timestamp, type,
       onlineCount = 0, membersCount = 0, mascotsCount = 0   } = responseData.data || {}
     const { username = '', status = '', lastonline = 0, fullname = '' } = user || {}
 
@@ -107,7 +107,7 @@ export class DiscussionRoomDetailStore implements RESPONSE_CALLBACKS {
       _key,
       description,
       category: type,
-      image: picture,
+      image: image,
       name,
       schedule: timestamp,
       tagline,

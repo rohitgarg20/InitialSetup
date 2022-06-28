@@ -3,7 +3,7 @@ import { strings } from '../../common'
 import { API_END_POINTS, API_IDS } from '../../common/ApiConfiguration'
 import { FORM_KEYS, TEXT_FIELD_KEYS } from '../../common/constant'
 import { log } from '../../config'
-import { BaseRequest, RESPONSE_CALLBACKS } from '../../http-layer'
+import { BaseRequest, RESPONSE_CALLBACKS, RESPONSE_CODE } from '../../http-layer'
 import { showAndroidToastMessage } from '../../utils/app-utils'
 import { get } from 'lodash'
 import { navigateSimple } from '../../service'
@@ -155,23 +155,41 @@ export class SignupDataStore implements RESPONSE_CALLBACKS {
     }
   }
 
-  registerUser = async () => {
-    const body = {
-      'email': (this.formData[FORM_KEYS.EMAIL][TEXT_FIELD_KEYS.INPUT_VALUE] || '').trim(),
-      'username': (this.formData[FORM_KEYS.NAME][TEXT_FIELD_KEYS.INPUT_VALUE] || '').trim(),
-      'password': this.formData[FORM_KEYS.PASSWORD][TEXT_FIELD_KEYS.INPUT_VALUE] || '',
-      'password-confirm': this.formData[FORM_KEYS.CONFIRM_PASSWORD][TEXT_FIELD_KEYS.INPUT_VALUE] || '',
-    }
-    const registerUserRequest = new BaseRequest(this, {
-      methodType: 'POST',
-      apiEndPoint: API_END_POINTS.REGISTER_USER,
-      apiId: API_IDS.REGISTER_USER,
-      reqParams: body,
+  getConfigData = async () => {
+    const getConfigRequest = new BaseRequest(this, {
+      methodType: 'GET',
+      apiEndPoint: API_END_POINTS.GET_CONFIG,
+      apiId: API_IDS.GET_CONFIG,
+      promisify: true
     })
-    await registerUserRequest.setRequestHeaders()
-    await registerUserRequest.hitPostApi()
+    return await getConfigRequest.hitGetApi()
+
   }
 
+  registerUser = async () => {
+    const configData = await this.getConfigData()
+    const { data = {}, status  } = configData || {}
+    if (status === RESPONSE_CODE.SUCCESS) {
+      const { csrf_token }  = data
+      const body = {
+        'email': (this.formData[FORM_KEYS.EMAIL][TEXT_FIELD_KEYS.INPUT_VALUE] || '').trim(),
+        'username': (this.formData[FORM_KEYS.NAME][TEXT_FIELD_KEYS.INPUT_VALUE] || '').trim(),
+        'password': this.formData[FORM_KEYS.PASSWORD][TEXT_FIELD_KEYS.INPUT_VALUE] || '',
+        'password-confirm': this.formData[FORM_KEYS.CONFIRM_PASSWORD][TEXT_FIELD_KEYS.INPUT_VALUE] || ''
+      }
+      const registerUserRequest = new BaseRequest(this, {
+        methodType: 'POST',
+        apiEndPoint: API_END_POINTS.REGISTER_USER,
+        apiId: API_IDS.REGISTER_USER,
+        reqParams: body,
+        reqHeaders: {
+          'x-csrf-token': csrf_token
+        }
+      })
+      await registerUserRequest.setRequestHeaders()
+      await registerUserRequest.hitPostApi()
+    }
+  }
 
 
   onSuccess(apiId: string, response: any) {

@@ -90,7 +90,7 @@ export class DiscussionRoomListStore implements RESPONSE_CALLBACKS {
     const currentPage = get(responseData, 'current_page')
     const lastPage = get(responseData, 'last_page')
     const formattedData: IEventListItem[] = map(roomList, (roomData) => {
-      const {_id = '', _key ='', attendees = 0, picture = '', name = '', type, description = '', timestamp,
+      const {_id = '', _key ='', attendees = 0, image = '', name = '', type, description = '', timestamp,
         viewcount = 0, tagline = '', author, roomId   } = roomData || {}
       const { username = '', status = '', lastonline = 0 } = author || {}
       return {
@@ -99,7 +99,7 @@ export class DiscussionRoomListStore implements RESPONSE_CALLBACKS {
         attendees,
         description,
         category: type,
-        image: picture,
+        image: image,
         name,
         schedule: timestamp,
         tagline,

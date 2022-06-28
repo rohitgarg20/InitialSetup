@@ -12,7 +12,7 @@ import { I_TEXT_FIELD } from '../../common/Interfaces'
 import { log } from '../../config'
 import { die } from 'mobx/dist/errors'
 import { heightToDp, widthToDp } from '../../utils/Responsive'
-import { navigateToWebView, PRIVACY_POLICY_KEY, TERMS_OF_USE_KEY } from '../../common/constant'
+import { BASE_URL, navigateToWebView, PRIVACY_POLICY_KEY, TERMS_OF_USE_KEY } from '../../common/constant'
 
 const styles = StyleSheet.create({
   mainContainer: {
@@ -185,10 +185,15 @@ export class RegisterUserScreen extends Component<IProps, I_STATE> {
     log('navigateToWebViewScreennavigateToWebViewScreen', optionKey)
     switch (optionKey) {
       case PRIVACY_POLICY_KEY:
+        navigateToWebView({
+          navigation: this.props.navigation,
+          pageUrl: `${BASE_URL}/mobile/privacy`
+        })
+        break
       case TERMS_OF_USE_KEY:
         navigateToWebView({
           navigation: this.props.navigation,
-          pageUrl: 'https://sdlms.deepthought.education'
+          pageUrl: `${BASE_URL}/mobile/tos`
         })
         break
       default:

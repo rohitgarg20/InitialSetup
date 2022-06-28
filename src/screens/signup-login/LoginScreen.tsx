@@ -11,7 +11,7 @@ import { KeyboardAwareScrollViewComponent } from '../../components/KeyboardAware
 import { I_TEXT_FIELD } from '../../common/Interfaces'
 import { navigateSimple } from '../../service'
 import { widthToDp } from '../../utils/Responsive'
-import { navigateToWebView, PRIVACY_POLICY_KEY, TERMS_OF_USE_KEY } from '../../common/constant'
+import { BASE_URL, navigateToWebView, PRIVACY_POLICY_KEY, TERMS_OF_USE_KEY } from '../../common/constant'
 import { log } from '../../config'
 import { ScreenLoaderComponent } from '../../components/ScreenLoaderComponent'
 
@@ -242,10 +242,15 @@ export class LoginScreen extends Component<IProps> {
     log('navigateToWebViewScreennavigateToWebViewScreen', optionKey)
     switch (optionKey) {
       case PRIVACY_POLICY_KEY:
+        navigateToWebView({
+          navigation: this.props.navigation,
+          pageUrl: `${BASE_URL}/mobile/privacy`
+        })
+        break
       case TERMS_OF_USE_KEY:
         navigateToWebView({
           navigation: this.props.navigation,
-          pageUrl: 'https://sdlms.deepthought.education'
+          pageUrl: `${BASE_URL}/mobile/tos`
         })
         break
       default:

@@ -35,7 +35,7 @@ export const DAYS_NAME = ['Sun', 'Mon', 'Tue', 'Wed', 'Thur', 'Fri', 'Sat']
 export const MONTH_NAMES = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'June', 'July', 'Aug', 'Sept', 'Oct', 'Nov', 'Dec']
 
 export const CARD_HEIGHT = 180
-export const EVENT_CARD_HEIGHT = 140
+export const EVENT_CARD_HEIGHT = 160
 export const FETCHING_ARR = ['', '', '', '', '', '', '', '', '', '']
 
 export const FOOTER_KEYS = {
@@ -130,11 +130,11 @@ export const OPTIONS_DATA_FOR_SELF_POST = [
     icon: icons.SAVE_ICON,
     heading: LABELS.SAVE
   },
-  {
-    key: POST_KEYS.REPOST,
-    icon: icons.REPOST_ICON,
-    heading: LABELS.REPOST
-  },
+  // {
+  //   key: POST_KEYS.REPOST,
+  //   icon: icons.REPOST_ICON,
+  //   heading: LABELS.REPOST
+  // },
   {
     key: POST_KEYS.DELETE,
     icon: icons.DELETE_ICON,
