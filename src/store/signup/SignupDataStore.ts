@@ -191,6 +191,21 @@ export class SignupDataStore implements RESPONSE_CALLBACKS {
     }
   }
 
+  getAncetodesListData = async () => {
+    const registerUserRequest = new BaseRequest(this, {
+      methodType: 'GET',
+      apiEndPoint: API_END_POINTS.GET_ANCETODES,
+      apiId: API_IDS.GET_ANCETODES,
+      prefetch: true,
+      // reqParams: body,
+      // reqHeaders: {
+      //   'x-csrf-token': csrf_token
+      // }
+    })
+    await registerUserRequest.setRequestHeaders()
+    await registerUserRequest.hitGetApi()
+  }
+
 
   onSuccess(apiId: string, response: any) {
     switch (apiId) {

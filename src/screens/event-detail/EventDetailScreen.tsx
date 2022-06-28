@@ -123,6 +123,13 @@ const styles = StyleSheet.create({
     fontFamily: 'OpenSans-VariableFont_wdth,wght',
     color: colors.black
   },
+  participantCounts: {
+    fontSize: widthToDp(fontDimensPer.small),
+    fontFamily: 'Poppins-Regular',
+    fontWeight: '400',
+    color: colors.black,
+    flexWrap: 'wrap'
+  },
   userNameStyle: {
     fontSize: widthToDp(fontDimensPer.small),
     fontFamily: 'Poppins-Regular',
@@ -486,7 +493,7 @@ export class EventDetailScreen extends Component<IProps, IState> {
 
   renderEventDetailView = () => {
     const { eventData } = eventDetailStore
-    const { author, startDate } = eventData as IEventListItem
+    const { author, startDate, participantCount = 0 } = eventData as IEventListItem
     const { fullName = '' } = author || {}
     const { containerOnLayoutHeight } = this.state
     return (
@@ -516,12 +523,12 @@ export class EventDetailScreen extends Component<IProps, IState> {
               </View>
               <View style={styles.eventDateRow}>
                 <IconButtonWrapper
-                  iconImage={icons.SCHEDULE_ICON}
+                  iconImage={icons.SIGNUP_COUNT}
                   iconHeight={18}
                   iconWidth={18}
                   styling={{ marginRight: 5 }}
                 />
-                <CustomText textStyle={styles.eventDateTimeTextStyle}>{getFormattedTime(startDate)} Onwards</CustomText>
+                <CustomText textStyle={styles.participantCounts}>{participantCount} Signups</CustomText>
               </View>
             </View>
             <View style = {styles.flexRow}>

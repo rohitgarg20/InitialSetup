@@ -27,6 +27,7 @@ export interface IEventListItem{
   mascotsCount?: number
   onlineUsersCount?: number
   membersCount?: number
+  participantCount?: number
 
 }
 

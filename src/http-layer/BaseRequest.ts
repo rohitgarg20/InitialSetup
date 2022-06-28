@@ -146,7 +146,11 @@ export class BaseRequest {
       if (this.promisify) {
         return  await this.axiosInstance.get(`${this.apiEndPoint}?${formattedGetParams}`, { headers: this.reqHeaders })
       } else {
-        const response = await this.axiosInstance.get(`${this.apiEndPoint}?${formattedGetParams}`, { headers: this.reqHeaders })
+        let url = this.apiEndPoint
+        if (formattedGetParams && formattedGetParams.length > 0) {
+          url = `${this.apiEndPoint}?${formattedGetParams}`
+        }
+        const response = await this.axiosInstance.get(url, { headers: this.reqHeaders })
         this.setApiSuccessResponse(response)
         hideLoader()
       }

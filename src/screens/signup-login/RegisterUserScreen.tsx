@@ -119,6 +119,10 @@ export class RegisterUserScreen extends Component<IProps, I_STATE> {
   componentWillUnmount() {
     signupDataStore.init()
   }
+
+  componentDidMount() {
+    signupDataStore.getAncetodesListData()
+  }
   renderLogoComponent = () => {
     return (
       <View style={styles.centerView}>

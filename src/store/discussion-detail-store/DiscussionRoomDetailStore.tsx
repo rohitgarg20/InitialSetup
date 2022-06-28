@@ -9,6 +9,8 @@ import { get } from 'lodash'
 import { IEventListItem, IHighlightedChatItem, IUserObj } from '../interfaces'
 import { timeFromNow } from '../../utils/DateHelper'
 import { discussion_data } from '../ApiRespData'
+import { userDataStore } from '..'
+import { BASE_URL, navigateToWebView } from '../../common/constant'
 
 const DEFAULT_SETTINGS = {
   isFetching: false,
@@ -89,6 +91,23 @@ export class DiscussionRoomDetailStore implements RESPONSE_CALLBACKS {
     })
     await loginUser.setRequestHeaders()
     await loginUser.hitGetApi()
+  }
+
+  joinDiscussionRoom = async () => {
+    const body = {
+      'roomId': this.discussionRoomId,
+      'uids': [userDataStore.getUserId()]
+    }
+
+    const loginUser = new BaseRequest(this, {
+      methodType: 'POST',
+      apiEndPoint: API_END_POINTS.ADD_USER_TO_DISCUSSION_ROOM,
+      apiId: API_IDS.ADD_USER_TO_DISCUSSION_ROOM,
+      prefetch: true,
+      reqParams: body,
+    })
+    await loginUser.setRequestHeaders()
+    await loginUser.hitPostApi()
   }
 
 
@@ -181,6 +200,12 @@ export class DiscussionRoomDetailStore implements RESPONSE_CALLBACKS {
         log('highlightedChatListhighlightedChatList', highlightedChatList)
         this.setHighlightedChatList(highlightedChatList)
         break
+      case API_IDS.ADD_USER_TO_DISCUSSION_ROOM:
+        navigateToWebView({
+          navigation: undefined,
+          pageUrl: `${BASE_URL}/mobile/discussion/${this.discussionRoomId}`
+        })
+        break
       default:
         break
     }
@@ -189,6 +214,7 @@ export class DiscussionRoomDetailStore implements RESPONSE_CALLBACKS {
     log('onFailureonFailureonFailure', error)
     switch (apiId) {
       case API_IDS.GET_DISCUSSION_ROOM_LIST:
+      case API_IDS.ADD_USER_TO_DISCUSSION_ROOM:
         showAndroidToastMessage(get(error, 'data', strings.ERROR_MESSAGES.SOME_ERROR_OCCURED))
         this.updateFetchingStatus(false)
         this.updateApiErrorStatus(true)

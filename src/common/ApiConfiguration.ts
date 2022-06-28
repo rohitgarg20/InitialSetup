@@ -19,7 +19,9 @@ export const API_END_POINTS = {
   ADD_JOKE: '/api/v3/app/joke',
   POST_DATA_BY_PID: '/api/v3/app/posts/:pid',
   GET_POST_URL: '/api/v3/sdlms/sharer',
-  GET_HIGHLIGHTED_CHAT: '/api/v3/app/room/thread/highlighted/:roomId'
+  GET_HIGHLIGHTED_CHAT: '/api/v3/app/room/thread/highlighted/:roomId',
+  GET_ANCETODES: '/api/v3/app/annecdote?screen=login',
+  ADD_USER_TO_DISCUSSION_ROOM: '/api/v3/app/adduser'
 }
 
 export const API_IDS = {
@@ -43,5 +45,7 @@ export const API_IDS = {
   ADD_JOKE: 'ADD_JOKE',
   DELETE_POST: 'DELETE_POST',
   GET_POST_URL: 'GET_POST_URL',
-  GET_HIGHLIGHTED_CHAT: 'GET_HIGHLIGHTED_CHAT'
+  GET_HIGHLIGHTED_CHAT: 'GET_HIGHLIGHTED_CHAT',
+  GET_ANCETODES: 'GET_ANCETODES',
+  ADD_USER_TO_DISCUSSION_ROOM: 'ADD_USER_TO_DISCUSSION_ROOM'
 }

@@ -239,9 +239,9 @@ export class DiscussionRoomDetailScreen extends Component<IProps, IState> {
 
   renderJoinButton = () => {
     const { JOIN } = strings.DISCUSSION_ROOM_DETAIL_SCREEN
-
+    const { joinDiscussionRoom } = discussionRoomDetailStore
     return (
-      <TouchableOpacity style={styles.button}>
+      <TouchableOpacity style={styles.button} onPress = {joinDiscussionRoom}>
         <CustomText textStyle={styles.joinButtonLabel}>
           {JOIN}
         </CustomText>
