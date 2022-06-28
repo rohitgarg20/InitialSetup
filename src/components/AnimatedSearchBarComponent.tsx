@@ -161,12 +161,11 @@ export class AnimatedSearchBarComponent extends Component<IProps> {
       onCrossButtonClicked()
     } else {
       this.showAnimation(0)
-    }
-
-    if (onActivateSearchBar) {
-      runAfterInteractions(() => {
-        onActivateSearchBar(false)
-      })
+      if (onActivateSearchBar) {
+        runAfterInteractions(() => {
+          onActivateSearchBar(false)
+        })
+      }
     }
   }
 

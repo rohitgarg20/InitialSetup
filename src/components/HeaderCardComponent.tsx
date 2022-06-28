@@ -1,6 +1,6 @@
 import { observer } from 'mobx-react'
 import React, { Component } from 'react'
-import { StyleSheet, View, TouchableOpacity } from 'react-native'
+import { StyleSheet, View, TouchableOpacity, Animated } from 'react-native'
 import { debounce, get } from 'lodash'
 import { colors } from '../common'
 import { BASE_URL, HEADER_HEIGHT, MINIMUM_TEXT_TO_SEARCH, navigateToWebView, OPTIONS_DATA_FOR_SELF_POST, USER_KEYS, USER_OPTIONS_LIST, WAITING_TIME } from '../common/constant'
@@ -102,7 +102,8 @@ interface IProps {
 @observer
 export class HeaderCardComponent extends Component<IProps> {
   toolTipRef
-
+  logoPosition: any
+  logoAnimatedValue = new Animated.Value(userDataStore.searchText.length > 0 ? 1 : 0)
   preferencesScript = `
   (function() {
 		document.getElementById('confirm-btn').onclick = function(e) {
@@ -113,6 +114,15 @@ export class HeaderCardComponent extends Component<IProps> {
 	  }())
     ;
   `
+
+  constructor(props, state){
+    super(props, state)
+    this.logoPosition = this.logoAnimatedValue.interpolate({
+      inputRange: [0, 1],
+      outputRange: [0,  -100],
+      extrapolate: 'clamp'
+    })
+  }
 
   setToolTipRef = (ref) => {
     this.toolTipRef = ref
@@ -272,20 +282,24 @@ export class HeaderCardComponent extends Component<IProps> {
     }
   }
 
+  onActivateSearchBar = (isExpanded) => {
+    this.logoAnimatedValue.setValue(isExpanded ? 1 : 0)
+  }
+
   render() {
     const { searchText } = userDataStore
     log('this.preferencesScriptthis.preferencesScript', this.preferencesScript)
     return (
       <View style={styles.headerContainer}>
-        <View>
-          <TouchableOpacity>
-            <IconButtonWrapper
-              iconImage={icons.LOGO}
-              iconHeight={20}
-              iconWidth={20}
-            />
-          </TouchableOpacity>
-        </View>
+        {searchText.length === 0 && <Animated.View style = {{
+          left: this.logoPosition
+        }}>
+          <IconButtonWrapper
+            iconImage={icons.LOGO}
+            iconHeight={20}
+            iconWidth={20}
+          />
+        </Animated.View>}
 
         <View style={styles.topHeaderRightView}>
           {/* <TouchableOpacity style={styles.topIconStyle}>
@@ -296,11 +310,12 @@ export class HeaderCardComponent extends Component<IProps> {
             />
           </TouchableOpacity> */}
           <AnimatedSearchBarComponent
-            rightDistance = {200}
+            rightDistance = {180}
             onChangeSearchText = {this.onChangeSearchText}
             onCrossButtonClicked = {this.resetSearchData}
             isSearchBarExpanded = {searchText.length > 0}
             searchText = {searchText}
+            onActivateSearchBar = {this.onActivateSearchBar}
           />
           <TouchableOpacity style={styles.topIconStyle} onPress = {() => {
             navigateToWebView({
