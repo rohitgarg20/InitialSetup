@@ -73,6 +73,8 @@ export class UserAvatar extends React.PureComponent<Props, State> {
 
     if (src.includes('sdlms.deepthought.education')) {
       src = src.replace('https://sdlms.deepthought.education', BASE_URL)
+    } else {
+      src = BASE_URL + src
     }
     const firstTwoChar = (str) => {
       return str && str.length > 2 ? (str.substring(0, 2)).toUpperCase() : 'UN'
