@@ -100,6 +100,7 @@ export const USER_LABELS = {
   SETTINGS: 'Settings',
   MY_EVENTS: 'My events',
   SAVED: 'Saved',
+  DRAFTS: 'Drafts',
   SUPPORT: 'Support',
   SIGN_OUT: 'Sign out'
 }
@@ -109,6 +110,7 @@ export const USER_KEYS = {
   SETTINGS: 'SETTINGS',
   MY_EVENTS: 'MY_EVENTS',
   SAVED: 'SAVED',
+  DRAFTS: 'DRAFTS',
   SUPPORT: 'SUPPORT',
   SIGN_OUT: 'SIGN_OUT',
   MESSAGES: 'MESSAGES'
@@ -218,6 +220,11 @@ export const USER_OPTIONS_LIST = [
     key: USER_KEYS.SAVED,
     icon: icons.SAVE_ICON,
     heading: USER_LABELS.SAVED
+  },
+  {
+    key: USER_KEYS.DRAFTS,
+    icon: icons.DRAFT_ICON,
+    heading: USER_LABELS.DRAFTS
   },
   {
     key: USER_KEYS.SUPPORT,
