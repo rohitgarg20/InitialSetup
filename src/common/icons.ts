@@ -49,5 +49,7 @@ export const icons = {
   REFLECTION_MIRROR: require('../../images/reflectionMirror.png'),
   CROSS_ICON: require('../../images/crossIcon.png'),
   SIGNUP_COUNT: require('../../images/SignupCount.png'),
-  SPLASH_ICON: require('../../images/splash.gif')
+  SPLASH_ICON: require('../../images/splash.gif'),
+  DRAFT_ICON: require('../../images/drafts.png')
+
 }

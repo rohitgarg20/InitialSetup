@@ -129,7 +129,7 @@ export class HeaderCardComponent extends Component<IProps> {
   }
 
   onClickPostOption = (optionKey) => {
-    const { VIEW_PROFILE, SETTINGS, MY_EVENTS, SAVED, SUPPORT, SIGN_OUT, MESSAGES } = USER_KEYS
+    const { VIEW_PROFILE, SETTINGS, MY_EVENTS, SAVED, DRAFTS, SUPPORT, SIGN_OUT, MESSAGES } = USER_KEYS
 
     switch (optionKey) {
       case VIEW_PROFILE:
@@ -148,6 +148,12 @@ export class HeaderCardComponent extends Component<IProps> {
         navigateToWebView({
           navigation: undefined,
           pageUrl: `${BASE_URL}/mobile/events/saved`
+        })
+        break
+      case DRAFTS:
+        navigateToWebView({
+          navigation: undefined,
+          pageUrl: `${BASE_URL}/mobile/post/drafts`
         })
         break
       case SAVED:
@@ -223,7 +229,7 @@ export class HeaderCardComponent extends Component<IProps> {
         customToolTipView={this.renderOptionsListComponent}
         customView={this.renderCustomView}
         customWidth={160}
-        customHeight={250}
+        customHeight={280}
         mainViewStyle={{ ...styles.mainViewStyle }}
         useAsDropDownView={true}
         withPointer={false}

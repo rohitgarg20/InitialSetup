@@ -1,6 +1,7 @@
 import React from 'react'
 import { View, Image, Text } from 'react-native'
 import { log } from '../config'
+import { BASE_URL } from '../common/constant'
 
 // from https://flatuicolors.com/
 const defaultColors = [
@@ -70,6 +71,11 @@ export class UserAvatar extends React.PureComponent<Props, State> {
 
     if (typeof size !== 'number') size = parseInt(size, 10)
 
+    if (src.includes('sdlms.deepthought.education')) {
+      src = src.replace('https://sdlms.deepthought.education', BASE_URL)
+    } else {
+      src = BASE_URL + src
+    }
     const firstTwoChar = (str) => {
       return str && str.length > 2 ? (str.substring(0, 2)).toUpperCase() : 'UN'
     }

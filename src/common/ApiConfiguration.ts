@@ -11,7 +11,7 @@ export const API_END_POINTS = {
   GET_NUDGES_LIST: '/api/v3/app/getnudge',
   GET_ALL_POSTS: '/api/v3/app/getposts',
   GET_USER_PREFERENCES: '/api/v3/app/preferences',
-  GET_CATEGORY_LIST: '/api/v3/app/category',
+  GET_CATEGORY_LIST: '/api/v3/app/category?type=mobile',
   REGISTER_EVENT: '/api/v3/app/events/register/:id',
   UNREGISTER_EVENT: '/api/v3/app/events/unregister/:id',
   SAVE_ITEM: '/api/v3/app/save/:item_name',
