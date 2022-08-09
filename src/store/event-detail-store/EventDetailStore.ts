@@ -130,7 +130,7 @@ export class EventRoomDetailStore implements RESPONSE_CALLBACKS {
   constructEventDetailData = (responseData) => {
     const { _id = '',  _key = '',  attendees = [], description = '', category = '', image = '', name = '',  schedule = 0,
       tagline = '', viewcount, moderator_data = {}, tid = 0, description_1 = '', description_2 = '',
-      field_1 = '', field_2 = '', type, participants_count = 0 } = responseData || {}
+      field_1 = '', field_2 = '', type, participants_count = 0, uid = '' } = responseData || {}
     const formattedData: IEventListItem = {
       _id,
       _key,
@@ -155,7 +155,8 @@ export class EventRoomDetailStore implements RESPONSE_CALLBACKS {
       field_2,
       attendees,
       startDate: toDateTime(get(responseData, 'schedule')),
-      participantCount: participants_count
+      participantCount: participants_count,
+      uid
     }
     return formattedData
   }
@@ -179,6 +180,7 @@ export class EventRoomDetailStore implements RESPONSE_CALLBACKS {
         this.updateFetchingStatus(false)
         break
       case API_IDS.REGISTER_EVENT:
+        this.updateAttendees()
         showAndroidToastMessage(strings.REGISTER_SUCCESS)
         break
       case API_IDS.UNREGISTER_EVENT:
@@ -188,6 +190,17 @@ export class EventRoomDetailStore implements RESPONSE_CALLBACKS {
         break
     }
   }
+
+  @action
+  updateAttendees = () => {
+    const tempEventData = { ...this.eventData }
+    const { attendees = [], uid } = tempEventData
+    attendees.push(uid)
+    this.setEventDetailData({
+      ...tempEventData
+    })
+  }
+
   onFailure(apiId: string, error: any) {
     log('onFailureonFailureonFailure', error)
     switch (apiId) {

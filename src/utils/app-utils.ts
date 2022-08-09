@@ -73,7 +73,7 @@ export const showAndroidToastMessage = (msg, duration = ToastAndroid.SHORT) => {
 
 export const toDateTime = (secs) => {
   const t = new Date(1970, 0, 1)
-  t.setSeconds(secs / 1000)
+  t.setSeconds((secs / 1000) + 19800)
   return t
 }
 
@@ -127,6 +127,7 @@ export const formatDate = (dateInp, additionalInfo?: IDateAdditionalInfo) => {
 
 export const getFormattedTime = (datein, appendZeroInHours = true) => {
   const date = new Date(datein)
+  log('getFormattedTimegetFormattedTime', datein, date)
   const hours = date.getHours()
   const minutes = date.getMinutes()
   const finalminutes = minutes < 10 ? '0' + minutes : minutes

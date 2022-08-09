@@ -2,7 +2,7 @@ import { observer } from 'mobx-react'
 import React, { Component } from 'react'
 import { ActivityIndicator, StyleSheet, View, TouchableOpacity, ScrollView, Text } from 'react-native'
 import { colors, fontDimensPer } from '../../common'
-import { get } from 'lodash'
+import { get, find } from 'lodash'
 import { icons } from '../../common/icons'
 import { BackButtonComponent, CustomText, IconButtonWrapper, ImageWithLoaderComponent, Loader, LoaderWithApiErrorComponent, UserAvatar, ViewPager } from '../../components'
 import { HeaderCardComponent } from '../../components/HeaderCardComponent'
@@ -478,13 +478,17 @@ export class EventDetailScreen extends Component<IProps, IState> {
   }
 
   renderRegisterButton = () => {
-    const { registerEvent } = eventDetailStore
-
+    const { registerEvent, eventData } = eventDetailStore
+    const { attendees, uid } = eventData as IEventListItem
+    const isUserRegistered = attendees.includes(uid)
+    const label = isUserRegistered ? 'Registered' : 'Register'
     return (
       <View style={styles.registerBtnContainer}>
-        <TouchableOpacity style={styles.registerBtn} onPress = {registerEvent}>
+        <TouchableOpacity style={[styles.registerBtn, {
+          opacity: isUserRegistered ? 0.5 : 1
+        }]} onPress = {registerEvent} disabled = {isUserRegistered}>
           <CustomText textStyle={styles.registerButtonLabel}>
-         Register
+         {label}
           </CustomText>
         </TouchableOpacity>
       </View>

@@ -1,7 +1,7 @@
 export interface IEventListItem{
   _id: string
   _key: string
-  attendees?: number
+  attendees?: [number]
   description: string
   category: string
   image: string
@@ -28,6 +28,7 @@ export interface IEventListItem{
   onlineUsersCount?: number
   membersCount?: number
   participantCount?: number
+  uid?: number
 
 }
 
