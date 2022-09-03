@@ -1,6 +1,8 @@
 export const REMOVE_LOG = false
 export const BASE_URL = ''
 
+export const HEADER_TOP = -50
+
 export const OPTIONS_KEY = {
   NEW_VISITOR: 'NEW_VISITOR',
   NEW_VENDOR: 'NEW_VENDOR',
@@ -141,3 +143,8 @@ export const ACTIONS_ALLOWED = [
 
 export const DAYS_NAME = ['Sun', 'Mon', 'Tue', 'Wed', 'Thur', 'Fri', 'Sat']
 export const MONTH_NAMES = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'June', 'July', 'Aug', 'Sept', 'Oct', 'Nov', 'Dec']
+
+export enum BACK_ICON_TYPES {
+  DEFAULT = 'default',
+  CARET = 'caret'
+}
