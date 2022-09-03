@@ -15,9 +15,9 @@
             <BuildableReference
                BuildableIdentifier = "primary"
                BlueprintIdentifier = "13B07F861A680F5B00A75B9A"
-               BuildableName = "deepthought.app"
-               BlueprintName = "deepthought"
-               ReferencedContainer = "container:deepthought.xcodeproj">
+               BuildableName = "Guard.app"
+               BlueprintName = "Guard"
+               ReferencedContainer = "container:Guard.xcodeproj">
             </BuildableReference>
          </BuildActionEntry>
       </BuildActionEntries>
@@ -33,9 +33,9 @@
             <BuildableReference
                BuildableIdentifier = "primary"
                BlueprintIdentifier = "00E356ED1AD99517003FC87E"
-               BuildableName = "deepthoughtTests.xctest"
-               BlueprintName = "deepthoughtTests"
-               ReferencedContainer = "container:deepthought.xcodeproj">
+               BuildableName = "GuardTests.xctest"
+               BlueprintName = "GuardTests"
+               ReferencedContainer = "container:Guard.xcodeproj">
             </BuildableReference>
          </TestableReference>
       </Testables>
@@ -55,9 +55,9 @@
          <BuildableReference
             BuildableIdentifier = "primary"
             BlueprintIdentifier = "13B07F861A680F5B00A75B9A"
-            BuildableName = "deepthought.app"
-            BlueprintName = "deepthought"
-            ReferencedContainer = "container:deepthought.xcodeproj">
+            BuildableName = "Guard.app"
+            BlueprintName = "Guard"
+            ReferencedContainer = "container:Guard.xcodeproj">
          </BuildableReference>
       </BuildableProductRunnable>
    </LaunchAction>
@@ -72,9 +72,9 @@
          <BuildableReference
             BuildableIdentifier = "primary"
             BlueprintIdentifier = "13B07F861A680F5B00A75B9A"
-            BuildableName = "deepthought.app"
-            BlueprintName = "deepthought"
-            ReferencedContainer = "container:deepthought.xcodeproj">
+            BuildableName = "Guard.app"
+            BlueprintName = "Guard"
+            ReferencedContainer = "container:Guard.xcodeproj">
          </BuildableReference>
       </BuildableProductRunnable>
    </ProfileAction>

@@ -25,7 +25,7 @@ interface REQUEST_CONFIG {
 const DEFAULT_SETTING = {
   baseUrl: BASE_URL,
   reqHeaders: '',
-  timeOut: 1000,
+  timeOut: 5000,
   methodType: '',
   apiId: '',
   urlParams: {},
@@ -93,13 +93,12 @@ export class BaseRequest {
   }
 
   setApiSuccessResponse = (response) => {
-    log('setApiSuccessResponse', response)
+    log('setApiSuccessResponse',  this.reqParams)
     const status = get(response, 'status')
     const responseData = get(response, 'data', {})
     const isAnyResponse = get(responseData, 'Response', false)
-    log('isAnyResponseisAnyResponse', isAnyResponse)
     if (status === RESPONSE_CODE.SUCCESS && isAnyResponse !== 'False') {
-      this.context.onSuccess(this.apiId, responseData)
+      this.context.onSuccess(this.apiId, responseData, this.reqParams)
     } else {
       this.context.onFailure(this.apiId, get(responseData, 'Error', ''))
     }
@@ -115,8 +114,6 @@ export class BaseRequest {
         return `${this.baseUrl}`
     }
   }
-
-
 
   hitGetApi = async () => {
     try {
@@ -192,7 +189,7 @@ hitPostApi = async () => {
 
   } catch (err: any) {
     hideLoader()
-    log('error is', err.response)
+    log('error is', err.response, err)
     this.context.onFailure(this.apiId, err.response)
   }
 }

@@ -1,8 +1,8 @@
 import { observer } from 'mobx-react'
 import { } from 'react'
 import { View, ActivityIndicator, StyleSheet } from 'react-native'
-import { colors } from '../common'
-import { LoaderDataStore, loaderDataStore } from '../store'
+import { colors } from '..'
+import { LoaderDataStore, loaderDataStore } from '../../store'
 
 const styles = StyleSheet.create({
   mainContainer: {
