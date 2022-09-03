@@ -14,6 +14,10 @@
 		6172F2D35A4C3AA820D92908 /* libPods-Guard.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 6423831EA8574132BED9D8CC /* libPods-Guard.a */; };
 		7EF68E3733C33B6898317E18 /* libPods-Guard-GuardTests.a in Frameworks */ = {isa = PBXBuildFile; fileRef = ABFE59519B596E51CEFDCCC0 /* libPods-Guard-GuardTests.a */; };
 		81AB9BB82411601600AC10FF /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 81AB9BB72411601600AC10FF /* LaunchScreen.storyboard */; };
+		695DE96AB2484A2DB0D02715 /* Poppins-Regular.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 7F968C0C89C34BC5AE9BDCDA /* Poppins-Regular.ttf */; };
+		0A4ECCCAE288412D9779B015 /* Poppins-SemiBold.ttf in Resources */ = {isa = PBXBuildFile; fileRef = DA18536C723446D08B923691 /* Poppins-SemiBold.ttf */; };
+		53C53AC6C89F49E5ABE48CA4 /* Segoe-UI.ttf in Resources */ = {isa = PBXBuildFile; fileRef = C84DCFB7F985408798C4C2A0 /* Segoe-UI.ttf */; };
+		1BB4F0AD5C4F4FFABFBD13AB /* SegoeUI-Bold.ttf in Resources */ = {isa = PBXBuildFile; fileRef = B5673FE7AFBD4ABAB9D2AE9A /* SegoeUI-Bold.ttf */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -44,6 +48,10 @@
 		C0A881CF5CF3F2B244570E2A /* Pods-Guard.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Guard.debug.xcconfig"; path = "Target Support Files/Pods-Guard/Pods-Guard.debug.xcconfig"; sourceTree = "<group>"; };
 		D00AAFFCFCFDA5787532823F /* Pods-Guard.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Guard.release.xcconfig"; path = "Target Support Files/Pods-Guard/Pods-Guard.release.xcconfig"; sourceTree = "<group>"; };
 		ED297162215061F000B7C4FE /* JavaScriptCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = JavaScriptCore.framework; path = System/Library/Frameworks/JavaScriptCore.framework; sourceTree = SDKROOT; };
+		7F968C0C89C34BC5AE9BDCDA /* Poppins-Regular.ttf */ = {isa = PBXFileReference; name = "Poppins-Regular.ttf"; path = "../android/assets/fonts/Poppins-Regular.ttf"; sourceTree = "<group>"; fileEncoding = undefined; lastKnownFileType = unknown; explicitFileType = undefined; includeInIndex = 0; };
+		DA18536C723446D08B923691 /* Poppins-SemiBold.ttf */ = {isa = PBXFileReference; name = "Poppins-SemiBold.ttf"; path = "../android/assets/fonts/Poppins-SemiBold.ttf"; sourceTree = "<group>"; fileEncoding = undefined; lastKnownFileType = unknown; explicitFileType = undefined; includeInIndex = 0; };
+		C84DCFB7F985408798C4C2A0 /* Segoe-UI.ttf */ = {isa = PBXFileReference; name = "Segoe-UI.ttf"; path = "../android/assets/fonts/Segoe-UI.ttf"; sourceTree = "<group>"; fileEncoding = undefined; lastKnownFileType = unknown; explicitFileType = undefined; includeInIndex = 0; };
+		B5673FE7AFBD4ABAB9D2AE9A /* SegoeUI-Bold.ttf */ = {isa = PBXFileReference; name = "SegoeUI-Bold.ttf"; path = "../android/assets/fonts/SegoeUI-Bold.ttf"; sourceTree = "<group>"; fileEncoding = undefined; lastKnownFileType = unknown; explicitFileType = undefined; includeInIndex = 0; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -122,6 +130,7 @@
 				83CBBA001A601CBA00E9B192 /* Products */,
 				2D16E6871FA4F8E400B85C8A /* Frameworks */,
 				E233CBF5F47BEE60B243DCF8 /* Pods */,
+				9704F1A903294A71BE26F143 /* Resources */,
 			);
 			indentWidth = 2;
 			sourceTree = "<group>";
@@ -148,6 +157,18 @@
 			name = Pods;
 			path = Pods;
 			sourceTree = "<group>";
+		};
+		9704F1A903294A71BE26F143 /* Resources */ = {
+			isa = "PBXGroup";
+			children = (
+				7F968C0C89C34BC5AE9BDCDA /* Poppins-Regular.ttf */,
+				DA18536C723446D08B923691 /* Poppins-SemiBold.ttf */,
+				C84DCFB7F985408798C4C2A0 /* Segoe-UI.ttf */,
+				B5673FE7AFBD4ABAB9D2AE9A /* SegoeUI-Bold.ttf */,
+			);
+			name = Resources;
+			sourceTree = "<group>";
+			path = "";
 		};
 /* End PBXGroup section */
 
@@ -245,6 +266,10 @@
 			files = (
 				81AB9BB82411601600AC10FF /* LaunchScreen.storyboard in Resources */,
 				13B07FBF1A68108700A75B9A /* Images.xcassets in Resources */,
+				695DE96AB2484A2DB0D02715 /* Poppins-Regular.ttf in Resources */,
+				0A4ECCCAE288412D9779B015 /* Poppins-SemiBold.ttf in Resources */,
+				53C53AC6C89F49E5ABE48CA4 /* Segoe-UI.ttf in Resources */,
+				1BB4F0AD5C4F4FFABFBD13AB /* SegoeUI-Bold.ttf in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
