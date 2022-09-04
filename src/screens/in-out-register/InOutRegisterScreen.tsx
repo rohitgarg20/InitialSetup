@@ -3,8 +3,8 @@ import { StyleSheet, TouchableOpacity, View } from 'react-native'
 import { colors } from '../../common'
 import { commonStyles, popinsTextStyle } from '../../common/commonStyles'
 import { CustomText } from '../../common/components'
-import { FILTERED_BY_STATUS, IN_OUT_REGISTER_TAB } from '../../common/Constant'
-import { strings } from '../../common/Strings'
+import { FILTERED_BY_STATUS, IN_OUT_REGISTER_TAB } from '../../common'
+import { strings } from '../../common'
 import { ContainerDataComponent, HeaderComponent, HorizontalScrollBar, InOutRegisterCard, SearchComponent } from '../../components'
 
 const styles = StyleSheet.create({

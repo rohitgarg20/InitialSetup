@@ -3,7 +3,7 @@ import { StyleSheet, TouchableOpacity, View } from 'react-native'
 import { colors } from '../common'
 import { popinsTextStyle } from '../common/commonStyles'
 import { CustomText, FlatListWrapper } from '../common/components'
-import { IN_OUT_REGISTER_TAB } from '../common/Constant'
+import { IN_OUT_REGISTER_TAB } from '../common'
 
 const styles = StyleSheet.create({
   tabContainer: {

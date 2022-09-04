@@ -2,7 +2,7 @@ import React, { ReactElement } from 'react'
 import { StyleSheet, View } from 'react-native'
 import { heightToDp } from '../common'
 import { CustomText } from '../common/components'
-import { BACK_ICON_TYPES } from '../common/constant'
+import { BACK_ICON_TYPES } from '../common'
 import { BackButtonComponent } from './BackButtonComponent'
 
 const styles = StyleSheet.create({

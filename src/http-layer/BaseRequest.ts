@@ -1,4 +1,4 @@
-import { BASE_URL } from './../common/constant'
+import { BASE_URL } from './../common'
 import { getAuthToken } from './../utils/auth-utils'
 import Reactotron  from 'reactotron-react-native'
 import axios from 'axios'

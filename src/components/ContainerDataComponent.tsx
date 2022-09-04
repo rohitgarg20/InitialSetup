@@ -2,7 +2,7 @@ import { observer } from 'mobx-react-lite'
 import React, { ReactElement } from 'react'
 import { StyleSheet, View } from 'react-native'
 import { colors } from '../common'
-import { HEADER_TOP } from '../common/constant'
+import { HEADER_TOP } from '../common'
 
 const styles = StyleSheet.create({
   subContainer: {

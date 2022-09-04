@@ -3,7 +3,7 @@ import {  StyleSheet, View } from 'react-native'
 import { colors } from '../common'
 import { popinsTextStyle } from '../common/commonStyles'
 import { RoundedBorderContainerComponent, CustomText, TextInputComponent } from '../common/components'
-import { strings } from '../common/Strings'
+import { strings } from '../common'
 
 const styles = StyleSheet.create({
   inputTextContainer: {

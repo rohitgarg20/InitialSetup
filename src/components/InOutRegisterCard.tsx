@@ -3,7 +3,7 @@ import { StyleSheet, View } from 'react-native'
 import { colors, icons } from '../common'
 import { popinsTextStyle, commonStyles } from '../common/commonStyles'
 import { UserAvatar, CustomText, IconButtonWrapper } from '../common/components'
-import { BASE_URL, GET_DATA_BY_VISITOR_TYPE } from '../common/Constant'
+import { BASE_URL, GET_DATA_BY_VISITOR_TYPE } from '../common'
 
 const HEADER_HEIGHT = 70
 

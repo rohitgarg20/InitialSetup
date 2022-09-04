@@ -3,7 +3,7 @@ import {Animated, StyleSheet, TouchableOpacity, View } from 'react-native'
 import { colors, icons } from '../common'
 import { popinsTextStyle } from '../common/commonStyles'
 import { IconButtonWrapper, TextInputComponent } from '../common/components'
-import { strings } from '../common/Strings'
+import { strings } from '../common'
 import { SearchedResultComponent } from './SearchedResultComponent'
 
 

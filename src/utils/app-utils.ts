@@ -1,6 +1,6 @@
 import { get, isEmpty, isNumber, reduce } from 'lodash'
 import { Image, InteractionManager, Platform, ToastAndroid } from 'react-native'
-import { DAYS_NAME, MONTH_NAMES} from '../common/constant'
+import { DAYS_NAME, MONTH_NAMES} from '../common'
 import { log } from '../config'
 import { navigateSimple } from '../service'
 

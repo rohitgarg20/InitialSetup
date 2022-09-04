@@ -1,6 +1,6 @@
 import axios from 'axios'
 import { Alert } from 'react-native'
-import { BASE_URL } from '../common/constant'
+import { BASE_URL } from '../common'
 import { log } from '../config'
 import { navigationDataStore } from '../store'
 import { showAndroidToastMessage } from '../utils/app-utils'

@@ -2,7 +2,7 @@ import React from 'react'
 import { StyleSheet, View } from 'react-native'
 import { colors } from '../../common'
 import { commonStyles } from '../../common/commonStyles'
-import { strings } from '../../common/Strings'
+import { strings } from '../../common'
 import { BodyTemperatureComponent, HeaderComponent, VisitedReasonComponent, WearingMaskComponent } from '../../components'
 
 const styles = StyleSheet.create({

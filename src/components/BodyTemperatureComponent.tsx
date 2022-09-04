@@ -1,7 +1,7 @@
 import React, { useState } from 'react'
 import {  StyleSheet, TouchableOpacity, View } from 'react-native'
 import { map } from 'lodash'
-import { strings } from '../common/Strings'
+import { strings } from '../common'
 import { CustomText, IconButtonWrapper, RoundedBorderContainerComponent } from '../common/components'
 import { colors } from '../common'
 import { popinsTextStyle } from '../common/commonStyles'
