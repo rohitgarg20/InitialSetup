@@ -15,7 +15,9 @@ const rootStack = () => {
   const { currentStackName } = navigationDataStore
   return (
     <NavigationContainer>
-      <Stack.Navigator>
+      <Stack.Navigator screenOptions={{
+        headerShown: false
+      }}>
         {currentStackName === STACK_NAMES.LOGIN_STACK && <Stack.Screen name ={'LoginStack'} component = {InOutRegisterScreen}/>}
       </Stack.Navigator>
     </NavigationContainer>

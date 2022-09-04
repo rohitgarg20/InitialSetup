@@ -72,13 +72,13 @@ export const BodyTemperatureComponent = () => {
     return (
       <View style = {styles.tempOperatorContainer}>
         {renderTempOperatorButton({
-          iconSrc: icons.ADD_MORE_TAB,
+          iconSrc: icons.RIGHT_ARROW,
           btnKey: BUTTON_KEYS.DECREASE,
           disabled: bodyTemp === MINIMUM_TEMP
         })}
         <CustomText textStyle={popinsTextStyle.twentyNormalBlack}>{bodyTemp}</CustomText>
         {renderTempOperatorButton({
-          iconSrc: icons.ACTIVITY_TAB,
+          iconSrc: icons.RIGHT_ARROW,
           btnKey: BUTTON_KEYS.INCREASE,
           disabled: bodyTemp === MAX_TEMP
         })}

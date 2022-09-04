@@ -1,5 +1,5 @@
 import React from 'react'
-import { StyleSheet, View } from 'react-native'
+import { StyleSheet, TouchableOpacity, View } from 'react-native'
 import { colors, icons } from '../common'
 import { popinsTextStyle, commonStyles } from '../common/commonStyles'
 import { UserAvatar, CustomText, IconButtonWrapper } from '../common/components'
@@ -71,6 +71,16 @@ const styles = StyleSheet.create({
   },
   paddingLeft: {
     paddingLeft: 10
+  },
+  infoIconContainer: {
+    borderRadius: 10,
+    borderWidth: 2,
+    borderColor: colors.black,
+    justifyContent: 'center',
+    alignItems: 'center',
+    backgroundColor: colors.primaryButton,
+    height: 35,
+    width: 35
   }
 })
 
@@ -126,7 +136,7 @@ export const InOutRegisterCard = (props) => {
     return (
       <View style = {[styles.inOutBorderContainer, styles.inContainer]}>
         <IconButtonWrapper
-          iconImage={icons.ADD_MORE_TAB}
+          iconImage={icons.IN_TIME}
           iconHeight = {27}
           iconWidth = {27}
         />
@@ -139,7 +149,7 @@ export const InOutRegisterCard = (props) => {
     return (
       <View style = {[styles.inOutBorderContainer, styles.outContainer]}>
         <IconButtonWrapper
-          iconImage={icons.ADD_MORE_TAB}
+          iconImage={icons.OUT_TIME}
           iconHeight = {27}
           iconWidth = {27}
         />
@@ -152,9 +162,12 @@ export const InOutRegisterCard = (props) => {
     return (
       <View style = {styles.rightArrow}>
         <IconButtonWrapper
-          iconImage={icons.ADD_MORE_TAB}
+          iconImage={icons.RIGHT_ARROW}
           iconHeight = {20}
           iconWidth = {20}
+          styling={{
+            tintColor: colors.primaryButton
+          }}
         />
       </View>
     )
@@ -180,6 +193,18 @@ export const InOutRegisterCard = (props) => {
     )
   }
 
+  const renderInfoIconContainer = () => {
+    return (
+      <TouchableOpacity style={styles.infoIconContainer}>
+        <IconButtonWrapper
+          iconImage={icons.INFO_ICON}
+          iconHeight={20}
+          iconWidth={20}
+        />
+      </TouchableOpacity>
+    )
+  }
+
   const renderUserDetail = () => {
     return (
       <View style = {commonStyles.rowWithEqualSpaced}>
@@ -187,7 +212,7 @@ export const InOutRegisterCard = (props) => {
           {renderRoundedAvtar()}
           {renderUserNameWithType()}
         </View>
-
+          {renderInfoIconContainer()}
       </View>
     )
   }

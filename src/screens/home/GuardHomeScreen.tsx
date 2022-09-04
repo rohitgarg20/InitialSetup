@@ -45,9 +45,9 @@ const styles = StyleSheet.create({
     padding: 10
   },
   blackContainer: {
-    borderRadius: 20,
+    borderRadius: 14,
     backgroundColor: colors.black,
-    padding: 18,
+    padding: 10,
     justifyContent: 'center',
     alignItems: 'center'
   },
@@ -100,16 +100,13 @@ export const GuardHomeScreen = () => {
       <TouchableOpacity style = {styles.scanQRCode} disabled = {true}>
         <View style = {[styles.blackContainer, { padding: 10, borderRadius: 10 }]}>
           <IconButtonWrapper
-            iconImage={icons.APPROVAL_PENDING}
-            iconWidth = {25}
-            iconHeight = {25}
-            styling = {{
-              tintColor: colors.black
-            }}
+            iconImage={icons.SCAN_QR}
+            iconWidth = {15}
+            iconHeight = {15}
           />
         </View>
         <CustomText textStyle={{
-          ...popinsTextStyle.thirtyBoldBlack,
+          ...popinsTextStyle.eighteenBoldBlack,
           textAlign: 'center',
           paddingLeft: 5
         }}>{SCAN_QR_CODE}</CustomText>
@@ -152,7 +149,7 @@ export const GuardHomeScreen = () => {
   const renderOptionLabel = (optionLabel) => {
     return (
       <CustomText textStyle={{
-        ...popinsTextStyle.thirtyBoldBlack,
+        ...popinsTextStyle.eighteenBoldBlack,
         paddingLeft: 10
       }}>
         {optionLabel}
@@ -175,7 +172,7 @@ export const GuardHomeScreen = () => {
             {renderOptionLabel(label)}
           </View>
           <IconButtonWrapper
-            iconImage={icons.BACK_ARROW}
+            iconImage={icons.RIGHT_ARROW}
             iconWidth = {35}
             iconHeight = {35}
             styling = {{

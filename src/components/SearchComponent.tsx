@@ -37,7 +37,7 @@ export const SearchComponent = () => {
     return (
       <TouchableOpacity style = {styles.iconContainer}>
         <IconButtonWrapper
-          iconImage={icons.SOCIETY}
+          iconImage={icons.SEARCH_ICON}
           iconHeight = {20}
           iconWidth = {20}
         />

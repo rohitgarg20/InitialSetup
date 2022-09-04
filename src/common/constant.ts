@@ -1,3 +1,5 @@
+import { icons } from "./icons"
+
 export const REMOVE_LOG = false
 export const BASE_URL = ''
 
@@ -14,32 +16,32 @@ export const OPTIONS_KEY = {
 export const OPTIONS_LIST = [
   {
     label: 'New Visitor',
-    icon: '',
+    icon: icons.NEW_VISITOR,
     key: OPTIONS_KEY.NEW_VISITOR
   },
   {
     label: 'New Vendor',
-    icon: '',
+    icon: icons.NEW_VENDOR,
     key: OPTIONS_KEY.NEW_VENDOR
   },
   {
     label: 'Staff',
-    icon: '',
+    icon: icons.STAFF,
     key: OPTIONS_KEY.STAFF
   },
   {
     label: 'Resident Entry',
-    icon: '',
+    icon: icons.RESIDENT_ENTRY,
     key: OPTIONS_KEY.RESIDENT_ENTRY
   },
   {
     label: 'Approvals',
-    icon: '',
+    icon: icons.APPROVALS,
     key: OPTIONS_KEY.APPROVALS
   },
   {
     label: 'In-Out Register',
-    icon: '',
+    icon: icons.IN_OUT_REGISTER,
     key: OPTIONS_KEY.IN_OUT_REGISTER
   }
 ]
